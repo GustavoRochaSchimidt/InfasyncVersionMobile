@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import{NavigationContainer} from '@react-navigation/native';
 import telaDeCadastro from "./src/screens/telaDeCadastro";
 import telaDeLogin from "./src/screens/telaDeLogin" 
-import { HeaderTitle } from "@react-navigation/elements";
 
 const Stack = createStackNavigator();
 
