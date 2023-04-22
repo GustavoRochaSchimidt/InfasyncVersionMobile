@@ -2,264 +2,359 @@ import React, { useState } from "react";
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign/';
-import SelectMultiple from 'C:/Users/gusta/Projeto_Infatec_mobile_OF/src/components/SelectMultiple';
-import { 
-    Ionicons,
-    AntDesign,
+import SelectMultiple from '../../src/components/SelectMultiple';
+import { useForm, Controller } from 'react-hook-form';
+import { posts } from "../components/SelectMultiple/posts";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import {
+  Ionicons,
+  AntDesign,
 } from '@expo/vector-icons';
 
 import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    TouchableOpacity,
-    TextInput,
-    Platform,
-    KeyboardAvoidingView,
-    ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
-import { posts } from "../components/SelectMultiple/posts";
+
 
 export default function TelaDeCadastro() {
 
-    const [input, setInput] = useState('');
-    const [hidePass, setHidePass] = useState(true);
+  const [hidePass, setHidePass] = useState(true);
+  const schema = yup.object({
+    userName: yup.string().required("Informe seu nome"),
+    email: yup.string().email("E-mail inválido").required("Informe seu e-mail"),
+    ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
+    senha: yup.string().min(8, "Sau senha tem que ter no minimo 8 digitos").required("Informe sua senha")
+  })
 
-    useEffect(() => {
-        loadFont();
-    }, []);
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  })
 
-    async function loadFont() {
-        await Font.loadAsync({
-            'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-            'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-        });
-    }
+  function handerInfosCadastro(infos) {
+    console.log(infos);
+  }
 
-    return (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.fundoTela}
-        >
-          <ScrollView>
-            <View style={styles.fundoFormato}>
-              
-                <Text style={styles.textCadastro}>CADASTRO</Text>
-              
-              <View style={styles.imagenLogo}>
-                <Image
-                  source={require('../../assets/logoInfatec.png')}
-                  style={styles.image}
-                  
-                />
-              </View>
-              <View style={styles.caixaDeTexto}>
+  useEffect(() => {
+    loadFont();
+  }, []);
 
-                <SelectMultiple title="Cursos" max={3} options={posts} initinalSelect={[]}/>
+  async function loadFont() {
+    await Font.loadAsync({
+      'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
+      'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
+    });
+  }
 
-                <View>
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.fundoTela}
+    >
+      <ScrollView>
+        <View style={styles.fundoFormato}>
+
+          <Text style={styles.textCadastro}>CADASTRO</Text>
+
+          <View style={styles.imagenLogo}>
+            <Image
+              source={require('../../assets/logoInfatec.png')}
+              style={styles.image}
+
+            />
+          </View>
+          <View style={styles.caixaDeTexto}>
+
+            <SelectMultiple
+              title="Cursos"
+              max={3}
+              options={posts}
+              initinalSelect={[]}
+
+            />
+
+            <View>
+              <Controller
+                control={control}
+                name="userName"
+                render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={[styles.name, { paddingLeft: 35 }]}
+                    style={[styles.name, { 
+                      borderColor: errors.userName? '#ff375b' : 'white',  
+                      paddingLeft: 35,
+                      
+                    }]}
                     placeholder='Nome'
                     placeholderTextColor='#FFF'
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+
                   />
-                  <View style={styles.iconUser}>
-                    <Icon name='user' size={22} color='#FFF' />
-                  </View>
-                </View>
-                <View>
+                )}
+              />
+              {errors.userName && <Text style={styles.inputError}>{errors.userName?.message} </Text>}
+
+              <View style={styles.iconUser}>
+                <Icon name='user' size={22} color='#FFF' />
+              </View>
+            </View>
+            <View>
+
+              <Controller
+                control={control}
+                name="ra"
+                render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={[styles.ra, { paddingLeft: 35 }]}
+                    style={[styles.ra, {
+                      borderColor: errors.ra? '#ff375b' : 'white',
+                      paddingLeft: 35
+                    }]}
                     placeholder='Ra'
                     placeholderTextColor='#FFF'
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    keyboardType="numeric"
+
                   />
-                  <View style={styles.iconRA}>
-                    <Ionicons name='school-outline' size={22} color='#FFF' />
-                  </View>
-                </View>
-                <View>
+                )}
+              />
+              {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
+
+              <View style={styles.iconRA}>
+                <Ionicons name='school-outline' size={22} color='#FFF' />
+              </View>
+            </View>
+            <View>
+
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={[styles.tel, { paddingLeft: 35 }]}
+                    style={[styles.tel, {
+                      borderColor: errors.email? '#ff375b' : 'white',
+                      paddingLeft: 35
+                    }]}
                     placeholder='E-mail'
                     placeholderTextColor='#FFF'
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
                   />
-                  <View style={styles.iconTel}>
-                    <Icon name='mail' size={22} color='#FFF' />
-                  </View>
-                </View>
-                <View>
+                )}
+              />
+              {errors.email && <Text style={styles.inputError}>{errors.email?.message} </Text>}
+
+              <View style={styles.iconTel}>
+                <Icon name='mail' size={22} color='#FFF' />
+              </View>
+            </View>
+            <View>
+
+              <Controller
+                control={control}
+                name="senha"
+                render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={[styles.senha, { paddingLeft: 35 }]}
+                    style={[styles.senha, {
+                      borderColor: errors.senha? '#ff375b' : 'white',
+                      paddingLeft: 35,
+                    }]}
                     placeholder='Senha'
                     placeholderTextColor='#FFF'
-                    value={input}
-                    onChangeText={(texto) => setInput(texto)}
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
                     secureTextEntry={hidePass}
                   />
-                  <View style={styles.iconSenha}>
-                    <AntDesign name='lock' size={22} color='#FFF' />
-                  </View>
-                  <TouchableOpacity
-                    style={styles.iconEye}
-                    onPress={() => setHidePass(!hidePass)}
-                  >
-                    {hidePass ? (
-                      <AntDesign name='eye' size={22} color='#FFF' />
-                    ) : (
-                      <Icon name='eyeo' size={22} color='#FFF' />
-                    )}
-                  </TouchableOpacity>
-                  
-                </View>
-                
-                </View>
-                <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => alert('aaaaaaaaaaaaa')}>
-                    <Text style={styles.buttonText}>CADASTRAR</Text>
-                </TouchableOpacity>
+                )}
+              />
+              {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
+
+              <View style={styles.iconSenha}>
+                <AntDesign name='lock' size={22} color='#FFF' />
+              </View>
+              <TouchableOpacity
+                style={styles.iconEye}
+                onPress={() => setHidePass(!hidePass)}
+              >
+                {hidePass ? (
+                  <AntDesign name='eye' size={22} color='#FFF' />
+                ) : (
+                  <Icon name='eyeo' size={22} color='#FFF' />
+                )}
+              </TouchableOpacity>
+
             </View>
-              
-            
-            
-          </ScrollView>
-          
-        </KeyboardAvoidingView>
-        
-      );
-    };
 
-    const styles = StyleSheet.create({
-        fundoTela: {
-          flex: 1,
-          backgroundColor: "#FAEBD7",
-        },
-        fundoFormato: {
-          
-          marginTop: '10%',
-          borderRadius: 50,
-          backgroundColor: "#162938",
-          borderColor: "#FFFFFF",
-          borderWidth: 2,
-          height: '90%',
-        },
-        imagenLogo: {
-          alignItems: "center",
-          marginTop: -15,
-          top: '-18%'
-        },
-        textCadastro: {
-          fontFamily: 'Ubuntu',
-          color: "#fff",
-          fontSize: 18,
-          marginTop: 120,
-          marginLeft: '40%',
-        },
-        caixaDeTexto: {
-          backgroundColor:"#162938",
-          marginTop: '5%',
-          width: '80%',
-          marginLeft: '10%',
-          height: '50%',
-          borderRadius: 20,
-          borderColor: "#162938",
-          borderWidth: 2,
-          top:'-5%',
-        },
+          </View>
+          <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosCadastro)}>
+            <Text style={styles.buttonText}>CADASTRAR</Text>
+          </TouchableOpacity>
+        </View>
 
-    name: {
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
-        borderRadius: 20,
-        padding: 10,
-        marginBottom: 10,
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu",
-        fontSize: 16,
-    },
+      </ScrollView>
 
-    ra: {
-      borderColor: "#FFFFFF",
-      borderWidth: 2,
-      borderRadius: 20,
-      padding: 10,
-      marginBottom: 10,
-      fontFamily: "Ubuntu",
-      color: "#FFF",
-      fontSize: 16,
-    },
+    </KeyboardAvoidingView>
 
-    tel: {
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
-        borderRadius: 20,
-        padding: 10,
-        marginBottom: 10,
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu",
-        fontSize: 16,
+  );
+};
 
-    },
+const styles = StyleSheet.create({
+  fundoTela: {
+    flex: 1,
+    backgroundColor: "#FAEBD7",
+  },
+  fundoFormato: {
 
-    senha: {
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
-        borderRadius: 20,
-        padding: 10,
-        marginBottom: 10,
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu",
-        fontSize: 16,
-    },
-    button: {
-        backgroundColor: "#162938",
-        marginLeft: -100,
-        width: 210,
-        left: '50%',
-        borderRadius: 20,
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
-        padding: 10,
-        
-    },
+    marginTop: '10%',
+    borderRadius: 50,
+    backgroundColor: "#162938",
+    borderColor: "#FFFFFF",
+    borderWidth: 2,
+    height: '90%',
+  },
+  imagenLogo: {
+    alignItems: "center",
+    marginTop: 25,
+    top: '-22%'
+  },
+  textCadastro: {
+    fontFamily: 'Ubuntu',
+    color: "#fff",
+    fontSize: 18,
+    marginTop: 120,
+    marginLeft: '40%',
+    top: "2%"
+  },
+  caixaDeTexto: {
+    backgroundColor: "#162938",
+    marginTop: '5%',
+    width: '80%',
+    marginLeft: '10%',
+    height: '50%',
+    borderRadius: 20,
+    borderColor: "#162938",
+    borderWidth: 2,
+    top: '-10%',
+  },
 
-    buttonText: {
-        left: 50,
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu",
-    },
+  name: {
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 10,
+    color: "#FFFFFF",
+    fontFamily: "Ubuntu",
+    fontSize: 16,
+    marginBottom: 20,
+  },
 
-    iconUser: {
-        top: '-55%',
-        left: '2%',
-    },
+  ra: {
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 10,
+    fontFamily: "Ubuntu",
+    color: "#FFF",
+    fontSize: 16,
+    marginBottom: 20,
+  },
 
-    iconRA: {
-        top: '-55%',
-        left: '2%',
-    },
+  tel: {
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 10,
+    color: "#FFFFFF",
+    fontFamily: "Ubuntu",
+    fontSize: 16,
+    marginBottom: 20,
 
-    iconTel: {
-        top: '-55%',
-        left: '2%',
+  },
 
-    },
+  senha: {
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 10,
+    color: "#FFFFFF",
+    fontFamily: "Ubuntu",
+    fontSize: 16,
+    marginBottom: 20,
 
-    iconSenha: {
-        top: '-35%',
-        left: '2%',
-    },
+  },
+  button: {
+    backgroundColor: "#162938",
+    marginLeft: -100,
+    marginBottom: 15,
+    width: 210,
+    left: '50%',
+    borderRadius: 20,
+    borderColor: "#FFFFFF",
+    borderWidth: 2,
+    padding: 10,
+    top: -10,
 
-    iconEye: {
-        width: '15%',
-        top: '-52%',
-        left: '90%',
-        height: 50,
+  },
 
-    },
+  buttonText: {
+    left: 50,
+    color: "#FFFFFF",
+    fontFamily: "Ubuntu",
+  },
+
+  iconUser: {
+    top: '15%',
+    left: '2%',
+    position: 'absolute',
+  },
+
+  iconRA: {
+    top: '15%',
+    left: '2%',
+    position: 'absolute',
+  },
+
+  iconTel: {
+    top: '15%',
+    left: '2%',
+    position: 'absolute',
+  },
+
+  iconSenha: {
+    top: '15%',
+    left: '2%',
+    position: 'absolute',
+  },
+
+  iconEye: {
+    width: '15%',
+    top: '15%',
+    left: '90%',
+    height: 50,
+    position: 'absolute',
+
+  },
+
+  inputError: {
+    alignSelf: "flex-start",
+    color: "#ff375b",
+    marginBottom: 5,
+    top: -20,
+    left: 10,
+
+  },
 
 
 
-   
 });
 
 

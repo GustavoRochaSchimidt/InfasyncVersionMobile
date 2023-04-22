@@ -1,7 +1,6 @@
 import React from "react";
 import * as Font from 'expo-font';
 import {
-    Ionicons,
     AntDesign,
     Feather,
 } from '@expo/vector-icons';
