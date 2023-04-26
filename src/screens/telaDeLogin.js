@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
   Ionicons,
   AntDesign,
@@ -21,8 +24,20 @@ import {
 
 
 export default function telaDeLogin() {
-  const [input, setInput] = useState('');
   const [hidePass, setHidePass] = useState(true);
+
+  const schema = yup.object({
+    ra: yup.string().min(13, "Ra ou senha incorretos").required("Informe seu Ra"),
+    senha: yup.string().min(8, "Ra ou senha incorretos").required("Informe sua senha"),
+  });
+
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  })
+
+  function handerInfosLogin(infos) {
+    console.log(infos);
+  }
 
   useEffect(() => {
     loadFont();
@@ -42,7 +57,7 @@ export default function telaDeLogin() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 3 }}>
         <View style={styles.fundoFormato}>
           <View>
             <Text style={styles.textEntrar}> ENTRAR</Text>
@@ -55,24 +70,57 @@ export default function telaDeLogin() {
           </View>
           <View style={styles.caixaDeTexto}>
             <View>
-              <TextInput
-                style={[styles.ra, { paddingLeft: 30 }]}
-                placeholder='Ra'
-                placeholderTextColor='#FFF'
+              <Controller
+                control={control}
+                name="ra"
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextInput
+                    style={[styles.ra, {
+                      paddingLeft: 30,
+                      borderColor: errors.ra ? '#ff375b' : 'white',
+                    }]}
+                    placeholder='Ra'
+                    placeholderTextColor='#FFF'
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    keyboardType="numeric"
+                  />
+                )}
               />
+              {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
+
               <View style={styles.iconUser}>
                 <Ionicons name="school-outline" size={22} color="#FFF" />
               </View>
             </View>
             <View>
-              <TextInput
-                style={[styles.senha, { paddingLeft: 30 }]}
-                placeholder='Insira sua senha'
-                placeholderTextColor='#FFF'
-                value={input}
-                onChangeText={(texto) => setInput(texto)}
-                secureTextEntry={hidePass}
+              <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => alert('Tela de recuperação de senha')}>
+                <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+
+              <Controller
+                control={control}
+                name="senha"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={[styles.senha, {
+                      paddingLeft: 30,
+                      borderColor: errors.senha ? '#ff375b' : 'white',
+                    }]}
+                    placeholder='Insira sua senha'
+                    placeholderTextColor='#FFF'
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry={hidePass}
+                  />
+                )}
               />
+              {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
+
               <View style={styles.iconLock}>
                 <Icon name="lock1" size={22} color="#FFF" />
               </View>
@@ -84,13 +132,11 @@ export default function telaDeLogin() {
                 }
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => alert('Entrar')}>
+            <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosLogin)}>
               <Text style={styles.buttonText}>LOGIN</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => alert('Tela de recuperação de senha')}>
-            <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
-          </TouchableOpacity>
+
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -110,13 +156,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#162938",
     borderColor: "#FFFFFF",
     borderWidth: 2,
-    top: "5%"
+    top: "5%",
   },
 
   imagenLogo: {
     alignItems: "center",
     marginTop: -15,
-    top: '-15%'
+    top: '-20%'
   },
 
   textEntrar: {
@@ -125,7 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 120,
     marginLeft: '40%',
-    top: '20%',
+    top: '10%',
   },
 
   caixaDeTexto: {
@@ -144,9 +190,10 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
     marginBottom: 10,
     fontFamily: "Ubuntu",
+    fontSize: 16,
     color: "#FFF",
     top: '25%',
 
@@ -156,10 +203,11 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
     marginBottom: 10,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
+    fontSize: 16,
     top: '20%',
 
   },
@@ -173,44 +221,60 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
     borderWidth: 2,
     padding: 10,
-    top: '5%',
+    top: '50%',
 
   },
 
   buttonText: {
     textAlign: 'center',
     color: "#FFFFFF",
-    fontFamily: "Ubuntu"
+    fontFamily: "Ubuntu",
+    fontSize: 16,
   },
 
   buttonText2: {
-    top: '600%',
-    left: '10%',
+    top: '590%',
+    left: '5%',
     textDecorationLine: 'underline',
     fontFamily: "Ubuntu",
+    fontSize: 16,
+    color: "#FFF"
   },
 
+
   trocar: {
-    color: '#000000',
-    top: '-10%',
+    color: '#FFFFFF',
 
   },
 
   iconUser: {
-    top: '-30%',
+    top: '40%',
     left: 5,
+    position: 'absolute',
   },
 
   iconLock: {
-    top: '-15%',
+    top: '40%',
     left: 5,
+    position: 'absolute',
   },
 
   iconEye: {
     width: '15%',
-    top: '-30%',
+    top: '40%',
     left: '90%',
     height: 50,
+    position: 'absolute',
+
+  },
+
+  inputError: {
+    alignSelf: "flex-start",
+    color: "#ff375b",
+    marginBottom: 5,
+    top: 10,
+    left: 10,
+    fontFamily: "Ubuntu",
 
   },
 

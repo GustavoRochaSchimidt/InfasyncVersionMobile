@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity, 
+  TouchableOpacity,
 
 } from 'react-native';
 import Header from '../../components/Header';

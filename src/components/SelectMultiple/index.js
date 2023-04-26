@@ -30,11 +30,11 @@ const SelectMultiple = ({ options = [], onChange, initinalSelect = [], title = '
         return (
             <TouchableOpacity
                 style={[styles.item, {
-                    backgroundColor:selected?.findIndex(i=>i.id == item.id) != -1 ? '#FAEBD7' : '#FFF'
+                    backgroundColor: selected?.findIndex(i => i.id == item.id) != -1 ? '#FAEBD7' : '#FFF'
                 }]}
                 onPress={() => toggleSelection(item)}
             >
-                <Text style={[styles.txt, {fontWeight: selected?.findIndex(i=>i.id == item.id) != -1 ? '600' : '400'}]}>{item?.title}</Text>
+                <Text style={[styles.txt, { fontWeight: selected?.findIndex(i => i.id == item.id) != -1 ? '600' : '400' }]}>{item?.title}</Text>
             </TouchableOpacity>
         )
     }
@@ -80,7 +80,7 @@ const SelectMultiple = ({ options = [], onChange, initinalSelect = [], title = '
 
 
     return <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>
-        <Text style={styles.textSelect}numberOfLines={1}><Feather name='book' size={22} color='#FFF' /> {selected.length > 0 ? selected.map(p=>`${p.title}, `): 'Selecione um curso'}</Text>
+        <Text style={styles.textSelect} numberOfLines={1}><Feather name='book' size={22} color='#FFF' /> {selected.length > 0 ? selected.map(p => `${p.title}, `) : 'Selecione um curso'}</Text>
         <AntDesign name='downcircleo' size={22} color='#FFF' />
         <Modal onRequestClose={() => setVisible(false)} visible={visible} animationType="slide" >
             <SafeAreaView style={{ flex: 1, }}>
@@ -111,11 +111,7 @@ const SelectMultiple = ({ options = [], onChange, initinalSelect = [], title = '
                 <FlatList
                     data={data}
                     renderItem={({ item }) => renderItem(item)}
-
-
                 />
-
-
             </SafeAreaView >
         </Modal>
     </TouchableOpacity>
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
         borderColor: '#FFFFFF',
         borderWidth: 2,
         paddingHorizontal: 10,
-        padding: 10,
+        padding: 9,
         width: '100%',
         top: -25
     },
@@ -153,13 +149,13 @@ const styles = StyleSheet.create({
     back: {
         fontSize: 15,
         fontFamily: "Ubuntu",
-       
+
     },
     title: {
         fontSize: 18,
         fontFamily: "Ubuntu",
         textAlign: "center",
-       
+
     },
 
     finsh: {
@@ -180,7 +176,7 @@ const styles = StyleSheet.create({
         borderColor: "#fff",
         borderWidth: 2,
         height: 40,
-        color:"#FFF",
+        color: "#FFF",
         fontFamily: "Ubuntu",
     },
 
@@ -191,15 +187,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginLeft: '5%',
-        marginHorizontal:'5%',
+        marginHorizontal: '5%',
         top: 5,
 
     },
-    textSelect:{
+    textSelect: {
         color: '#FFF',
         fontSize: 16,
         fontFamily: "Ubuntu",
-        
+
+
     }
 })
 

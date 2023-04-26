@@ -29,12 +29,15 @@ import {
 export default function TelaDeCadastro() {
 
   const [hidePass, setHidePass] = useState(true);
+  const [hidePassConf, setHidePassConf] = useState(true);
+
   const schema = yup.object({
     userName: yup.string().required("Informe seu nome"),
     email: yup.string().email("E-mail inválido").required("Informe seu e-mail"),
     ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
-    senha: yup.string().min(8, "Sau senha tem que ter no minimo 8 digitos").required("Informe sua senha")
-  })
+    senha: yup.string().min(8, "Sua senha tem que ter no minimo 8 digitos").required("Informe sua senha"),
+    senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
+  });
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -88,10 +91,10 @@ export default function TelaDeCadastro() {
                 name="userName"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={[styles.name, { 
-                      borderColor: errors.userName? '#ff375b' : 'white',  
+                    style={[styles.name, {
+                      borderColor: errors.userName ? '#ff375b' : 'white',
                       paddingLeft: 35,
-                      
+
                     }]}
                     placeholder='Nome'
                     placeholderTextColor='#FFF'
@@ -116,7 +119,7 @@ export default function TelaDeCadastro() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     style={[styles.ra, {
-                      borderColor: errors.ra? '#ff375b' : 'white',
+                      borderColor: errors.ra ? '#ff375b' : 'white',
                       paddingLeft: 35
                     }]}
                     placeholder='Ra'
@@ -143,7 +146,7 @@ export default function TelaDeCadastro() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     style={[styles.tel, {
-                      borderColor: errors.email? '#ff375b' : 'white',
+                      borderColor: errors.email ? '#ff375b' : 'white',
                       paddingLeft: 35
                     }]}
                     placeholder='E-mail'
@@ -168,7 +171,7 @@ export default function TelaDeCadastro() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     style={[styles.senha, {
-                      borderColor: errors.senha? '#ff375b' : 'white',
+                      borderColor: errors.senha ? '#ff375b' : 'white',
                       paddingLeft: 35,
                     }]}
                     placeholder='Senha'
@@ -190,6 +193,44 @@ export default function TelaDeCadastro() {
                 onPress={() => setHidePass(!hidePass)}
               >
                 {hidePass ? (
+                  <AntDesign name='eye' size={22} color='#FFF' />
+                ) : (
+                  <Icon name='eyeo' size={22} color='#FFF' />
+                )}
+              </TouchableOpacity>
+
+            </View>
+
+            <View>
+
+              <Controller
+                control={control}
+                name="senhaConfirm"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={[styles.senhaConfirm, {
+                      borderColor: errors.senhaConfirm ? '#ff375b' : 'white',
+                      paddingLeft: 35,
+                    }]}
+                    placeholder='Confirme sua senha'
+                    placeholderTextColor='#FFF'
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry={hidePassConf}
+                  />
+                )}
+              />
+              {errors.senhaConfirm && <Text style={styles.inputError}>{errors.senhaConfirm?.message} </Text>}
+
+              <View style={styles.iconSenha}>
+                <AntDesign name='lock' size={22} color='#FFF' />
+              </View>
+              <TouchableOpacity
+                style={styles.iconEye}
+                onPress={() => setHidePassConf(!hidePassConf)}
+              >
+                {hidePassConf ? (
                   <AntDesign name='eye' size={22} color='#FFF' />
                 ) : (
                   <Icon name='eyeo' size={22} color='#FFF' />
@@ -253,7 +294,7 @@ const styles = StyleSheet.create({
   name: {
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
     fontSize: 16,
@@ -263,7 +304,7 @@ const styles = StyleSheet.create({
   ra: {
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
     fontFamily: "Ubuntu",
     color: "#FFF",
     fontSize: 16,
@@ -273,7 +314,7 @@ const styles = StyleSheet.create({
   tel: {
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
     fontSize: 16,
@@ -284,7 +325,17 @@ const styles = StyleSheet.create({
   senha: {
     borderWidth: 2,
     borderRadius: 20,
-    padding: 10,
+    padding: 9,
+    color: "#FFFFFF",
+    fontFamily: "Ubuntu",
+    fontSize: 16,
+    marginBottom: 20,
+
+  },
+  senhaConfirm: {
+    borderWidth: 2,
+    borderRadius: 20,
+    padding: 9,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
     fontSize: 16,
@@ -300,8 +351,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#FFFFFF",
     borderWidth: 2,
-    padding: 10,
-    top: -10,
+    padding: 9,
+    top: 10,
 
   },
 
@@ -309,35 +360,36 @@ const styles = StyleSheet.create({
     left: 50,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
+    fontSize: 16,
   },
 
   iconUser: {
-    top: '15%',
+    top: '17%',
     left: '2%',
     position: 'absolute',
   },
 
   iconRA: {
-    top: '15%',
+    top: '17%',
     left: '2%',
     position: 'absolute',
   },
 
   iconTel: {
-    top: '15%',
+    top: '17%',
     left: '2%',
     position: 'absolute',
   },
 
   iconSenha: {
-    top: '15%',
+    top: '17%',
     left: '2%',
     position: 'absolute',
   },
 
   iconEye: {
     width: '15%',
-    top: '15%',
+    top: '17%',
     left: '90%',
     height: 50,
     position: 'absolute',
@@ -350,6 +402,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     top: -20,
     left: 10,
+    fontFamily: "Ubuntu",
 
   },
 
