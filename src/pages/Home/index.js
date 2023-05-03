@@ -2,8 +2,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
+  Image,
 
 } from 'react-native';
 import Header from '../../components/Header';
@@ -27,7 +27,6 @@ export default function Home() {
   }
 
   return (
-
     <View style={styles.container}>
       <Header />
       <View style={styles.imageContainer}>
@@ -83,22 +82,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    top: '30%',
-
+    top: '28%',
+    width: 100,
+    height: 100,
   },
+
   textInfatec: {
-    position: 'absolute',
+    position: 'relative',
     fontFamily: 'JuliusSansOne',
     fontSize: 38,
     color: '#000000',
     textAlign: 'center',
-
+    top: 60,
   },
+
   textFatec: {
+    position: 'relative',
     fontFamily: 'Ubuntu',
     color: '#000000',
     fontSize: 38,
+    top: 60,
   },
+
   buttonContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -106,33 +111,39 @@ const styles = StyleSheet.create({
     marginTop: 20,
     top: '70%',
   },
+
   button: {
     padding: '5%',
     borderRadius: 30,
     width: 255,
     height: 50,
   },
+
   buttonText: {
     fontFamily: 'Ubuntu',
     color: '#ffffff',
     fontWeight: 'bold',
     textAlign: 'center',
   },
+
   button1: {
     backgroundColor: '#162938',
     borderColor: "#FFFFFF",
     borderWidth: 2,
   },
+
   button2: {
     backgroundColor: '#162938',
     top: '15%',
     borderColor: "#FFFFFF",
     borderWidth: 2,
   },
+
   button3: {
     backgroundColor: '#FAEBD7',
     top: '30%',
   },
+
   buttonText2: {
     textDecorationLine: 'underline',
     color: "#000000",
@@ -142,6 +153,4 @@ const styles = StyleSheet.create({
   title: {
     top: '160%',
   },
-
-
 });

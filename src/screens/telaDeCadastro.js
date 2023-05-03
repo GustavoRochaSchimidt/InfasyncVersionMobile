@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
-import Icon from 'react-native-vector-icons/AntDesign/';
 import SelectMultiple from '../../src/components/SelectMultiple';
 import { useForm, Controller } from 'react-hook-form';
 import { posts } from "../components/SelectMultiple/posts";
@@ -65,190 +64,174 @@ export default function TelaDeCadastro() {
     >
       <ScrollView>
         <View style={styles.fundoFormato}>
-
-          <Text style={styles.textCadastro}>CADASTRO</Text>
-
-          <View style={styles.imagenLogo}>
-            <Image
-              source={require('../../assets/logoInfatec.png')}
-              style={styles.image}
-
-            />
-          </View>
-          <View style={styles.caixaDeTexto}>
-
-            <SelectMultiple
-              title="Cursos"
-              max={3}
-              options={posts}
-              initinalSelect={[]}
-
-            />
-
-            <View>
-              <Controller
-                control={control}
-                name="userName"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.name, {
-                      borderColor: errors.userName ? '#ff375b' : 'white',
-                      paddingLeft: 35,
-
-                    }]}
-                    placeholder='Nome'
-                    placeholderTextColor='#FFF'
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-
-                  />
-                )}
-              />
-              {errors.userName && <Text style={styles.inputError}>{errors.userName?.message} </Text>}
-
-              <View style={styles.iconUser}>
-                <Icon name='user' size={22} color='#FFF' />
+          <View>
+            <View style={styles.caixaDeTexto}>
+              <View style={styles.imagenLogo}>
+                <Image
+                  source={require('../../assets/logoInfatec.png')}
+                  style={styles.image}
+                />
               </View>
-            </View>
-            <View>
+              <Text style={styles.textCadastro}>CADASTRO</Text>
+              <View style={styles.cursoInput}>
+                <SelectMultiple
+                  title="Cursos"
+                  max={3}
+                  options={posts}
+                  initinalSelect={[]}
 
-              <Controller
-                control={control}
-                name="ra"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.ra, {
-                      borderColor: errors.ra ? '#ff375b' : 'white',
-                      paddingLeft: 35
-                    }]}
-                    placeholder='Ra'
-                    placeholderTextColor='#FFF'
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    keyboardType="numeric"
-
-                  />
-                )}
-              />
-              {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
-
-              <View style={styles.iconRA}>
-                <Ionicons name='school-outline' size={22} color='#FFF' />
+                />
               </View>
-            </View>
-            <View>
+              <View>
+                <Controller
+                  control={control}
+                  name="userName"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.name, {
+                        borderColor: errors.userName ? '#ff375b' : 'white',
+                        paddingLeft: 35,
+                      }]}
+                      placeholder='Nome'
+                      placeholderTextColor='#FFF'
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                    />
+                  )}
+                />
+                {errors.userName && <Text style={styles.inputError}>{errors.userName?.message} </Text>}
 
-              <Controller
-                control={control}
-                name="email"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.tel, {
-                      borderColor: errors.email ? '#ff375b' : 'white',
-                      paddingLeft: 35
-                    }]}
-                    placeholder='E-mail'
-                    placeholderTextColor='#FFF'
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                  />
-                )}
-              />
-              {errors.email && <Text style={styles.inputError}>{errors.email?.message} </Text>}
-
-              <View style={styles.iconTel}>
-                <Icon name='mail' size={22} color='#FFF' />
+                <View style={styles.iconUser}>
+                  <AntDesign name='user' size={22} color='#FFF' />
+                </View>
               </View>
-            </View>
-            <View>
-
-              <Controller
-                control={control}
-                name="senha"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.senha, {
-                      borderColor: errors.senha ? '#ff375b' : 'white',
-                      paddingLeft: 35,
-                    }]}
-                    placeholder='Senha'
-                    placeholderTextColor='#FFF'
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    secureTextEntry={hidePass}
-                  />
-                )}
-              />
-              {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
-
-              <View style={styles.iconSenha}>
-                <AntDesign name='lock' size={22} color='#FFF' />
+              <View>
+                <Controller
+                  control={control}
+                  name="ra"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.ra, {
+                        borderColor: errors.ra ? '#ff375b' : 'white',
+                        paddingLeft: 35
+                      }]}
+                      placeholder='Ra'
+                      placeholderTextColor='#FFF'
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
+                {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
+                <View style={styles.iconRA}>
+                  <Ionicons name='school-outline' size={22} color='#FFF' />
+                </View>
               </View>
-              <TouchableOpacity
-                style={styles.iconEye}
-                onPress={() => setHidePass(!hidePass)}
-              >
-                {hidePass ? (
-                  <AntDesign name='eye' size={22} color='#FFF' />
-                ) : (
-                  <Icon name='eyeo' size={22} color='#FFF' />
-                )}
+              <View>
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.tel, {
+                        borderColor: errors.email ? '#ff375b' : 'white',
+                        paddingLeft: 35
+                      }]}
+                      placeholder='E-mail'
+                      placeholderTextColor='#FFF'
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                    />
+                  )}
+                />
+                {errors.email && <Text style={styles.inputError}>{errors.email?.message} </Text>}
+
+                <View style={styles.iconTel}>
+                  <AntDesign name='mail' size={22} color='#FFF' />
+                </View>
+              </View>
+              <View>
+                <Controller
+                  control={control}
+                  name="senha"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.senha, {
+                        borderColor: errors.senha ? '#ff375b' : 'white',
+                        paddingLeft: 35,
+                      }]}
+                      placeholder='Senha'
+                      placeholderTextColor='#FFF'
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      secureTextEntry={hidePass}
+                    />
+                  )}
+                />
+                {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
+
+                <View style={styles.iconSenha}>
+                  <AntDesign name='lock' size={22} color='#FFF' />
+                </View>
+                <TouchableOpacity
+                  style={styles.iconEye}
+                  onPress={() => setHidePass(!hidePass)}
+                >
+                  {hidePass ? (
+                    <AntDesign name='eye' size={22} color='#FFF' />
+                  ) : (
+                    <AntDesign name='eyeo' size={22} color='#FFF' />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Controller
+                  control={control}
+                  name="senhaConfirm"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.senhaConfirm, {
+                        borderColor: errors.senhaConfirm ? '#ff375b' : 'white',
+                        paddingLeft: 35,
+                      }]}
+                      placeholder='Confirme sua senha'
+                      placeholderTextColor='#FFF'
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      secureTextEntry={hidePassConf}
+                    />
+                  )}
+                />
+                {errors.senhaConfirm && <Text style={styles.inputError}>{errors.senhaConfirm?.message} </Text>}
+
+                <View style={styles.iconSenha}>
+                  <AntDesign name='lock' size={22} color='#FFF' />
+                </View>
+                <TouchableOpacity
+                  style={styles.iconEye}
+                  onPress={() => setHidePassConf(!hidePassConf)}
+                >
+                  {hidePassConf ? (
+                    <AntDesign name='eye' size={22} color='#FFF' />
+                  ) : (
+                    <AntDesign name='eyeo' size={22} color='#FFF' />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosCadastro)}>
+                <Text style={styles.buttonText}>CADASTRAR</Text>
               </TouchableOpacity>
-
             </View>
-
-            <View>
-
-              <Controller
-                control={control}
-                name="senhaConfirm"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.senhaConfirm, {
-                      borderColor: errors.senhaConfirm ? '#ff375b' : 'white',
-                      paddingLeft: 35,
-                    }]}
-                    placeholder='Confirme sua senha'
-                    placeholderTextColor='#FFF'
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    secureTextEntry={hidePassConf}
-                  />
-                )}
-              />
-              {errors.senhaConfirm && <Text style={styles.inputError}>{errors.senhaConfirm?.message} </Text>}
-
-              <View style={styles.iconSenha}>
-                <AntDesign name='lock' size={22} color='#FFF' />
-              </View>
-              <TouchableOpacity
-                style={styles.iconEye}
-                onPress={() => setHidePassConf(!hidePassConf)}
-              >
-                {hidePassConf ? (
-                  <AntDesign name='eye' size={22} color='#FFF' />
-                ) : (
-                  <Icon name='eyeo' size={22} color='#FFF' />
-                )}
-              </TouchableOpacity>
-
-            </View>
-
           </View>
-          <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosCadastro)}>
-            <Text style={styles.buttonText}>CADASTRAR</Text>
-          </TouchableOpacity>
         </View>
-
       </ScrollView>
-
     </KeyboardAvoidingView>
-
   );
 };
 
@@ -258,7 +241,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAEBD7",
   },
   fundoFormato: {
-
     marginTop: '10%',
     borderRadius: 50,
     backgroundColor: "#162938",
@@ -266,22 +248,28 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: '90%',
   },
+
   imagenLogo: {
     alignItems: "center",
-    marginTop: 25,
-    top: '-22%'
   },
+
+  image: {
+    width: 100,
+    height: 100,
+    top: -10,
+  },
+
   textCadastro: {
     fontFamily: 'Ubuntu',
     color: "#fff",
     fontSize: 18,
-    marginTop: 120,
-    marginLeft: '40%',
-    top: "2%"
+    textAlign: 'center',
+    top: "-5%",
   },
+
   caixaDeTexto: {
     backgroundColor: "#162938",
-    marginTop: '5%',
+    marginTop: '20%',
     width: '80%',
     marginLeft: '10%',
     height: '50%',
@@ -292,6 +280,7 @@ const styles = StyleSheet.create({
   },
 
   name: {
+    height: 50,
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
@@ -302,6 +291,7 @@ const styles = StyleSheet.create({
   },
 
   ra: {
+    height: 50,
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
@@ -312,6 +302,7 @@ const styles = StyleSheet.create({
   },
 
   tel: {
+    height: 50,
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
@@ -319,10 +310,10 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu",
     fontSize: 16,
     marginBottom: 20,
-
   },
 
   senha: {
+    height: 50,
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
@@ -332,7 +323,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
 
   },
+
   senhaConfirm: {
+    height: 50,
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
@@ -342,6 +335,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
 
   },
+
   button: {
     backgroundColor: "#162938",
     marginLeft: -100,
@@ -353,6 +347,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 9,
     top: 10,
+    textAlign: 'center'
 
   },
 
@@ -393,7 +388,6 @@ const styles = StyleSheet.create({
     left: '90%',
     height: 50,
     position: 'absolute',
-
   },
 
   inputError: {
@@ -403,11 +397,14 @@ const styles = StyleSheet.create({
     top: -20,
     left: 10,
     fontFamily: "Ubuntu",
-
   },
 
-
-
+  cursoInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 40,
+  },
 });
 
 

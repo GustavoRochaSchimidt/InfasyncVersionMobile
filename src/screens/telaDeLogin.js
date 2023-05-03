@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -9,7 +8,6 @@ import {
   Ionicons,
   AntDesign,
 } from '@expo/vector-icons';
-
 
 import {
   StyleSheet,
@@ -20,6 +18,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
 
 
@@ -52,7 +51,6 @@ export default function telaDeLogin() {
 
 
   return (
-
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
@@ -60,83 +58,81 @@ export default function telaDeLogin() {
       <ScrollView contentContainerStyle={{ flexGrow: 3 }}>
         <View style={styles.fundoFormato}>
           <View>
-            <Text style={styles.textEntrar}> ENTRAR</Text>
-          </View>
-          <View style={styles.imagenLogo}>
-            <Image
-              source={require("../../assets/logoInfatec.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.caixaDeTexto}>
-            <View>
-              <Controller
-                control={control}
-                name="ra"
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextInput
-                    style={[styles.ra, {
-                      paddingLeft: 30,
-                      borderColor: errors.ra ? '#ff375b' : 'white',
-                    }]}
-                    placeholder='Ra'
-                    placeholderTextColor='#FFF'
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    keyboardType="numeric"
-                  />
-                )}
-              />
-              {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
-
-              <View style={styles.iconUser}>
-                <Ionicons name="school-outline" size={22} color="#FFF" />
+            <View style={styles.caixaDeTexto}>
+              <View style={styles.imagenLogo}>
+                <Image
+                  source={require("../../assets/logoInfatec.png")}
+                  style={styles.image}
+                />
               </View>
-            </View>
-            <View>
-              <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => alert('Tela de recuperação de senha')}>
-                <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
+              <Text style={styles.textEntrar}> ENTRAR</Text>
+              <View>
+                <Controller
+                  control={control}
+                  name="ra"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextInput
+                      style={[styles.ra, {
+                        paddingLeft: 30,
+                        borderColor: errors.ra ? '#ff375b' : 'white',
+                      }]}
+                      placeholder='Ra'
+                      placeholderTextColor='#FFF'
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
+                {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
+
+                <View style={styles.iconUser}>
+                  <Ionicons name="school-outline" size={22} color="#FFF" />
+                </View>
+              </View>
+              <View>
+                <Controller
+                  control={control}
+                  name="senha"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.senha, {
+                        paddingLeft: 30,
+                        borderColor: errors.senha ? '#ff375b' : 'white',
+                      }]}
+                      placeholder='Insira sua senha'
+                      placeholderTextColor='#FFF'
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      secureTextEntry={hidePass}
+                    />
+                  )}
+                />
+                {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
+
+                <View style={styles.iconLock}>
+                  <AntDesign name="lock1" size={22} color="#FFF" />
+                </View>
+                <TouchableOpacity style={styles.iconEye} onPress={() => setHidePass(!hidePass)}>
+                  {hidePass ?
+                    <AntDesign name="eye" size={22} color="#FFF" />
+                    :
+                    <AntDesign name="eyeo" size={22} color="#FFF" />
+                  }
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => alert('Tela de recuperação de senha')}>
+                  <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosLogin)}>
+                <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>
-            <View>
-
-              <Controller
-                control={control}
-                name="senha"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={[styles.senha, {
-                      paddingLeft: 30,
-                      borderColor: errors.senha ? '#ff375b' : 'white',
-                    }]}
-                    placeholder='Insira sua senha'
-                    placeholderTextColor='#FFF'
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    secureTextEntry={hidePass}
-                  />
-                )}
-              />
-              {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
-
-              <View style={styles.iconLock}>
-                <Icon name="lock1" size={22} color="#FFF" />
-              </View>
-              <TouchableOpacity style={styles.iconEye} onPress={() => setHidePass(!hidePass)}>
-                {hidePass ?
-                  <Icon name="eye" size={22} color="#FFF" />
-                  :
-                  <Icon name="eyeo" size={22} color="#FFF" />
-                }
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosLogin)}>
-              <Text style={styles.buttonText}>LOGIN</Text>
-            </TouchableOpacity>
           </View>
-
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -161,45 +157,48 @@ const styles = StyleSheet.create({
 
   imagenLogo: {
     alignItems: "center",
-    marginTop: -15,
-    top: '-20%'
+  },
+
+  image: {
+    width: 100,
+    height: 100,
+    top: -40,
   },
 
   textEntrar: {
     fontFamily: 'Ubuntu',
     color: "#fff",
     fontSize: 18,
-    marginTop: 120,
     marginLeft: '40%',
-    top: '10%',
+    top: '-10%',
   },
 
   caixaDeTexto: {
     backgroundColor: "#162938",
-    marginTop: '10%',
+    marginTop: '20%',
+    marginEnd: '20%',
     width: '80%',
     marginLeft: '10%',
     marginBottom: '10%',
     borderRadius: 20,
     borderColor: "#162938",
     borderWidth: 2,
-    top: '-15%'
   },
 
   ra: {
+    height: 50,
     borderColor: "#FFFFFF",
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
-    marginBottom: 10,
+    marginBottom: 20,
     fontFamily: "Ubuntu",
     fontSize: 16,
     color: "#FFF",
-    top: '25%',
-
   },
 
   senha: {
+    height: 50,
     borderColor: "#FFFFFF",
     borderWidth: 2,
     borderRadius: 20,
@@ -208,8 +207,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
     fontSize: 16,
-    top: '20%',
-
   },
 
   button: {
@@ -221,8 +218,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
     borderWidth: 2,
     padding: 10,
-    top: '50%',
-
+    top: '10%',
   },
 
   buttonText: {
@@ -233,7 +229,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText2: {
-    top: '590%',
+    top: '-40%',
     left: '5%',
     textDecorationLine: 'underline',
     fontFamily: "Ubuntu",
@@ -241,31 +237,28 @@ const styles = StyleSheet.create({
     color: "#FFF"
   },
 
-
   trocar: {
     color: '#FFFFFF',
-
   },
 
   iconUser: {
-    top: '40%',
+    top: '20%',
     left: 5,
     position: 'absolute',
   },
 
   iconLock: {
-    top: '40%',
+    top: '20%',
     left: 5,
     position: 'absolute',
   },
 
   iconEye: {
     width: '15%',
-    top: '40%',
+    top: '20%',
     left: '90%',
     height: 50,
     position: 'absolute',
-
   },
 
   inputError: {
@@ -275,7 +268,5 @@ const styles = StyleSheet.create({
     top: 10,
     left: 10,
     fontFamily: "Ubuntu",
-
   },
-
 });

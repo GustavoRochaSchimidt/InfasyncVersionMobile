@@ -15,17 +15,22 @@
       "**/*"
     ],
     "ios": {
-      
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gustavoschimidt.Projeto_Infatec_mobile_OF"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e9b28258-ca35-46c6-a066-7503f8b9847f"
+      }
     }
   }
 }
