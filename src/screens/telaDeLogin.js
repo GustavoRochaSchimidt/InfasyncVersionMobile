@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: '40%',
     top: '-10%',
+    position: "relative",
   },
 
   caixaDeTexto: {
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
-    marginBottom: 10,
+    marginBottom: 20,
     color: "#FFFFFF",
     fontFamily: "Ubuntu",
     fontSize: 16,
@@ -234,7 +235,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily: "Ubuntu",
     fontSize: 16,
-    color: "#FFF"
+    color: "#FFF",
+    position: "relative",
   },
 
   trocar: {
@@ -242,20 +244,20 @@ const styles = StyleSheet.create({
   },
 
   iconUser: {
-    top: '20%',
+    top: '15%',
     left: 5,
     position: 'absolute',
   },
 
   iconLock: {
-    top: '20%',
+    top: '15%',
     left: 5,
     position: 'absolute',
   },
 
   iconEye: {
     width: '15%',
-    top: '20%',
+    top: '15%',
     left: '90%',
     height: 50,
     position: 'absolute',
@@ -265,8 +267,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     color: "#ff375b",
     marginBottom: 5,
-    top: 10,
+    top: -20,
     left: 10,
     fontFamily: "Ubuntu",
+    position: "relative",
   },
 });

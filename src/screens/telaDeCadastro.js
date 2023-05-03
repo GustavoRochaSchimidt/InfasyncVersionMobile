@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#162938",
     borderWidth: 2,
-    top: '-10%',
+    top: '-5%',
   },
 
   name: {
@@ -339,15 +339,14 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#162938",
     marginLeft: -100,
-    marginBottom: 15,
+    marginBottom: 20,
     width: 210,
     left: '50%',
     borderRadius: 20,
     borderColor: "#FFFFFF",
     borderWidth: 2,
     padding: 9,
-    top: 10,
-    textAlign: 'center'
+    textAlign: 'center',
 
   },
 
@@ -397,6 +396,7 @@ const styles = StyleSheet.create({
     top: -20,
     left: 10,
     fontFamily: "Ubuntu",
+    position:"relative",
   },
 
   cursoInput: {
