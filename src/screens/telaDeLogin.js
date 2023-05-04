@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import * as Animatable from 'react-native-animatable';
 import {
   Ionicons,
   AntDesign,
@@ -56,12 +57,12 @@ export default function telaDeLogin() {
       style={styles.fundoTela}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 3 }}>
-        <View style={styles.fundoFormato}>
+        <Animatable.View animation="bounceIn" style={styles.fundoFormato}>
           <View>
             <View style={styles.caixaDeTexto}>
               <View style={styles.imagenLogo}>
                 <Image
-                  source={require("../../assets/logoInfatec.png")}
+                  source={require("../../assets/imagens/logoInfatec.png")}
                   style={styles.image}
                 />
               </View>
@@ -133,7 +134,7 @@ export default function telaDeLogin() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </Animatable.View>
       </ScrollView>
     </KeyboardAvoidingView>
 

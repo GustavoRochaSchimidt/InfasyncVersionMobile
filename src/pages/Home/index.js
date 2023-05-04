@@ -7,10 +7,12 @@ import {
 
 } from 'react-native';
 import Header from '../../components/Header';
+//import MovingSquares  from '../../components/ScreenAnimatable';
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import * as Animatable from 'react-native-animatable';
 
 export default function Home() {
   const navigation = useNavigation({});
@@ -28,19 +30,32 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Animatable.View
+        animation="fadeInDown"
+        delay={300}
+      >
+        <Header />
+      </Animatable.View>
       <View style={styles.imageContainer}>
-        <Image
-          source={require('../../../assets/LogoInfatecBlack.png')}
+        <Animatable.Image
+          animation="flipInY"
+          delay={300}
+          source={require('../../../assets/imagens/LogoInfatecBlack.png')}
           style={styles.image}
         />
-        <View>
+        <Animatable.View
+          animation="flipInY"
+          delay={300}
+        >
           <Text style={styles.title}>
             <Text style={styles.textInfatec}>IN</Text>
             <Text style={styles.textFatec}>FATEC</Text>
           </Text>
-        </View>
-        <View style={styles.buttonContainer}>
+        </Animatable.View>
+        <Animatable.View
+          animation="fadeInUp"
+          delay={600}
+          style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={() => navigation.navigate('telaDeLogin')}
@@ -59,7 +74,7 @@ export default function Home() {
           >
             <Text style={styles.buttonText2}>MAIS INFORMAÇÕES</Text>
           </TouchableOpacity>
-        </View>
+        </Animatable.View>
       </View>
     </View>
   );
@@ -83,8 +98,9 @@ const styles = StyleSheet.create({
   },
   image: {
     top: '28%',
-    width: 100,
-    height: 100,
+    width: '80%',
+    height: "80%",
+    resizeMode: "contain"
   },
 
   textInfatec: {
@@ -93,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 38,
     color: '#000000',
     textAlign: 'center',
-    top: 60,
+    top: 40,
   },
 
   textFatec: {
@@ -101,7 +117,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu',
     color: '#000000',
     fontSize: 38,
-    top: 60,
+    top: 40,
   },
 
   buttonContainer: {
@@ -133,6 +149,7 @@ const styles = StyleSheet.create({
   },
 
   button2: {
+    fontFamily: 'Ubuntu',
     backgroundColor: '#162938',
     top: '15%',
     borderColor: "#FFFFFF",
@@ -151,6 +168,6 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    top: '160%',
+    top: '70%',
   },
 });

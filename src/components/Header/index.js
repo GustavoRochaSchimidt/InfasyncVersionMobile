@@ -16,7 +16,7 @@ export default function Header() {
       
         async function loadFont() {
           await Font.loadAsync({
-           'Ubuntu-Regular': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
+           'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
           });
         }
     return (
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontFamily: 'Ubuntu-Regular',
+        fontFamily: 'Ubuntu',
         fontSize: 25,
         color: '#FFFFFF',
         textAlign: "center",

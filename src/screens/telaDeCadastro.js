@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { posts } from "../components/SelectMultiple/posts";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import * as Animatable from 'react-native-animatable';
 
 import {
   Ionicons,
@@ -63,12 +64,12 @@ export default function TelaDeCadastro() {
       style={styles.fundoTela}
     >
       <ScrollView>
-        <View style={styles.fundoFormato}>
+        <Animatable.View animation="bounceIn" style={styles.fundoFormato}>
           <View>
             <View style={styles.caixaDeTexto}>
               <View style={styles.imagenLogo}>
                 <Image
-                  source={require('../../assets/logoInfatec.png')}
+                  source={require('../../assets/imagens/logoInfatec.png')}
                   style={styles.image}
                 />
               </View>
@@ -229,7 +230,7 @@ export default function TelaDeCadastro() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </Animatable.View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
