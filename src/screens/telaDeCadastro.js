@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     top: -20,
     left: 10,
     fontFamily: "Ubuntu",
-    position:"relative",
+    position: "relative",
   },
 
   cursoInput: {

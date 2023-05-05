@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
+
 import {
   Ionicons,
   AntDesign,
@@ -23,7 +24,8 @@ import {
 } from 'react-native';
 
 
-export default function telaDeLogin() {
+export default function telaDeLogin({ navigation }) {
+
   const [hidePass, setHidePass] = useState(true);
 
   const schema = yup.object({
@@ -52,6 +54,7 @@ export default function telaDeLogin() {
 
 
   return (
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
@@ -129,7 +132,7 @@ export default function telaDeLogin() {
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosLogin)}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaDeOpçoes')}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>
