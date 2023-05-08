@@ -25,7 +25,6 @@ import {
   ScrollView,
 } from "react-native";
 
-
 export default function TelaDeCadastro() {
 
   const [hidePass, setHidePass] = useState(true);
@@ -322,7 +321,6 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu",
     fontSize: 16,
     marginBottom: 20,
-
   },
 
   senhaConfirm: {
@@ -334,7 +332,6 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu",
     fontSize: 16,
     marginBottom: 20,
-
   },
 
   button: {
@@ -348,7 +345,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 9,
     textAlign: 'center',
-
   },
 
   buttonText: {

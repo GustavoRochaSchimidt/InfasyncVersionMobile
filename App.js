@@ -1,12 +1,15 @@
 import Home from "./src/pages/Home/index";
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer, } from '@react-navigation/native';
 import telaDeCadastro from "./src/screens/telaDeCadastro";
 import telaDeLogin from "./src/screens/telaDeLogin";
 import telaDeOpçoes from "./src/screens/telaDeOpçoes";
+import CustonDrawer from "./src/components/CustonDrawer";
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function MyStack() {
   return (
@@ -40,16 +43,32 @@ function MyStack() {
         }}
         component={telaDeLogin} />
 
-        <Stack.Screen
-          name="telaDeOpçoes"
-          component={telaDeOpçoes}
-          options={{ headerShown: false }}
+      <Stack.Screen
+        name="telaDeOpçoes"
+        component={MyDrawer}
+        options={{ headerShown: false }}
 
-        />
-
+      />
     </Stack.Navigator>
   );
-}
+};
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator drawerContent={(props) => <CustonDrawer {...props} />}
+    >
+      <Drawer.Screen
+        name="drawerTelaDeOpçoes"
+        component={telaDeOpçoes}
+        options={{
+          //headerShown: false,
+          contentComponent: CustonDrawer
+        }}
+
+      />
+    </Drawer.Navigator>
+  );
+};
 
 export default function App() {
   return (
@@ -58,7 +77,7 @@ export default function App() {
       <MyStack />
     </NavigationContainer>
   );
-}
+};
 
 
 

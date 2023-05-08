@@ -24,7 +24,7 @@ import {
 } from 'react-native';
 
 
-export default function telaDeLogin({ navigation }) {
+export default function telaDeLogin({navigation}) {
 
   const [hidePass, setHidePass] = useState(true);
 
@@ -140,10 +140,9 @@ export default function telaDeLogin({ navigation }) {
         </Animatable.View>
       </ScrollView>
     </KeyboardAvoidingView>
-
   );
+};
 
-}
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,

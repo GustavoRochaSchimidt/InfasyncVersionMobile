@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 
 import {
@@ -26,7 +23,7 @@ import {
 } from 'react-native';
 
 
-export default function telaDeOpçoes({ navigation }) {
+export default function telaDeOpçoes() {
 
   useEffect(() => {
     loadFont();
@@ -56,9 +53,11 @@ export default function telaDeOpçoes({ navigation }) {
                 style={styles.image}
               />
             </View>
-            <View style={styles.iconOptions}>
-              <Ionicons name="settings" size={30} color="#fff" />
-            </View>
+            <TouchableOpacity style={[styles.buttonNotify]} >
+              <View style={styles.iconOptions}>
+                <Ionicons name="settings" size={30} color="#fff" />
+              </View>
+            </TouchableOpacity>
             <Text style={styles.textOption}> SELECIONE UMA OPÇÃO</Text>
           </View>
 
@@ -128,6 +127,16 @@ const styles = StyleSheet.create({
     height: 200,
   },
 
+  iconOptions: {
+    position: "absolute",
+    marginLeft: "85%",
+    top: 70,
+  },
+
+  buttonNotify: {
+    top: -220,
+  },
+
   image: {
     width: '100%',
     height: '100%',
@@ -165,16 +174,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  iconOptions: {
-    position: "absolute",
-    marginLeft: "85%",
-    top: 70,
-
-  },
-
   iconNotification: {
     alignItems: "center",
-    top: "8%",
+    top: '8%',
+
   },
 
   iconEventos: {
