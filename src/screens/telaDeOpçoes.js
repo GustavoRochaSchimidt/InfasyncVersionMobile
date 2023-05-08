@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 
 
-export default function telaDeOpçoes() {
+export default function telaDeOpçoes( {navigation} ) {
 
   useEffect(() => {
     loadFont();
@@ -53,9 +53,9 @@ export default function telaDeOpçoes() {
                 style={styles.image}
               />
             </View>
-            <TouchableOpacity style={[styles.buttonNotify]} >
+            <TouchableOpacity style={[styles.buttonNotify]} onPress={()=>navigation.openDrawer()} >
               <View style={styles.iconOptions}>
-                <Ionicons name="settings" size={30} color="#fff" />
+                <Ionicons name="settings" size={30} color="#fff"  />
               </View>
             </TouchableOpacity>
             <Text style={styles.textOption}> SELECIONE UMA OPÇÃO</Text>

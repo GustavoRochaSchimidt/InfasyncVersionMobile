@@ -6,7 +6,10 @@ import { NavigationContainer, } from '@react-navigation/native';
 import telaDeCadastro from "./src/screens/telaDeCadastro";
 import telaDeLogin from "./src/screens/telaDeLogin";
 import telaDeOpçoes from "./src/screens/telaDeOpçoes";
+import telaDePerfilUser from "./src/screens/telaDePerfilUser";
 import CustonDrawer from "./src/components/CustonDrawer";
+import { View } from "react-native-animatable";
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,6 +52,19 @@ function MyStack() {
         options={{ headerShown: false }}
 
       />
+
+      <Stack.Screen
+        name="telaPerfilUser"
+        component={telaDePerfilUser}
+        options={{
+          title: "Voltar",
+          headerStyle: {
+            backgroundColor: "#FAEBD7",
+          },
+          headerTintColor: "#000000",
+
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -61,10 +77,9 @@ function MyDrawer() {
         name="drawerTelaDeOpçoes"
         component={telaDeOpçoes}
         options={{
-          //headerShown: false,
-          contentComponent: CustonDrawer
+          headerShown: false,
+          contentComponent: CustonDrawer,
         }}
-
       />
     </Drawer.Navigator>
   );
