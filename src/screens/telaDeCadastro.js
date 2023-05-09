@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
-import { useEffect } from 'react';
 import SelectMultiple from '../../src/components/SelectMultiple';
 import { useForm, Controller } from 'react-hook-form';
 import { posts } from "../components/SelectMultiple/posts";

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
-import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -24,7 +23,7 @@ import {
 } from 'react-native';
 
 
-export default function telaDeLogin({navigation}) {
+export default function telaDeLogin({ navigation }) {
 
   const [hidePass, setHidePass] = useState(true);
 
@@ -54,7 +53,7 @@ export default function telaDeLogin({navigation}) {
 
 
   return (
-    
+
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
