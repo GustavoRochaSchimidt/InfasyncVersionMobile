@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+    Alert,
     View,
     TouchableOpacity,
     Button,
@@ -30,6 +31,24 @@ function CustonDrawer({ navigation }) {
         });
     }
 
+    const handleExitApp = () => {
+        Alert.alert(
+            'Tem certeza?',
+            'Deseja mesmo fechar o aplicativo?',
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
+                {
+                    text: 'Sim',
+                    onPress: () => BackHandler.exitApp()
+                }
+            ]
+        );
+    }
+
     return (
         <View style={styles.container}>
             <View>
@@ -48,7 +67,7 @@ function CustonDrawer({ navigation }) {
 
 
             <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleExitApp}>
                     <Text style={styles.perfilUserText}>SAIR</Text>
                     <Ionicons style={styles.perfilIcon} name="md-exit" size={20} color="000" />
                 </TouchableOpacity>
