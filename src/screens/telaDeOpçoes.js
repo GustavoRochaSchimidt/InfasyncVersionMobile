@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import * as Font from 'expo-font';
 import * as Animatable from 'react-native-animatable';
 
@@ -13,9 +13,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
@@ -65,7 +63,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconNotification}>
             <Ionicons name="notifications" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+          <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaAvisos')}>
             <Text style={styles.buttonText}>AVISOS</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />

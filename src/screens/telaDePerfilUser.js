@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
+import * as Animatable from 'react-native-animatable';
 import {
     StyleSheet,
     Text,
     View,
-    Image,
     TouchableOpacity,
     TextInput,
     KeyboardAvoidingView,
@@ -38,7 +38,10 @@ export default function telaDePerfilUser() {
             style={styles.fundoTela}
         >
             <ScrollView>
-                <View style={styles.fundoFormato}>
+                <Animatable.View animation="bounceIn" style={styles.fundoFormato}>
+                    <View>
+                        <Text style={styles.textEditProfile}>EDITAR PERFIL</Text>
+                    </View>
                     <View>
                         <FontAwesome style={styles.perfilIcon} name="user-circle" size={130} color="#FAEBD7" />
                         <TouchableOpacity>
@@ -89,7 +92,7 @@ export default function telaDePerfilUser() {
                             <Text style={styles.buttonText}>SALVAR</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </Animatable.View>
             </ScrollView >
         </KeyboardAvoidingView >
     )
@@ -109,6 +112,16 @@ const styles = StyleSheet.create({
         borderColor: "#FFFFFF",
         borderWidth: 2,
         height: '90%',
+    },
+
+    textEditProfile: {
+        color:"#FFF",
+        fontFamily: 'Ubuntu',
+        fontSize: 20,
+        top: '2%',
+        position: "relative",
+        textAlign: "center",
+
     },
 
     perfilIcon: {

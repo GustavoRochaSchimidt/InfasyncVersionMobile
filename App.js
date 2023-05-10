@@ -7,6 +7,7 @@ import telaDeCadastro from "./src/screens/telaDeCadastro";
 import telaDeLogin from "./src/screens/telaDeLogin";
 import telaDeOpçoes from "./src/screens/telaDeOpçoes";
 import telaDePerfilUser from "./src/screens/telaDePerfilUser";
+import telaDeAvisos from "./src/screens/telaDeAvisos";
 import CustonDrawer from "./src/components/CustonDrawer";
 import { View } from "react-native-animatable";
 
@@ -56,6 +57,19 @@ function MyStack() {
       <Stack.Screen
         name="telaPerfilUser"
         component={telaDePerfilUser}
+        options={{
+          title: "Voltar",
+          headerStyle: {
+            backgroundColor: "#FAEBD7",
+          },
+          headerTintColor: "#000000",
+
+        }}
+      />
+
+      <Stack.Screen
+        name="telaAvisos"
+        component={telaDeAvisos}
         options={{
           title: "Voltar",
           headerStyle: {
