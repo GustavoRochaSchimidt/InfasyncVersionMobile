@@ -10,6 +10,7 @@ import {
     Platform,
     KeyboardAvoidingView,
     ScrollView,
+    Button,
 } from "react-native";
 
 import {
@@ -20,7 +21,6 @@ import {
     MaterialCommunityIcons,
 
 } from '@expo/vector-icons';
-
 
 export default function telaDeAvisos() {
 
@@ -36,11 +36,11 @@ export default function telaDeAvisos() {
     };
 
     return (
+        <ScrollView contentContainerStyle={{}}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.containerFundoTela}>
 
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.containerFundoTela}>
-            <ScrollView contentContainerStyle={{  }}>
                 <View style={styles.imagenLogo}>
                     <Animatable.Image
                         animation="flipInY"
@@ -63,15 +63,54 @@ export default function telaDeAvisos() {
                 </View>
 
                 <Text style={styles.textAnexar}>Anexar imagem:</Text>
-            </ScrollView>
-        </KeyboardAvoidingView>
 
+                <View style={styles.containerAnexar}>
+                    <View>
+                        <TouchableOpacity style={styles.buttonAnexar}>
+                            <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                    </View>
+                </View>
+
+                <Text style={styles.textEnviaAviso2}>ENVIAR AVISO 2</Text>
+                <Text style={styles.textDescriçao2}>Descrição do Aviso:</Text>
+
+                <View style={styles.containerInputWarn2}>
+                    <TextInput
+                        style={styles.inputWarn2}
+                        multiline={true}
+                        numberOfLines={10}
+                        placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
+                    />
+                </View>
+
+                <Text style={styles.textAnexar}>Anexar imagem:</Text>
+
+                <View style={styles.containerAnexar}>
+                    <View>
+                        <TouchableOpacity style={styles.buttonAnexar}>
+                            <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                    </View>
+                </View>
+
+                <View style={styles.containerEnviar}>
+                    <TouchableOpacity style={styles.buttonEnviar}>
+                        <Text style={styles.textEnviar}>Enviar Avisos</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </KeyboardAvoidingView>
+        </ScrollView>
     )
 };
 
 const styles = StyleSheet.create({
 
     containerFundoTela: {
+        height: "100%",
         flex: 1,
         backgroundColor: "#FAEBD7",
     },
@@ -92,7 +131,7 @@ const styles = StyleSheet.create({
     },
 
     textEnviaAviso: {
-        position:"relative",
+        position: "relative",
         marginLeft: 10,
         top: -80,
         fontSize: 30,
@@ -102,7 +141,7 @@ const styles = StyleSheet.create({
     },
 
     textDescriçao: {
-        position:"relative",
+        position: "relative",
         marginLeft: 10,
         top: -80,
         fontSize: 20,
@@ -115,21 +154,22 @@ const styles = StyleSheet.create({
     containerInputWarn: {
         flex: 1,
         marginTop: '-15%',
-        borderRadius: 20,
+        borderRadius: 10,
         backgroundColor: "#FFF",
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
+        borderColor: "#000",
+        borderWidth: 1,
+        margin: 5,
     },
 
-    inputWarn:{
+    inputWarn: {
         fontFamily: "Ubuntu",
         fontSize: 15,
         height: 300,
         width: 410
     },
 
-    textAnexar:{
-        position:"relative",
+    textAnexar: {
+        position: "relative",
         marginLeft: 10,
         fontSize: 20,
         color: "#000",
@@ -137,6 +177,107 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginTop: 10,
     },
-    
 
+    containerAnexar: {
+        //flex: 1,
+        //marginTop: '-15%',
+        borderRadius: 10,
+        backgroundColor: "#FFF",
+        borderColor: "#000",
+        borderWidth: 1,
+        height: 40,
+        margin: 5,
+    },
+
+    styleTextAdd: {
+        fontFamily: "Ubuntu",
+        marginLeft: 20,
+        position: "absolute",
+        color: "#fff" 
+    },
+    
+    buttonAnexar:{
+        borderBottomColor: "#000", 
+        width: 150, 
+        height:25,   
+        borderWidth: 1,
+        borderRadius: 10,
+        left: 20,
+        top: 7,
+        backgroundColor: "#162938",
+
+    },
+
+    textNehum:{
+        fontFamily: "Ubuntu",
+        fontSize: 15,
+        position:"absolute",
+        top: 10,
+        left: 180
+    },
+
+    textEnviaAviso2:{
+        position: "relative",
+        marginLeft: 10,
+        top: 15,
+        fontSize: 30,
+        color: "#000",
+        fontFamily: "Ubuntu",
+        fontWeight: "bold",
+
+    },
+
+    textDescriçao2:{
+        position: "relative",
+        marginLeft: 10,
+        top: 10,
+        fontSize: 20,
+        color: "#000",
+        fontFamily: "Ubuntu",
+        fontWeight: "bold",
+        marginTop: 10,
+    },
+
+    containerInputWarn2:{
+        flex: 1,
+        marginTop: '10%',
+        borderRadius: 10,
+        backgroundColor: "#FFF",
+        borderColor: "#000",
+        borderWidth: 1,
+        margin: 5,
+    },
+
+    inputWarn2:{
+        fontFamily: "Ubuntu",
+        fontSize: 15,
+        height: 300,
+        width: 410
+    },
+
+    containerEnviar:{
+
+    },
+
+    buttonEnviar:{
+        borderBottomColor: "#000", 
+        width: 170, 
+        height:40,   
+        borderWidth: 1,
+        borderRadius: 10,
+        left: 115,
+        top: -5,
+        backgroundColor: "#162938",
+        margin: 10,
+    },
+
+    textEnviar:{
+        position:"absolute",
+        left: 40,
+        top: 10,
+        color:"#fff",
+        fontFamily:"Ubuntu"
+
+
+    }
 });
