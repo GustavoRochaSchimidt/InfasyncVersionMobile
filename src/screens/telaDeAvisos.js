@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Animatable from 'react-native-animatable';
+
 import {
     StyleSheet,
     Text,

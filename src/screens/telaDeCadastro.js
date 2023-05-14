@@ -6,6 +6,7 @@ import { posts } from "../components/SelectMultiple/posts";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
+import infatecFetch from "../Services/api";
 
 import {
   Ionicons,
@@ -29,21 +30,38 @@ export default function TelaDeCadastro() {
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConf, setHidePassConf] = useState(true);
 
-  const schema = yup.object({
+  const schema = yup.object().shape({
+    ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     userName: yup.string().required("Informe seu nome"),
     email: yup.string().email("E-mail inválido").required("Informe seu e-mail"),
-    ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     senha: yup.string().min(8, "Sua senha tem que ter no minimo 8 digitos").required("Informe sua senha"),
     senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
   });
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   })
 
-  function handerInfosCadastro(infos) {
-    console.log(infos);
-  }
+  async function createUser(values) {
+    try {
+      const data = {
+        ra: values.ra,
+        name: values.userName,
+        email: values.email,
+        password: values.senha,
+        type: 1,
+        coursesId: '1',
+        cpf: '11111111111',
+      };
+
+
+      console.log(data);
+      const response = await infatecFetch.post('/api/Login/CreateUser', data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     loadFont();
@@ -81,30 +99,7 @@ export default function TelaDeCadastro() {
 
                 />
               </View>
-              <View>
-                <Controller
-                  control={control}
-                  name="userName"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      style={[styles.name, {
-                        borderColor: errors.userName ? '#ff375b' : 'white',
-                        paddingLeft: 35,
-                      }]}
-                      placeholder='Nome'
-                      placeholderTextColor='#FFF'
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                      value={value}
-                    />
-                  )}
-                />
-                {errors.userName && <Text style={styles.inputError}>{errors.userName?.message} </Text>}
 
-                <View style={styles.iconUser}>
-                  <AntDesign name='user' size={22} color='#FFF' />
-                </View>
-              </View>
               <View>
                 <Controller
                   control={control}
@@ -129,6 +124,32 @@ export default function TelaDeCadastro() {
                   <Ionicons name='school-outline' size={22} color='#FFF' />
                 </View>
               </View>
+
+              <View>
+                <Controller
+                  control={control}
+                  name="userName"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.name, {
+                        borderColor: errors.userName ? '#ff375b' : 'white',
+                        paddingLeft: 35,
+                      }]}
+                      placeholder='Nome'
+                      placeholderTextColor='#FFF'
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      value={value}
+                    />
+                  )}
+                />
+                {errors.userName && <Text style={styles.inputError}>{errors.userName?.message} </Text>}
+
+                <View style={styles.iconUser}>
+                  <AntDesign name='user' size={22} color='#FFF' />
+                </View>
+              </View>
+
               <View>
                 <Controller
                   control={control}
@@ -223,7 +244,7 @@ export default function TelaDeCadastro() {
                   )}
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(handerInfosCadastro)}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(createUser)}>
                 <Text style={styles.buttonText}>CADASTRAR</Text>
               </TouchableOpacity>
             </View>

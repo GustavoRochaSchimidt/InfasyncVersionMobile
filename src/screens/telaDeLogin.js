@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
+import infatecFetch from "../Services/api";
 
 import {
   Ionicons,
@@ -32,9 +33,38 @@ export default function telaDeLogin({ navigation }) {
     senha: yup.string().min(8, "Ra ou senha incorretos").required("Informe sua senha"),
   });
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   })
+
+
+  async function loginUser() {
+    try {
+      const data = {
+        ra: '1234567891236',
+        password: '1234578'
+      };
+
+      console.log(data);
+      const response = await infatecFetch.post('/api/Login/LoginUser', data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  function loginUserok() {
+    // Lógica de autenticação e verificação de login
+    const loginSuccessful = true; // Exemplo de login bem-sucedido
+
+    if (loginSuccessful) {
+      navigation.navigate('telaDeOpçoes');
+    } else {
+      // Tratar caso de login incorreto
+    }
+  }
+
+
 
   function handerInfosLogin(infos) {
     console.log(infos);
@@ -131,7 +161,7 @@ export default function telaDeLogin({ navigation }) {
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(loginUser)}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>
