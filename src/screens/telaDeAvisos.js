@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import * as Animatable from 'react-native-animatable';
 
 import {
     StyleSheet,
     Text,
     View,
-    Image,
     TouchableOpacity,
     TextInput,
     Platform,
     KeyboardAvoidingView,
     ScrollView,
-    Button,
 } from "react-native";
-
-import {
-    Ionicons,
-    AntDesign,
-    FontAwesome5,
-    FontAwesome,
-    MaterialCommunityIcons,
-
-} from '@expo/vector-icons';
 
 export default function telaDeAvisos() {
 
@@ -117,7 +106,6 @@ const styles = StyleSheet.create({
     },
 
     imagenLogo: {
-        //margin: 10,
         left: 100,
         width: 200,
         height: 200,
@@ -128,7 +116,6 @@ const styles = StyleSheet.create({
         height: '100%',
         top: -60,
         resizeMode: "contain",
-        // marginLeft: 10
     },
 
     textEnviaAviso: {

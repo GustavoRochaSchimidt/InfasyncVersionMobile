@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import { useForm, Controller } from 'react-hook-form';
@@ -5,12 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 import infatecFetch from "../Services/api";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Ionicons,
   AntDesign,
 } from '@expo/vector-icons';
-
 import {
   StyleSheet,
   Text,
@@ -23,53 +23,43 @@ import {
   Platform,
 } from 'react-native';
 
-
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeLogin({ navigation }) {
 
+  //Const com useState para realizar a visibilidade da senha. 
   const [hidePass, setHidePass] = useState(true);
 
+  //Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup  
   const schema = yup.object({
     ra: yup.string().min(13, "Ra ou senha incorretos").required("Informe seu Ra"),
     senha: yup.string().min(8, "Ra ou senha incorretos").required("Informe sua senha"),
   });
 
+  //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   })
 
-
-  async function loginUser() {
+  //função da API que pega os valores das inputs e repassa para o login.
+  async function loginUser(values) {
     try {
       const data = {
-        ra: '1234567891236',
-        password: '1234578'
+        ra: values.ra,
+        password: values.senha
       };
-
       console.log(data);
       const response = await infatecFetch.post('/api/Login/LoginUser', data);
+      const token = response.data.bearer;
+      await AsyncStorage.setItem('bearer', token);
+      console.log(await AsyncStorage.getItem('bearer'));
+      navigation.navigate('telaDeOpçoes');
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-  };
-
-  function loginUserok() {
-    // Lógica de autenticação e verificação de login
-    const loginSuccessful = true; // Exemplo de login bem-sucedido
-
-    if (loginSuccessful) {
-      navigation.navigate('telaDeOpçoes');
-    } else {
-      // Tratar caso de login incorreto
-    }
   }
 
-
-
-  function handerInfosLogin(infos) {
-    console.log(infos);
-  }
-
+  // Esse useEffect carrega as fonts ultlizadas no front-end do código.
   useEffect(() => {
     loadFont();
   }, []);
@@ -80,7 +70,6 @@ export default function telaDeLogin({ navigation }) {
       'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
     });
   }
-
 
   return (
 
@@ -172,6 +161,7 @@ export default function telaDeLogin({ navigation }) {
   );
 };
 
+// Atribue a stilização do front-end.
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,

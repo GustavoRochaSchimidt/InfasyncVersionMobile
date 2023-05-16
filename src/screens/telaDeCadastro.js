@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import SelectMultiple from '../../src/components/SelectMultiple';
@@ -7,12 +8,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 import infatecFetch from "../Services/api";
-
+import { ToastContainer, toast } from 'react-native-toast-message';
 import {
   Ionicons,
   AntDesign,
 } from '@expo/vector-icons';
-
 import {
   StyleSheet,
   Text,
@@ -25,11 +25,14 @@ import {
   ScrollView,
 } from "react-native";
 
+//Uma função que pode ser importada em outro módulo ou arquivo.
 export default function TelaDeCadastro() {
 
+//Const com useState para realizar a visibilidade da senha.  
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConf, setHidePassConf] = useState(true);
 
+//Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup  
   const schema = yup.object().shape({
     ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     userName: yup.string().required("Informe seu nome"),
@@ -38,10 +41,12 @@ export default function TelaDeCadastro() {
     senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
   });
 
+  //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   })
 
+  //função da API que pega os valores das inputs e repassa para o cadastro.
   async function createUser(values) {
     try {
       const data = {
@@ -53,8 +58,6 @@ export default function TelaDeCadastro() {
         coursesId: '1',
         cpf: '11111111111',
       };
-
-
       console.log(data);
       const response = await infatecFetch.post('/api/Login/CreateUser', data);
       console.log(response.data);
@@ -63,6 +66,7 @@ export default function TelaDeCadastro() {
     }
   };
 
+// Esse useEffect carrega as fonts ultlizadas no front-end do código.
   useEffect(() => {
     loadFont();
   }, []);
@@ -250,11 +254,14 @@ export default function TelaDeCadastro() {
             </View>
           </View>
         </Animatable.View>
+        
       </ScrollView>
+      <ToastContainer />
     </KeyboardAvoidingView>
   );
 };
 
+// Atribue a stilização do front-end.
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,
