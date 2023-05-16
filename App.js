@@ -11,7 +11,6 @@ import telaDeAvisos from "./src/screens/telaDeAvisos";
 import CustonDrawer from "./src/components/CustonDrawer";
 import { View } from "react-native-animatable";
 
-
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 

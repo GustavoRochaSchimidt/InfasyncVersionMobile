@@ -150,7 +150,7 @@ export default function telaDeLogin({ navigation }) {
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(loginUser)}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaDeOpçoes')}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>

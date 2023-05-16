@@ -254,9 +254,7 @@ export default function TelaDeCadastro() {
             </View>
           </View>
         </Animatable.View>
-        
       </ScrollView>
-      <ToastContainer />
     </KeyboardAvoidingView>
   );
 };

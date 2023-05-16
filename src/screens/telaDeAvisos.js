@@ -1,5 +1,6 @@
-import React, {useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as Animatable from 'react-native-animatable';
+import * as ImagePicker from 'expo-image-picker';
 
 import {
     StyleSheet,
@@ -10,6 +11,8 @@ import {
     Platform,
     KeyboardAvoidingView,
     ScrollView,
+    Alert,
+    Image,
 } from "react-native";
 
 export default function telaDeAvisos() {
@@ -25,6 +28,25 @@ export default function telaDeAvisos() {
         });
     };
 
+    const [image, setImage] = useState ("https://github.com/account")
+
+const handleImagePicker = async () =>{
+  const result = await ImagePicker.launchImageLibraryAsync
+    (
+        {
+            aspect:[4,4],
+            allowsEditing: true,
+            base64: true,
+            quality: 1,
+        }
+    );
+
+    if(!result.canceled) {
+        setImage(result.assets[0].uri);
+    }
+}
+    
+
     return (
         <ScrollView contentContainerStyle={{}}>
             <KeyboardAvoidingView
@@ -39,50 +61,86 @@ export default function telaDeAvisos() {
                         style={styles.image}
                     />
                 </View>
-
-                <Text style={styles.textEnviaAviso}>ENVIAR AVISO</Text>
-                <Text style={styles.textDescriçao}>Descrição do Aviso:</Text>
-
-                <View style={styles.containerInputWarn}>
-                    <TextInput
-                        style={styles.inputWarn}
-                        multiline={true}
-                        numberOfLines={10}
-                        placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
-                    />
-                </View>
-
-                <Text style={styles.textAnexar}>Anexar imagem:</Text>
-
-                <View style={styles.containerAnexar}>
+                <View styele={styles.containerFull}>
                     <View>
-                        <TouchableOpacity style={styles.buttonAnexar}>
-                            <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                        <Text style={styles.textEnviaAviso}>ENVIAR AVISO</Text>
+                    </View>
+                    <View>
+                        <View>
+                            <Text style={styles.textDescriçao}>Titulo do Aviso:</Text>
+                        </View>
+                        <View style={styles.containerTextTitulo}>
+                            <TextInput
+                                style={styles.inputTitulo}
+                            />
+                        </View>
+                    </View>
+                    <View>
+                        <Text style={styles.textDescriçao}>Descrição do Aviso:</Text>
+
+                        <View style={styles.containerInputWarn}>
+                        <Image
+                                 source={{uri: image}}
+                                 style={{width:410, height:300, borderRadius: 20, backgroundColor:"#000", position:"absolute"}}
+                                /> 
+                            <TextInput
+                                style={styles.inputWarn}
+                                multiline={true}
+                                numberOfLines={10}
+                                placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.textAnexar}>Anexar imagem:</Text>
+                        <View style={styles.containerAnexar}>
+                            <View>
+                                <TouchableOpacity
+                                    onPress={handleImagePicker}
+                                    style={styles.buttonAnexar}>
+
+                                    <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                               
+                            </View>
+                        </View>
                     </View>
                 </View>
-
                 <Text style={styles.textEnviaAviso2}>ENVIAR AVISO 2</Text>
-                <Text style={styles.textDescriçao2}>Descrição do Aviso:</Text>
 
-                <View style={styles.containerInputWarn2}>
-                    <TextInput
-                        style={styles.inputWarn2}
-                        multiline={true}
-                        numberOfLines={10}
-                        placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
-                    />
-                </View>
-
-                <Text style={styles.textAnexar}>Anexar imagem:</Text>
-
-                <View style={styles.containerAnexar}>
+                <View>
                     <View>
-                        <TouchableOpacity style={styles.buttonAnexar}>
-                            <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                        <Text style={styles.textDescriçao2}>Titulo do Aviso:</Text>
+                    </View>
+                    <View style={styles.containerTextTitulo2}>
+                        <TextInput
+                            style={styles.inputTitulo2}
+                        />
+                    </View>
+                </View>
+                <View>
+                    <Text style={styles.textDescriçao2}>Descrição do Aviso:</Text>
+                    <View style={styles.containerInputWarn2}>
+                        <TextInput
+                            style={styles.inputWarn2}
+                            multiline={true}
+                            numberOfLines={10}
+                            placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
+                        />
+                    </View>
+                </View>
+                <View>
+                    <Text style={styles.textAnexar}>Anexar imagem:</Text>
+
+                    <View style={styles.containerAnexar}>
+                        <View>
+                            <TouchableOpacity style={styles.buttonAnexar}>
+                                <Text style={styles.styleTextAdd}>Adcionar Arquivo</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.textNehum}>Nenhum a... foi selecionado</Text>
+                        </View>
                     </View>
                 </View>
 
@@ -118,9 +176,19 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
 
+    containerFull:{
+        flex: 1,
+        marginTop: '10%',
+        borderRadius: 50,
+        backgroundColor: "#162938",
+        borderColor: "#FFFFFF",
+        borderWidth: 2,
+        height: '90%',
+    },
+
     textEnviaAviso: {
         position: "relative",
-        marginLeft: 10,
+        marginLeft: 85,
         top: -80,
         fontSize: 30,
         color: "#000",
@@ -128,10 +196,28 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
+    containerTextTitulo: {
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: "#FFF",
+        borderColor: "#000",
+        borderWidth: 1,
+        margin: 5,
+        top: -65
+    },
+
+    inputTitulo: {
+        fontFamily: "Ubuntu",
+        fontSize: 15,
+        height: 50,
+        width: 410,
+
+    },
+
     textDescriçao: {
         position: "relative",
         marginLeft: 10,
-        top: -80,
+        top: -60,
         fontSize: 20,
         color: "#000",
         fontFamily: "Ubuntu",
@@ -181,13 +267,13 @@ const styles = StyleSheet.create({
         fontFamily: "Ubuntu",
         marginLeft: 20,
         position: "absolute",
-        color: "#fff" 
+        color: "#fff"
     },
-    
-    buttonAnexar:{
-        borderBottomColor: "#000", 
-        width: 150, 
-        height:25,   
+
+    buttonAnexar: {
+        borderBottomColor: "#000",
+        width: 150,
+        height: 25,
         borderWidth: 1,
         borderRadius: 10,
         left: 20,
@@ -196,29 +282,48 @@ const styles = StyleSheet.create({
 
     },
 
-    textNehum:{
+    textNehum: {
         fontFamily: "Ubuntu",
         fontSize: 15,
-        position:"absolute",
+        position: "absolute",
         top: 10,
         left: 180
     },
 
-    textEnviaAviso2:{
+    textEnviaAviso2: {
         position: "relative",
-        marginLeft: 10,
+        marginLeft: 85,
         top: 15,
         fontSize: 30,
         color: "#000",
         fontFamily: "Ubuntu",
         fontWeight: "bold",
+        margin: 25
 
     },
 
-    textDescriçao2:{
+    containerTextTitulo2: {
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: "#FFF",
+        borderColor: "#000",
+        borderWidth: 1,
+        margin: 5,
+        //top: 15
+    },
+
+    inputTitulo2: {
+        fontFamily: "Ubuntu",
+        fontSize: 15,
+        height: 50,
+        width: 410,
+
+    },
+
+    textDescriçao2: {
         position: "relative",
         marginLeft: 10,
-        top: 10,
+
         fontSize: 20,
         color: "#000",
         fontFamily: "Ubuntu",
@@ -226,9 +331,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
 
-    containerInputWarn2:{
+    containerInputWarn2: {
         flex: 1,
-        marginTop: '10%',
+        //marginTop: '10%',
         borderRadius: 10,
         backgroundColor: "#FFF",
         borderColor: "#000",
@@ -236,21 +341,21 @@ const styles = StyleSheet.create({
         margin: 5,
     },
 
-    inputWarn2:{
+    inputWarn2: {
         fontFamily: "Ubuntu",
         fontSize: 15,
         height: 300,
         width: 410
     },
 
-    containerEnviar:{
+    containerEnviar: {
 
     },
 
-    buttonEnviar:{
-        borderBottomColor: "#000", 
-        width: 170, 
-        height:40,   
+    buttonEnviar: {
+        borderBottomColor: "#000",
+        width: 170,
+        height: 40,
         borderWidth: 1,
         borderRadius: 10,
         left: 115,
@@ -259,12 +364,12 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 
-    textEnviar:{
-        position:"absolute",
+    textEnviar: {
+        position: "absolute",
         left: 40,
         top: 10,
-        color:"#fff",
-        fontFamily:"Ubuntu"
+        color: "#fff",
+        fontFamily: "Ubuntu"
 
 
     }
