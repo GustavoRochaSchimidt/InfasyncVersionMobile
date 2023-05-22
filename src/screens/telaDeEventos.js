@@ -15,7 +15,7 @@ import {
   Image,
 } from "react-native";
 
-export default function telaDeAvisos() {
+export default function telaDeEventos() {
   const [valueTitulo, setValueTitulo] = useState("");
   const [valueDescriçao, setvalueDescriçao] = useState("");
   const [image, setImage] = useState(null);
@@ -56,19 +56,20 @@ export default function telaDeAvisos() {
 
   const createWarning = async (imageUri) => {
     const formData = new FormData();
-    formData.append("imageName", valueTitulo);
-    formData.append("message", valueDescriçao);
+    formData.append("title", valueTitulo);
+    formData.append("description", valueDescriçao);
+    formData.append("imageFile", imageFile);
     formData.append("imgUri", "");
-    formData.append("loginId", 1);
+    
 
     const response = await fetch(imageUri);
     const blob = await response.blob();
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
-    formData.append("imageFile", imageFile);
+    
 
     try {
       const token = AsyncStorage.getItem("bearer");
-      await infatecFetch.post("/api/Warnings/CreateNewWarning", formData, {
+      await infatecFetch.post("/api/Events/InsertNewEvent", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -101,11 +102,11 @@ export default function telaDeAvisos() {
         </View>
         <View>
           <View>
-            <Text style={styles.textEnviaAviso}>ENVIAR AVISO</Text>
+            <Text style={styles.textEnviaEventos}>ENVIAR EVENTOS</Text>
           </View>
           <View>
             <View>
-              <Text style={styles.textDescriçao}>Titulo do Aviso:</Text>
+              <Text style={styles.textDescriçao}>Titulo do Evento:</Text>
             </View>
             <View style={styles.containerTextTitulo}>
               <TextInput
@@ -116,7 +117,7 @@ export default function telaDeAvisos() {
             </View>
           </View>
           <View>
-            <Text style={styles.textDescriçao}>Descrição do Aviso:</Text>
+            <Text style={styles.textDescriçao}>Descrição do Evento:</Text>
             <View style={styles.containerInputWarn}>
               <TextInput
                 style={styles.inputWarn}
@@ -165,7 +166,7 @@ export default function telaDeAvisos() {
             style={styles.buttonEnviar}
             onPress={handleSendImage}
           >
-            <Text style={styles.textEnviar}>Enviar Avisos</Text>
+            <Text style={styles.textEnviar}>Enviar Eventos</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: "90%",
   },
-  textEnviaAviso: {
+  textEnviaEventos: {
     position: "relative",
     marginLeft: 85,
     top: -80,

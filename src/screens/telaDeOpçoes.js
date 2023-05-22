@@ -76,7 +76,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconEventos}>
             <MaterialIcons name="event" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button2]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+          <TouchableOpacity style={[styles.button, styles.button2]} onPress={() => navigation.navigate('telaDeEventos')}>
             <Text style={styles.buttonText}>EVENTOS</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
@@ -89,7 +89,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconCronogramas}>
             <FontAwesome5 name="book" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button3]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+          <TouchableOpacity style={[styles.button, styles.button3]} onPress={() => navigation.navigate('telaTEste')}>
             <Text style={styles.buttonText}>CRONOGRAMAS</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
