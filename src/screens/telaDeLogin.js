@@ -83,7 +83,7 @@ export default function telaDeLogin({ navigation }) {
             <View style={styles.caixaDeTexto}>
               <View style={styles.imagenLogo}>
                 <Image
-                  source={require("../../assets/imagens/logoInfatec.png")}
+                  source={require("../../assets/imagens/LogoINFASYNCWhiteOF.png")}
                   style={styles.image}
                 />
               </View>
@@ -179,19 +179,19 @@ const styles = StyleSheet.create({
 
   imagenLogo: {
     alignItems: "center",
+    marginTop: -85,
   },
 
   image: {
-    width: 100,
-    height: 100,
-    top: -40,
+    width: 200,
+    height: 200,
   },
 
   textEntrar: {
     fontFamily: 'Ubuntu',
     color: "#fff",
     fontSize: 18,
-    marginLeft: '40%',
+    textAlign: 'center',
     top: '-10%',
     position: "relative",
   },

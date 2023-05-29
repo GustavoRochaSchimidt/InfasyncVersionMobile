@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useEffect } from "react";
 import * as Font from 'expo-font';
 import * as Animatable from 'react-native-animatable';
@@ -19,12 +20,14 @@ import {
   Platform,
 } from 'react-native';
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeOpçoes({ navigation }) {
 
   useEffect(() => {
     loadFont();
   }, []);
 
+  //Função async que carrega as font utilizadas no front-end.
   async function loadFont() {
     await Font.loadAsync({
       'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
@@ -45,7 +48,7 @@ export default function telaDeOpçoes({ navigation }) {
               <Animatable.Image
                 animation="flipInY"
                 delay={300}
-                source={require("../../assets/imagens/logoInfatecInLineWithe.png")}
+                source={require("../../assets/imagens/LogoINFASYNCInLineOF.png")}
                 style={styles.image}
               />
             </View>
@@ -101,6 +104,7 @@ export default function telaDeOpçoes({ navigation }) {
   );
 
 }
+//O styles é encarregado de dar a estilização do front-end
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
 
   formatoHeader: {
     backgroundColor: ('#162938'),
-    paddingTop: '-5%',
+    //paddingTop: '-5%',
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     borderColor: "#FFFFFF",
@@ -119,14 +123,14 @@ const styles = StyleSheet.create({
 
   imagenLogo: {
     margin: 10,
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 220,
   },
 
   iconOptions: {
     position: "absolute",
     marginLeft: "85%",
-    top: 70,
+    top: 55,
   },
 
   buttonNotify: {

@@ -89,7 +89,7 @@ export default function TelaDeCadastro() {
             <View style={styles.caixaDeTexto}>
               <View style={styles.imagenLogo}>
                 <Image
-                  source={require('../../assets/imagens/logoInfatec.png')}
+                  source={require('../../assets/imagens/LogoINFASYNCWhiteOF.png')}
                   style={styles.image}
                 />
               </View>
@@ -275,13 +275,13 @@ const styles = StyleSheet.create({
   },
 
   imagenLogo: {
+    marginTop: -85,
     alignItems: "center",
   },
 
   image: {
-    width: 100,
-    height: 100,
-    top: -10,
+    width: 200,
+    height: 200,
   },
 
   textCadastro: {
@@ -290,18 +290,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     top: "-5%",
+    position:"relative",
   },
 
   caixaDeTexto: {
     backgroundColor: "#162938",
     marginTop: '20%',
+    marginEnd: '20%',
     width: '80%',
     marginLeft: '10%',
-    height: '50%',
+    marginBottom: '10%',
     borderRadius: 20,
     borderColor: "#162938",
     borderWidth: 2,
-    top: '-5%',
   },
 
   name: {

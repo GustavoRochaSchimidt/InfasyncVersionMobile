@@ -96,7 +96,7 @@ export default function telaDeEventos() {
           <Animatable.Image
             animation="flipInY"
             delay={300}
-            source={require("../../assets/imagens/logoInfatecInLine.png")}
+            source={require("../../assets/imagens/LogoINFASYNCInLineBlack.png")}
             style={styles.image}
           />
         </View>
@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
   },
   imagenLogo: {
     left: 100,
-    width: 200,
-    height: 200,
+    width: 230,
+    height: 230,
   },
   image: {
     width: "100%",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   textEnviaEventos: {
     position: "relative",
-    marginLeft: 85,
+    left: 100,
     top: -80,
     fontSize: 30,
     color: "#000",
@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerTextTitulo: {
-    flex: 1,
     borderRadius: 10,
     backgroundColor: "#FFF",
     borderColor: "#000",
@@ -237,7 +236,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   containerInputWarn: {
-    flex: 1,
     marginTop: "-15%",
     borderRadius: 10,
     backgroundColor: "#FFF",

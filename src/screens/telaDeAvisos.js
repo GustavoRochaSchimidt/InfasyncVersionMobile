@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useEffect, useState, useRef } from "react";
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
@@ -16,11 +17,14 @@ import {
 } from "react-native";
 
 export default function telaDeAvisos() {
+  
+  //Essas conts de useState guardão o estado de cada componete para serem utilizados.
   const [valueTitulo, setValueTitulo] = useState("");
   const [valueDescriçao, setvalueDescriçao] = useState("");
   const [image, setImage] = useState(null);
   const imageRef = useRef();
 
+  //Função que carrega a fonte das letras no fron-end
   useEffect(() => {
     loadFont();
   }, []);
@@ -40,13 +44,14 @@ export default function telaDeAvisos() {
     setvalueDescriçao(inputValuedescriçao);
   };
 
+  //Const que pede a permisao do usuario para o acesso da galeria
   const handleImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       alert("Permissão negada para acessar a biblioteca de mídia.");
       return;
     }
-
+    //A galeria é aberta e a imagem e setada no setImage
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) {
       setImage(result.uri);
@@ -54,6 +59,7 @@ export default function telaDeAvisos() {
     }
   };
 
+  //Nesta const e pego todos os dados que a API necessita e enviado no formato que ela pede.
   const createWarning = async (imageUri) => {
     const formData = new FormData();
     formData.append("imageName", valueTitulo);
@@ -95,7 +101,7 @@ export default function telaDeAvisos() {
           <Animatable.Image
             animation="flipInY"
             delay={300}
-            source={require("../../assets/imagens/logoInfatecInLine.png")}
+            source={require("../../assets/imagens/LogoINFASYNCInLineBlack.png")}
             style={styles.image}
           />
         </View>
@@ -175,14 +181,14 @@ export default function telaDeAvisos() {
 
 const styles = StyleSheet.create({
   containerFundoTela: {
-    height: "100%",
+    //height: "100%",
     flex: 1,
     backgroundColor: "#FAEBD7",
   },
   imagenLogo: {
     left: 100,
-    width: 200,
-    height: 200,
+    width: 230,
+    height: 230,
   },
   image: {
     width: "100%",
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
   },
   textEnviaAviso: {
     position: "relative",
-    marginLeft: 85,
+    left: 100,
     top: -80,
     fontSize: 30,
     color: "#000",
@@ -211,7 +217,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerTextTitulo: {
-    flex: 1,
     borderRadius: 10,
     backgroundColor: "#FFF",
     borderColor: "#000",
@@ -236,7 +241,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   containerInputWarn: {
-    flex: 1,
     marginTop: "-15%",
     borderRadius: 10,
     backgroundColor: "#FFF",

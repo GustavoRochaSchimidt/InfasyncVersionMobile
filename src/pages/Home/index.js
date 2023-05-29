@@ -40,7 +40,7 @@ export default function Home() {
         <Animatable.Image
           animation="flipInY"
           delay={300}
-          source={require('../../../assets/imagens/LogoInfatecBlack.png')}
+          source={require('../../../assets/imagens/LogoINFASYNCBlackOF.png')}
           style={styles.image}
         />
         <Animatable.View
@@ -48,8 +48,8 @@ export default function Home() {
           delay={300}
         >
           <Text style={styles.title}>
-            <Text style={styles.textInfatec}>IN</Text>
-            <Text style={styles.textFatec}>FATEC</Text>
+            <Text style={styles.textInfatec}>INFA</Text>
+            <Text style={styles.textFatec}>SYNC</Text>
           </Text>
         </Animatable.View>
         <Animatable.View
