@@ -98,7 +98,7 @@ export default function telaDeLogin({ navigation }) {
                         paddingLeft: 30,
                         borderColor: errors.ra ? '#ff375b' : 'white',
                       }]}
-                      placeholder='Ra'
+                      placeholder='E-mail'
                       placeholderTextColor='#FFF'
                       onChangeText={onChange}
                       onBlur={onBlur}
@@ -110,7 +110,7 @@ export default function telaDeLogin({ navigation }) {
                 {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
 
                 <View style={styles.iconUser}>
-                  <Ionicons name="school-outline" size={22} color="#FFF" />
+                  <Ionicons name="mail" size={22} color="#FFF" />
                 </View>
               </View>
               <View>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   },
 
   iconUser: {
-    top: '15%',
+    top: '17%',
     left: 5,
     position: 'absolute',
   },

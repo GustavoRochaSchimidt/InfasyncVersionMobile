@@ -102,7 +102,7 @@ export default function telaDeEventos() {
         </View>
         <View>
           <View>
-            <Text style={styles.textEnviaEventos}>ENVIAR EVENTOS</Text>
+            <Text style={styles.textEnviaEventos}>ENVIAR EVENTO</Text>
           </View>
           <View>
             <View>
@@ -125,7 +125,7 @@ export default function telaDeEventos() {
                 onChangeText={handleInputDescriçao}
                 multiline={true}
                 numberOfLines={10}
-                placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
+                placeholder="             Digite seu evento aqui ou Anexe uma Imagem."
               />
             </View>
           </View>
@@ -166,7 +166,7 @@ export default function telaDeEventos() {
             style={styles.buttonEnviar}
             onPress={handleSendImage}
           >
-            <Text style={styles.textEnviar}>Enviar Eventos</Text>
+            <Text style={styles.textEnviar}>Enviar Evento</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

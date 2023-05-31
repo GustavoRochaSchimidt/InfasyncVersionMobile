@@ -130,7 +130,7 @@ export default function telaDeAvisos() {
                 onChangeText={handleInputDescriçao}
                 multiline={true}
                 numberOfLines={10}
-                placeholder="             Digite seu aviso aqui ou Anexe uma Imagen."
+                placeholder="             Digite seu aviso aqui ou Anexe uma Imagem."
               />
             </View>
           </View>
@@ -171,7 +171,7 @@ export default function telaDeAvisos() {
             style={styles.buttonEnviar}
             onPress={handleSendImage}
           >
-            <Text style={styles.textEnviar}>Enviar Avisos</Text>
+            <Text style={styles.textEnviar}>Enviar Aviso</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -181,7 +181,6 @@ export default function telaDeAvisos() {
 
 const styles = StyleSheet.create({
   containerFundoTela: {
-    //height: "100%",
     flex: 1,
     backgroundColor: "#FAEBD7",
   },

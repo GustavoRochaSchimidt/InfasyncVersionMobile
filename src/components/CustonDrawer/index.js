@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
+    Image,
 }
     from "react-native";
 
@@ -73,10 +74,14 @@ function CustonDrawer({ navigation }) {
 
             <View style={styles.containerTop}>
                 <View style={{ marginLeft: "5%", top: 35, position: "absolute" }}>
-                    <FontAwesome name="user-circle" size={100} color="#FAEBD7" />
-                    <Text style={{ fontSize: 20, top: -85, left: 110, position: "relative", color: "#FFF", fontFamily: "Ubuntu", }}>Gustavo rocha  </Text>
-                    <Text style={{ fontSize: 15, top: -80, left: 110, position: "relative", color: "#FFF", fontFamily: "Ubuntu", }}>Ra: 1234567891013</Text>
-                    <Text style={{ fontSize: 15, top: -80, left: 110, position: "relative", color: "#FFF", fontFamily: "Ubuntu", }}>E-mail: G@gmail.com</Text>
+                    <View style={styles.imagenLogo}>
+                    <Image
+                        source={require("../../../assets/imagens/LogoINFASYNCWhiteOF.png")}
+                        style={styles.image}
+                    />
+                    </View>
+
+                    <Text style={{ fontSize: 15, top: 70, left: 20, position: "relative", color: "#FFF", fontFamily: "Ubuntu", }}>E-mail: gustavo@fatec.sp.gov.br</Text>
                 </View>
             </View>
         </View>
@@ -90,7 +95,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FAEBD7",
+        borderRadius: 10,
 
+    },
+
+    imagenLogo: {
+        position:"absolute",
+        alignItems: "center",
+        left: 50,
+        marginTop: -55,
+      },
+
+    image: {
+        width: 150,
+        height: 150,
     },
 
     containerTop: {

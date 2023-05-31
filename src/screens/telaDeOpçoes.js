@@ -67,7 +67,7 @@ export default function telaDeOpçoes({ navigation }) {
             <Ionicons name="notifications" size={50} color="#162938" />
           </Animatable.View>
           <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaAvisos')}>
-            <Text style={styles.buttonText}>AVISOS</Text>
+            <Text style={styles.buttonText}>ENVIAR AVISO</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
             </View>
@@ -80,7 +80,7 @@ export default function telaDeOpçoes({ navigation }) {
             <MaterialIcons name="event" size={50} color="#162938" />
           </Animatable.View>
           <TouchableOpacity style={[styles.button, styles.button2]} onPress={() => navigation.navigate('telaDeEventos')}>
-            <Text style={styles.buttonText}>EVENTOS</Text>
+            <Text style={styles.buttonText}>ENVIAR EVENTO</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
             </View>
@@ -92,7 +92,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconCronogramas}>
             <FontAwesome5 name="book" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button3]} onPress={() => navigation.navigate('telaTEste')}>
+          <TouchableOpacity style={[styles.button, styles.button3]} onPress={() => navigation.navigate('telaDeCronogramas')}>
             <Text style={styles.buttonText}>CRONOGRAMAS</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
 
   formatoHeader: {
     backgroundColor: ('#162938'),
-    //paddingTop: '-5%',
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     borderColor: "#FFFFFF",

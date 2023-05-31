@@ -9,6 +9,7 @@ import telaDeOpçoes from "./src/screens/telaDeOpçoes";
 import telaDePerfilUser from "./src/screens/telaDePerfilUser";
 import telaDeAvisos from "./src/screens/telaDeAvisos";
 import telaDeEventos from "./src/screens/telaDeEventos";
+import telaDECronogramas from "./src/screens/telaDeCronogramas";
 import telaTEste from "./src/screens/telaTEste";
 import CustonDrawer from "./src/components/CustonDrawer";
 import { View } from "react-native-animatable";
@@ -82,8 +83,8 @@ function MyStack() {
       />
 
 <Stack.Screen
-        name="telaTEste"
-        component={telaTEste}
+        name="telaDeCronogramas"
+        component={telaDECronogramas}
         options={{
           title: "Voltar",
           headerStyle: {
