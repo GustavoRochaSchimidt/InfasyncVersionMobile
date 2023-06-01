@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import * as Font from 'expo-font';
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import infatecFetch from '../Services/api';

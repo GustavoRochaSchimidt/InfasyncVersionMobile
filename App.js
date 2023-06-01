@@ -10,9 +10,10 @@ import telaDePerfilUser from "./src/screens/telaDePerfilUser";
 import telaDeAvisos from "./src/screens/telaDeAvisos";
 import telaDeEventos from "./src/screens/telaDeEventos";
 import telaDECronogramas from "./src/screens/telaDeCronogramas";
+import telaDeRecuperacao from "./src/screens/telaDeRecuperacao";
+import telaDePosRecuperacao from "./src/screens/telaDePosRecuperacao";
 import telaTEste from "./src/screens/telaTEste";
 import CustonDrawer from "./src/components/CustonDrawer";
-import { View } from "react-native-animatable";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -82,7 +83,7 @@ function MyStack() {
         }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="telaDeCronogramas"
         component={telaDECronogramas}
         options={{
@@ -95,7 +96,7 @@ function MyStack() {
         }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="telaDeEventos"
         component={telaDeEventos}
         options={{
@@ -105,6 +106,30 @@ function MyStack() {
           },
           headerTintColor: "#000000",
 
+        }}
+      />
+
+      <Stack.Screen
+        name="telaDeRecuperacao"
+        component={telaDeRecuperacao}
+        options={{
+          title: "Voltar",
+          headerStyle: {
+            backgroundColor: "#FAEBD7",
+          },
+          headerTintColor: "#000000",
+        }}
+      />
+
+      <Stack.Screen
+        name="telaDePosRecuperacao"
+        component={telaDePosRecuperacao}
+        options={{
+          title: "Voltar",
+          headerStyle: {
+            backgroundColor: "#FAEBD7",
+          },
+          headerTintColor: "#000000",
         }}
       />
     </Stack.Navigator>

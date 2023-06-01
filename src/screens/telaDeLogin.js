@@ -146,7 +146,7 @@ export default function telaDeLogin({ navigation }) {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => alert('Tela de recuperação de senha')}>
+                <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => navigation.navigate('telaDeRecuperacao')}>
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
