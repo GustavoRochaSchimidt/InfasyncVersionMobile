@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useEffect, useState, useRef } from "react";
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
@@ -16,11 +17,14 @@ import {
 } from "react-native";
 
 export default function telaDeEventos() {
+
+  //Essas conts de useState guarda o estado de cada componete para serem utilizados.
   const [valueTitulo, setValueTitulo] = useState("");
   const [valueDescriçao, setvalueDescriçao] = useState("");
   const [image, setImage] = useState(null);
   const imageRef = useRef();
 
+  //Função que carrega a fonte das letras no fron-end
   useEffect(() => {
     loadFont();
   }, []);
@@ -32,6 +36,7 @@ export default function telaDeEventos() {
     });
   }
 
+  //Const que guarda o valor das inputs
   const handleInputTitulo = (inputValueTitulo) => {
     setValueTitulo(inputValueTitulo);
   };
@@ -40,13 +45,14 @@ export default function telaDeEventos() {
     setvalueDescriçao(inputValuedescriçao);
   };
 
+  //Const que pede a permisao do usuario para o acesso da galeria 
   const handleImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       alert("Permissão negada para acessar a biblioteca de mídia.");
       return;
     }
-
+    //A galeria é aberta e a imagem e setada no setImage
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) {
       setImage(result.uri);
@@ -54,18 +60,19 @@ export default function telaDeEventos() {
     }
   };
 
+  //Nesta const e pego todos os dados que a API necessita.
   const createWarning = async (imageUri) => {
     const formData = new FormData();
     formData.append("title", valueTitulo);
     formData.append("description", valueDescriçao);
     formData.append("imageFile", imageFile);
     formData.append("imgUri", "");
-    
+
 
     const response = await fetch(imageUri);
     const blob = await response.blob();
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
-    
+
 
     try {
       const token = AsyncStorage.getItem("bearer");
@@ -137,13 +144,6 @@ export default function telaDeEventos() {
                   image ||
                   "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
               }}
-              style={{
-                // width: 410,
-                // height: 300,
-                // borderRadius: 20,
-                // backgroundColor: "#000",
-                // position: "absolute"
-              }}
             />
             <Text style={styles.textAnexar}>Anexar imagem:</Text>
             <View style={styles.containerAnexar}>
@@ -180,17 +180,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FAEBD7",
   },
+
   imagenLogo: {
     left: 100,
     width: 230,
     height: 230,
   },
+
   image: {
     width: "100%",
     height: "100%",
     top: -60,
     resizeMode: "contain",
   },
+
   containerFull: {
     flex: 1,
     marginTop: "10%",
@@ -200,6 +203,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: "90%",
   },
+
   textEnviaEventos: {
     position: "relative",
     left: 100,
@@ -211,6 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   containerTextTitulo: {
     borderRadius: 10,
     backgroundColor: "#FFF",
@@ -219,12 +224,14 @@ const styles = StyleSheet.create({
     margin: 5,
     top: -65,
   },
+
   inputTitulo: {
     fontFamily: "Ubuntu",
     fontSize: 15,
     height: 50,
     width: 410,
   },
+
   textDescriçao: {
     position: "relative",
     marginLeft: 10,
@@ -235,6 +242,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
   },
+
   containerInputWarn: {
     marginTop: "-15%",
     borderRadius: 10,
@@ -243,12 +251,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 5,
   },
+
   inputWarn: {
     fontFamily: "Ubuntu",
     fontSize: 15,
     height: 300,
     width: 410,
   },
+
   textAnexar: {
     position: "relative",
     marginLeft: 10,
@@ -258,6 +268,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
   },
+
   containerAnexar: {
     borderRadius: 10,
     backgroundColor: "#FFF",
@@ -266,12 +277,14 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 5,
   },
+
   styleTextAdd: {
     fontFamily: "Ubuntu",
     marginLeft: 20,
     position: "absolute",
     color: "#fff",
   },
+
   buttonAnexar: {
     borderBottomColor: "#000",
     width: 150,
@@ -282,6 +295,7 @@ const styles = StyleSheet.create({
     top: 7,
     backgroundColor: "#162938",
   },
+
   textNehum: {
     fontFamily: "Ubuntu",
     fontSize: 15,
@@ -289,7 +303,7 @@ const styles = StyleSheet.create({
     top: 10,
     left: 180,
   },
-  containerEnviar: {},
+
   buttonEnviar: {
     borderBottomColor: "#000",
     width: 170,
@@ -297,10 +311,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     left: 115,
-    top: -5,
+    top: 20,
     backgroundColor: "#162938",
     margin: 10,
+    marginBottom: 90,
   },
+
   textEnviar: {
     position: "absolute",
     left: 40,

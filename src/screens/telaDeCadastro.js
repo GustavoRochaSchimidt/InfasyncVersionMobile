@@ -36,7 +36,11 @@ export default function TelaDeCadastro() {
   const schema = yup.object().shape({
     ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     userName: yup.string().required("Informe seu nome"),
-    email: yup.string().email("E-mail inválido").required("Informe seu e-mail"),
+    email: yup
+    .string()
+    .email("E-mail inválido")
+    .matches(/^[a-zA-Z0-9._%+-]+@fatec\.sp\.gov\.br$/, "E-mail deve ser @fatec.sp.gov.br")
+    .required("Informe seu e-mail"),
     senha: yup.string().min(8, "Sua senha tem que ter no minimo 8 digitos").required("Informe sua senha"),
     senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
   });

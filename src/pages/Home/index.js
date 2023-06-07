@@ -3,16 +3,15 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
 
 } from 'react-native';
 import Header from '../../components/Header';
-//import MovingSquares  from '../../components/ScreenAnimatable';
 import * as Font from 'expo-font';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import * as Animatable from 'react-native-animatable';
+//import { useFonts } from 'expo-font';
 
 export default function Home() {
   const navigation = useNavigation({});
@@ -87,6 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingBottom: getBottomSpace() + 5,
   },
+
   imageContainer: {
     position: 'relative',
     width: '45%',
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   image: {
     top: '28%',
     width: '80%',

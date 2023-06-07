@@ -1,222 +1,232 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import * as Font from 'expo-font';
-import * as Animatable from 'react-native-animatable';
-import * as ImagePicker from 'expo-image-picker';
-import infatecFetch from '../Services/api';
+import * as DocumentPicker from 'expo-document-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Picker } from "@react-native-picker/picker";
+import infatecFetch from '../Services/api';
+
 import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    Platform,
-    KeyboardAvoidingView,
-    ScrollView,
-    Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  Image,
 } from "react-native";
 
 import {
-    Ionicons,
-    AntDesign,
+  Ionicons,
+  AntDesign,
 } from '@expo/vector-icons';
 
 export default function telaDECronogramas() {
 
-    useEffect(() => {
-        loadFont();
-    }, []);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectHorario, setSelectHorario] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
 
-    async function loadFont() {
-        await Font.loadAsync({
-            Ubuntu: require("../../assets/fonts/Ubuntu-Regular.ttf"),
-            JuliusSansOne: require("../../assets/fonts/JuliusSansOne-Regular.ttf"),
-        });
+  // UseEffect para carregar as fonts das escritas no front-end
+  useEffect(() => {
+    loadFont();
+  }, []);
+
+  async function loadFont() {
+    await Font.loadAsync({
+      Ubuntu: require("../../assets/fonts/Ubuntu-Regular.ttf"),
+      JuliusSansOne: require("../../assets/fonts/JuliusSansOne-Regular.ttf"),
+    });
+  }
+
+  const handleDocumentPicker = async () => {
+    try {
+      const document = await DocumentPicker.getDocumentAsync({ type: "application/vnd.ms-excel" });
+
+      if (document.type === "success") {
+        setSelectedFile(document);
+        
+      }
+    } catch (error) {
+      console.error(error);
+    
     }
+  };
+
+  const handleSendDocument = async () => {
+    if (!selectedFile) {
+      
+      return;
+    }
+  
+    const fileUri = selectedFile.uri;
+  
+    // Transformar o arquivo em blob
+    const response = await fetch(fileUri);
+    const blob = await response.blob();
+  
+    const formData = new FormData();
+    formData.append('file', blob, selectedFile.name);
+  
+    try {
+      const token = await AsyncStorage.getItem('bearer');
+      await infatecFetch.post('/api/Courses/InsertNewCourseByXLSX', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      console.log(formData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  return (
+    <ScrollView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.containerFundoTela}
+      >
+        <View style={styles.imagenLogo}>
+          <Image
+            animation="flipInY"
+            delay={300}
+            source={require("../../assets/imagens/LogoINFASYNCInLineBlack.png")}
+            style={styles.image}
+          />
+        </View>
+        <View>
+          <View style={styles.divider} />
+          <View>
+            <Text style={styles.textCronogramas}>CRONOGRAMAS</Text>
+          </View>
+        </View>
+        <View>
+          <View>
+
+          </View>
+          <View>
+
+          </View>
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder='Nome do curso'
+            placeholderTextColor='#000'
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder='Andar'
+            placeholderTextColor='#000'
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder='Matéria'
+            placeholderTextColor='#000'
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputHoraInicio}
+            placeholder='Horario de inicio'
+            placeholderTextColor='#000'
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputHoraTerm}
+            placeholder='Horario de término'
+            placeholderTextColor='#000'
+          />
+        </View>
+
+        <View>
+          <TextInput
+            style={styles.inputNameProf}
+            placeholder='Nome do professor'
+            placeholderTextColor='#000'
+          />
+        </View>
+
+        <View style={styles.containerEnviar}>
+          <TouchableOpacity
+            style={styles.buttonEnviar}
+          >
+            <Text style={styles.textEnviar}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.divider} />
+        <View>
+          <Text style={styles.text1}>Para carregar todos os cronogramas insira um Excel.</Text>
+        </View>
+
+        <View style={styles.iconLock1}>
+          <Ionicons name="warning" size={22} color="#000" />
+        </View>
+        <View>
+          <Text style={styles.text2}>É necessário que o documento esteja preenchido na seguinte ordem</Text>
+        </View>
+        <View style={styles.iconLock}>
+          <Ionicons name="warning" size={22} color="#000" />
+        </View>
+
+        <View>
+          <Text style={styles.text3}>Curso, Período, Horário de Início, horário de término, Nome, Matéria e Andar</Text>
+        </View>
+
+        <View>
+          <Image
+            source={{
+              uri:
+                "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
+            }}
+          />
+          <Text style={styles.textAnexar}>Anexar Excel:</Text>
+          <View style={styles.containerAnexar}>
+            <View>
+              <TouchableOpacity
+                style={styles.buttonAnexar}
+                onPress={handleDocumentPicker}
+              >
+                <Text style={styles.styleTextAdd}>Adicionar Arquivo</Text>
+              </TouchableOpacity>
+              <Text style={styles.textNehum}>
+                {selectedFile ? selectedFile.name : "Nenhum arquivo selecionado"}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={styles.buttonEnviar2}
+            onPress={handleSendDocument}
+          >
+            <Text style={styles.textEnviar2}>Enviar Todos os Cronogramas</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View >
+          <TouchableOpacity
+            style={styles.buttonEnviar3}
+          >
+            <Text style={styles.textEnviar3}>Deletar Todos os Cronogramas</Text>
+          </TouchableOpacity>
+        </View>
+
+      </KeyboardAvoidingView>
+    </ScrollView>
+  );
+}
 
 
-    const [selectedValue, setSelectedValue] = useState('');
-    const [selectHorario, setSelectHorario] = useState('');
-    return (
-
-        <ScrollView>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={styles.containerFundoTela}
-
-            >
-                <View style={styles.imagenLogo}>
-                    <Animatable.Image
-                        animation="flipInY"
-                        delay={300}
-                        source={require("../../assets/imagens/LogoINFASYNCInLineBlack.png")}
-                        style={styles.image}
-                    />
-                </View>
-                <View>
-                    <View style={styles.divider} />
-                    <View>
-                        <Text style={styles.textCronogramas}>CRONOGRAMAS</Text>
-                    </View>
-                </View>
-                <View>
-                    <View>
-                        <Picker
-                            style={styles.selectPicker}
-                            placeholder="Selecione a matéria"
-                            selectedValue={selectedValue}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedValue(itemValue)
-
-                            }
-                        >
-                            <Picker.Item label="Opção 1" value="option1" />
-                            <Picker.Item label="Opção 2" value="option2" />
-                            <Picker.Item label="Opção 3" value="option3" />
-                        </Picker>
-                    </View>
-                    <View>
-                        <Picker
-                            style={styles.selectPicker2}
-                            placeholder="Selecione o horário do curso"
-                            selectedValue={selectHorario}
-                            onValueChange={(itemHorario, itemHorarioIndex) =>
-                                setSelectHorario(itemHorario)
-                            }
-                        >
-                            <Picker.Item label="Diurno" value="option1" />
-                            <Picker.Item label="Noturno" value="option2" />
-                        </Picker>
-                    </View>
-                </View>
-                <View>
-                    <TextInput
-                        style={styles.inputName}
-                        placeholder='Nome do curso'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-                <View>
-                    <TextInput
-                        style={styles.inputName}
-                        placeholder='Andar'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-                <View>
-                    <TextInput
-                        style={styles.inputName}
-                        placeholder='Matéria'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-                <View>
-                    <TextInput
-                        style={styles.inputHoraInicio}
-                        placeholder='Horario de inicio'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-                <View>
-                    <TextInput
-                        style={styles.inputHoraTerm}
-                        placeholder='Horario de término'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-
-                <View>
-                    <TextInput
-                        style={styles.inputNameProf}
-                        placeholder='Nome do professor'
-                        placeholderTextColor='#000'
-                    />
-                </View>
-
-                <View style={styles.containerEnviar}>
-                    <TouchableOpacity
-                        style={styles.buttonEnviar}
-                    >
-                        <Text style={styles.textEnviar}>Enviar</Text>
-                    </TouchableOpacity>
-
-                </View>
-                <View style={styles.divider} />
-                <View>
-                    <Text style={styles.text1}>Para carregar todos os cronogramas insira um Excel.</Text>
-                </View>
-
-                <View style={styles.iconLock1}>
-                    <Ionicons name="warning" size={22} color="#000" />
-                </View>
-                <View>
-                    <Text style={styles.text2}>É necessario que o documento esteja preenchido na seguinte ordem</Text>
-                </View>
-                <View style={styles.iconLock}>
-                    <Ionicons name="warning" size={22} color="#000" />
-                </View>
-
-                <View>
-                    <Text style={styles.text3}>Curso, Período, Horário de Início, horário de término, Nome, Matéria e Andar</Text>
-                </View>
-
-                <View>
-                    <Image
-                        //ref={imageRef}
-                        source={{
-                            uri:
-                                "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
-                        }}
-                        style={{
-                            // width: 410,
-                            // height: 300,
-                            // borderRadius: 20,
-                            // backgroundColor: "#000",
-                            // position: "absolute"
-                        }}
-                    />
-                    <Text style={styles.textAnexar}>Anexar Excel:</Text>
-                    <View style={styles.containerAnexar}>
-                        <View>
-                            <TouchableOpacity
-                                style={styles.buttonAnexar}
-                            //onPress={handleImagePicker}
-                            >
-                                <Text style={styles.styleTextAdd}>Adicionar Arquivo</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.textNehum}>
-                                {"Nenhum arquivo selecionado"}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-
-
-                <View>
-                    <TouchableOpacity
-                        style={styles.buttonEnviar2}
-                    >
-                        <Text style={styles.textEnviar2}>Enviar Todos os Cronogramas</Text>
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View >
-                    <TouchableOpacity
-                        style={styles.buttonEnviar3}
-                    >
-                        <Text style={styles.textEnviar3}>Deletar Todos os Cronogramas</Text>
-                    </TouchableOpacity>
-
-                </View>
-
-
-            </KeyboardAvoidingView>
-        </ScrollView>
-    )
-};
 
 const styles = StyleSheet.create({
 
@@ -252,7 +262,7 @@ const styles = StyleSheet.create({
 
     selectPicker: {
         left: 35,
-        top: -35,
+        top: -90,
         width: 170,
         height: 45,
         borderRadius: 10,
@@ -449,7 +459,7 @@ const styles = StyleSheet.create({
     },
 
     buttonEnviar2: {
-        textAlign:"center",
+        textAlign: "center",
         borderBottomColor: "#000",
         width: 180,
         height: 40,
@@ -464,7 +474,7 @@ const styles = StyleSheet.create({
     },
 
     textEnviar2: {
-        textAlign:"center",
+        textAlign: "center",
         position: "absolute",
         color: "#fff",
         fontFamily: "Ubuntu",
@@ -473,7 +483,7 @@ const styles = StyleSheet.create({
     },
 
     buttonEnviar3: {
-        textAlign:"center",
+        textAlign: "center",
         borderBottomColor: "#000",
         width: 180,
         height: 40,
@@ -488,7 +498,7 @@ const styles = StyleSheet.create({
     },
 
     textEnviar3: {
-        textAlign:"center",
+        textAlign: "center",
         position: "absolute",
         color: "#fff",
         fontFamily: "Ubuntu",

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
-import {
-    Ionicons,
-    AntDesign,
-  } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import {
     StyleSheet,
     Text,
     View,
-    Image,
     TouchableOpacity,
     TextInput,
     KeyboardAvoidingView,
@@ -40,15 +36,15 @@ export default function telaDePosRecuperacao() {
             <ScrollView>
                 <View style={styles.containerFormato}>
                     <View>
-                        <Text style={styles.text1}>PREENCHA OS CAMPO ABAIXO PARA REDEFINIR SUA SENHA</Text>
+                        <Text style={styles.text1}>ESQUECEU SUA SENHA?</Text>
                     </View>
                     <View>
-                        <Text style={styles.text2}>O código foi enviado para o e-mail selecionado</Text>
+                        <Text style={styles.text2}>Digite o código e a nova senha</Text>
                     </View>
                     <View>
                         <TextInput
                             style={styles.inputEmail}
-                            placeholder='Insira o código'
+                            placeholder='Código recebido'
                             placeholderTextColor='#000'
                         />
                     </View>
@@ -88,7 +84,7 @@ export default function telaDePosRecuperacao() {
                     </View>
                     <View>
                         <TouchableOpacity style={styles.button} >
-                            <Text style={styles.buttonText}>REDEFIR SENHA</Text>
+                            <Text style={styles.buttonText}>REDEFINIR SENHA</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

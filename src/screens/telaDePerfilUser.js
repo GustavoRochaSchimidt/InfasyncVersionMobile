@@ -11,13 +11,7 @@ import {
     Platform,
 } from 'react-native';
 
-import {
-    Ionicons,
-    AntDesign,
-    FontAwesome5,
-    FontAwesome,
-    MaterialCommunityIcons,
-} from '@expo/vector-icons';
+import {AntDesign,} from '@expo/vector-icons';
 
 export default function telaDePerfilUser() {
 

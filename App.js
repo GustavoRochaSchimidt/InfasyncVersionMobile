@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import Home from "./src/pages/Home/index";
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,9 +16,11 @@ import telaDePosRecuperacao from "./src/screens/telaDePosRecuperacao";
 import telaTEste from "./src/screens/telaTEste";
 import CustonDrawer from "./src/components/CustonDrawer";
 
+//Const que chamam as funções ultilizadas no dispositivo
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+//Esta fução carrega as telas em formato de pilha
 function MyStack() {
   return (
     <Stack.Navigator initialRouteName="Home">
@@ -136,6 +139,7 @@ function MyStack() {
   );
 };
 
+//Função que aplica o efeito de gaveta na tela de Opçoes
 function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustonDrawer {...props} />}
@@ -152,6 +156,7 @@ function MyDrawer() {
   );
 };
 
+//Carrega o App.js
 export default function App() {
   return (
 

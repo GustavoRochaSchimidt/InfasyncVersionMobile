@@ -27,7 +27,6 @@ export default function telaDeOpçoes({ navigation }) {
     loadFont();
   }, []);
 
-  //Função async que carrega as font utilizadas no front-end.
   async function loadFont() {
     await Font.loadAsync({
       'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),

@@ -31,8 +31,12 @@ export default function telaDeLogin({ navigation }) {
 
   //Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup  
   const schema = yup.object({
-    ra: yup.string().min(13, "Ra ou senha incorretos").required("Informe seu Ra"),
-    senha: yup.string().min(8, "Ra ou senha incorretos").required("Informe sua senha"),
+    senha: yup.string().required("Informe sua senha"),
+    email: yup
+      .string()
+      .email("E-mail inválido")
+      .matches(/^[a-zA-Z0-9._%+-]+@fatec\.sp\.gov\.br$/, "E-mail deve ser @fatec.sp.gov.br")
+      .required("Informe seu e-mail"),
   });
 
   //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
@@ -40,15 +44,19 @@ export default function telaDeLogin({ navigation }) {
     resolver: yupResolver(schema)
   })
 
+  //Const que trata em caso de erro na senha
+  const [loginError, setLoginError] = useState(false);
+
   //função da API que pega os valores das inputs e repassa para o login.
   async function loginUser(values) {
     try {
       const data = {
-        ra: values.ra,
+        email: values.email,
         password: values.senha
       };
       console.log(data);
       const response = await infatecFetch.post('/api/Login/LoginUser', data);
+      //Armazena o token so usuario
       const token = response.data.bearer;
       await AsyncStorage.setItem('bearer', token);
       console.log(await AsyncStorage.getItem('bearer'));
@@ -56,6 +64,7 @@ export default function telaDeLogin({ navigation }) {
       console.log(response.data);
     } catch (error) {
       console.error(error);
+      setLoginError(true);
     }
   }
 
@@ -72,7 +81,6 @@ export default function telaDeLogin({ navigation }) {
   }
 
   return (
-
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
@@ -91,23 +99,22 @@ export default function telaDeLogin({ navigation }) {
               <View>
                 <Controller
                   control={control}
-                  name="ra"
+                  name="email"
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextInput
-                      style={[styles.ra, {
+                      style={[styles.email, {
                         paddingLeft: 30,
-                        borderColor: errors.ra ? '#ff375b' : 'white',
+                        borderColor: errors.email ? '#ff375b' : 'white',
                       }]}
                       placeholder='E-mail'
                       placeholderTextColor='#FFF'
                       onChangeText={onChange}
                       onBlur={onBlur}
                       value={value}
-                      keyboardType="numeric"
                     />
                   )}
                 />
-                {errors.ra && <Text style={styles.inputError}>{errors.ra?.message} </Text>}
+                {errors.email && <Text style={styles.inputError}>{errors.email?.message} </Text>}
 
                 <View style={styles.iconUser}>
                   <Ionicons name="mail" size={22} color="#FFF" />
@@ -133,6 +140,10 @@ export default function telaDeLogin({ navigation }) {
                   )}
                 />
                 {errors.senha && <Text style={styles.inputError}>{errors.senha?.message} </Text>}
+                
+                {loginError && (
+                  <Text style={styles.inputError}>Usuário ou senha incorretos</Text>
+                )}
 
                 <View style={styles.iconLock}>
                   <AntDesign name="lock1" size={22} color="#FFF" />
@@ -150,7 +161,7 @@ export default function telaDeLogin({ navigation }) {
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+              <TouchableOpacity style={[styles.button]} onPress={handleSubmit(loginUser)}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>
@@ -161,7 +172,7 @@ export default function telaDeLogin({ navigation }) {
   );
 };
 
-// Atribue a stilização do front-end.
+// Atribue a estilização do front-end.
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,
@@ -208,7 +219,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
 
-  ra: {
+  email: {
     height: 50,
     borderColor: "#FFFFFF",
     borderWidth: 2,
