@@ -74,6 +74,8 @@ export default function telaDeAvisos() {
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
     formData.append("imageFile", imageFile);
 
+    console.log(imageFile)
+
     try {
       const token = AsyncStorage.getItem("bearer");
       await infatecFetch.post("/api/Warnings/CreateNewWarning", formData, {

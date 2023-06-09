@@ -65,14 +65,13 @@ export default function telaDeEventos() {
     const formData = new FormData();
     formData.append("title", valueTitulo);
     formData.append("description", valueDescriçao);
-    formData.append("imageFile", imageFile);
+    formData.append("imageName", "");
     formData.append("imgUri", "");
-
 
     const response = await fetch(imageUri);
     const blob = await response.blob();
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
-
+    formData.append("imageFile", imageFile);
 
     try {
       const token = AsyncStorage.getItem("bearer");
