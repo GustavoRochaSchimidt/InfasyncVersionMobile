@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React from "react";
 import {
     Alert,
     View,
@@ -6,29 +7,27 @@ import {
     Text,
     StyleSheet,
     Image,
-}
-    from "react-native";
+}from "react-native";
 
 import {
     Ionicons,
     AntDesign,
     FontAwesome5,
-    FontAwesome,
 } from '@expo/vector-icons';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 
 
 function CustonDrawer({ navigation }) {
 
-    useEffect(() => {
-        loadFont();
-    }, []);
+   //const que carrega as fonts
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
 
-    async function loadFont() {
-        await Font.loadAsync({
-            'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
-            'JuliusSansOne': require('../../../assets/fonts/JuliusSansOne-Regular.ttf'),
-        });
-    }
+  if(!fontLoaded){
+    return null;
+  };
+
 
     const handleExitApp = () => {
         Alert.alert(
@@ -81,7 +80,7 @@ function CustonDrawer({ navigation }) {
                     />
                     </View>
 
-                    <Text style={{ fontSize: 15, top: 70, left: 20, position: "relative", color: "#FFF", fontFamily: "Ubuntu", }}>E-mail: gustavo@fatec.sp.gov.br</Text>
+                    <Text style={{ fontSize: 15, top: 70, left: 20, position: "relative", color: "#FFF", fontFamily: "Ubuntu_400Regular", }}>E-mail: gustavo@fatec.sp.gov.br</Text>
                 </View>
             </View>
         </View>
@@ -90,13 +89,13 @@ function CustonDrawer({ navigation }) {
 
 export default CustonDrawer;
 
+// Atribue a estilização do front-end.
 const styles = StyleSheet.create({
 
     container: {
         flex: 1,
         backgroundColor: "#FAEBD7",
         borderRadius: 10,
-
     },
 
     imagenLogo: {
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     },
 
     perfilUserText: {
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         position: "relative",
         top: 280,
         left: 40,

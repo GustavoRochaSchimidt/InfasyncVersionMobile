@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import * as Font from 'expo-font';
+import React, { useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import infatecFetch from '../Services/api';
-
+import { Picker } from '@react-native-picker/picker';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
   StyleSheet,
   Text,
@@ -15,17 +15,24 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-
-import {
-  Ionicons,
-  AntDesign,
-} from '@expo/vector-icons';
+import {Ionicons,} from '@expo/vector-icons';
 
 export default function telaDECronogramas() {
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue2, setSelectedValue2] = useState('');
 
   //Const useState que guadar o estado do objeto.
   const [selectedFile, setSelectedFile] = useState(null);
 
+   //Função que carrega a fonte das letras no fron-end
+   const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
+
+  if(!fontLoaded){
+    return null;
+  };
+ 
   //Const para abrir o local que esta o documento e selecionar.
   const handleDocumentPicker = async () => {
     try {
@@ -80,7 +87,6 @@ export default function telaDECronogramas() {
       console.log("Excel com cursos deletados com sucesso");
     } catch (error) {
       console.error(error);
-      // Tratar erro aqui (ex: mostrar uma mensagem de erro para o usuário)
     }
   };
 
@@ -113,10 +119,26 @@ export default function telaDECronogramas() {
         </View>
         <View>
           <View>
-
+            <Picker
+              style={styles.selectPicker}
+              selectedValue={selectedValue}
+              onValueChange={(itemValue) => setSelectedValue(itemValue)}
+            >
+              <Picker.Item label="Opção 1" value="opcao1" />
+              <Picker.Item label="Opção 2" value="opcao2" />
+              <Picker.Item label="Opção 3" value="opcao3" />
+            </Picker>
           </View>
           <View>
-
+            <Picker
+              style={styles.selectPicker2}
+              selectedValue={selectedValue2}
+              onValueChange={(itemValue) => setSelectedValue2(itemValue)}
+            >
+              <Picker.Item label="Opção 1" value="opcao1" />
+              <Picker.Item label="Opção 2" value="opcao2" />
+              <Picker.Item label="Opção 3" value="opcao3" />
+            </Picker>
           </View>
         </View>
         <View>
@@ -180,14 +202,14 @@ export default function telaDECronogramas() {
           <Ionicons name="warning" size={22} color="#000" />
         </View>
         <View>
-          <Text style={styles.text2}>É necessário que o documento esteja preenchido na seguinte ordem</Text>
+          <Text style={styles.text2}>É necessário que o documento esteja preenchido na seguinte ordem:</Text>
         </View>
         <View style={styles.iconLock}>
           <Ionicons name="warning" size={22} color="#000" />
         </View>
 
         <View>
-          <Text style={styles.text3}>Curso, Período, Horário de Início, horário de término, Nome, Matéria e Andar</Text>
+          <Text style={styles.text3}>Curso, Período, Horário de Início, horário de término, Nome, Matéria e Andar.</Text>
         </View>
 
         <View>
@@ -264,7 +286,7 @@ const styles = StyleSheet.create({
     top: -85,
     fontSize: 30,
     color: "#000",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
@@ -272,7 +294,7 @@ const styles = StyleSheet.create({
 
   selectPicker: {
     left: 35,
-    top: -90,
+    top: -35,
     width: 170,
     height: 45,
     borderRadius: 10,
@@ -291,8 +313,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     padding: 9,
-    color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    color: "#000",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     backgroundColor: "#FFF",
     marginBottom: 20,
@@ -307,8 +329,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     padding: 9,
-    color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    color: "#000",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     backgroundColor: "#FFF",
     marginBottom: 20,
@@ -323,8 +345,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     padding: 9,
-    color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    color: "#000",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     backgroundColor: "#FFF",
     marginBottom: 20,
@@ -351,8 +373,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     padding: 9,
-    color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    color: "#000",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     backgroundColor: "#FFF",
     marginBottom: 20,
@@ -376,7 +398,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     color: "#fff",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     alignItems: "center",
     alignContent: "center"
   },
@@ -390,7 +412,7 @@ const styles = StyleSheet.create({
 
   text1: {
     position: "relative",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     top: -90,
     left: 20,
@@ -398,7 +420,7 @@ const styles = StyleSheet.create({
 
   text2: {
     position: "relative",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 12,
     top: -90,
     left: 20,
@@ -407,7 +429,7 @@ const styles = StyleSheet.create({
 
   text3: {
     position: "relative",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     top: -90,
     textAlign: "center",
@@ -428,7 +450,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 20,
     color: "#000",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontWeight: "bold",
   },
 
@@ -454,14 +476,14 @@ const styles = StyleSheet.create({
   },
 
   styleTextAdd: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     marginLeft: 20,
     position: "absolute",
     color: "#fff",
   },
 
   textNehum: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 15,
     position: "absolute",
     top: 10,
@@ -487,7 +509,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     color: "#fff",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     alignItems: "center",
     alignContent: "center"
   },
@@ -511,7 +533,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     color: "#fff",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     alignItems: "center",
     alignContent: "center"
   },

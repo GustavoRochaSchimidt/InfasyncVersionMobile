@@ -1,122 +1,144 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import {
-    AntDesign,
-    Feather,
+  AntDesign,
+  Feather,
 } from '@expo/vector-icons';
-
+import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import infatecFetch from '../../Services/api';
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    Modal,
-    FlatList,
-    StyleSheet,
-    TextInput,
-
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+  StyleSheet,
+  TextInput,
 } from "react-native";
-import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
-const SelectMultiple = ({ options = [], onChange, initinalSelect = [], title = '', max = '' }) => {
-    const [visible, setVisible] = useState(false);
-    const [originalOpitions, setOriginalOptions] = useState([...options]);
-    const [data, setData] = useState([...options])
-    const [termo, setTermo] = useState('')
-    const [selected, setSelected] = useState([...initinalSelect])
+const SelectMultiple = ({ title = '', max = '' }) => {
+  const [visible, setVisible] = useState(false);
+  const [originalOptions, setOriginalOptions] = useState([]);
+  const [data, setData] = useState([]);
+  const [termo, setTermo] = useState('');
+  const [selected, setSelected] = useState([]);
 
-    function renderItem(item) {
-        return (
-            <TouchableOpacity
-                style={[styles.item, {
-                    backgroundColor: selected?.findIndex(i => i.id == item.id) != -1 ? '#FAEBD7' : '#FFF'
-                }]}
-                onPress={() => toggleSelection(item)}
-            >
-                <Text style={[styles.txt, { fontWeight: selected?.findIndex(i => i.id == item.id) != -1 ? '600' : '400' }]}>{item?.title}</Text>
-            </TouchableOpacity>
-        )
+  function renderItem(item) {
+    return (
+      <TouchableOpacity
+        style={[styles.item, {
+          backgroundColor: selected?.findIndex(i => i.id === item.id) !== -1 ? '#FAEBD7' : '#FFF'
+        }]}
+        onPress={() => toggleSelection(item)}
+      >
+        <Text style={[styles.txt, { fontWeight: selected?.findIndex(i => i.id === item.id) !== -1 ? '600' : '400' }]}>{item?.title}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  useEffect(() => {
+    loadFont();
+    fetchCourses();
+  }, []);
+
+  async function loadFont() {
+    await Font.loadAsync({
+      'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
+      'JuliusSansOne': require('../../../assets/fonts/JuliusSansOne-Regular.ttf'),
+    });
+  }
+  
+
+ 
+
+  async function fetchCourses() {
+    try {
+      const token = await AsyncStorage.getItem('bearer');
+      const response = await infatecFetch.get('/api/Courses/GetAllCourses', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      console.log(response.data); // Verifique o valor de response.data
+  
+      const courses = response.data.data.map((course) => ({
+        id: course.id,
+        title: course.name,
+      }));
+      setOriginalOptions(courses);
+      setData(courses);
+      console.log(courses)
+      return courses
+
+    } catch (error) {
+      console.error(error);
     }
-
-    useEffect(() => {
-        setOriginalOptions(options)
-        setData(options)
-    }, [options])
-
-    useEffect(() => {
-        let arr = [...originalOpitions];
-        setData(arr.filter(i =>
-            i.title.toLowerCase().includes(termo.toLowerCase())) ||
-            i.body.toLowerCase().includes(termo.toLowerCase()))
-    }, [termo])
-
-
-    useEffect(() => {
-        loadFont();
-    }, []);
-
-    async function loadFont() {
-        await Font.loadAsync({
-            'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
-            'JuliusSansOne': require('../../../assets/fonts/JuliusSansOne-Regular.ttf'),
-        });
+  }
+  function toggleSelection(item) {
+    let index = selected.findIndex(i => i?.id === item.id);
+    let arrSelected = [...selected];
+    if (index !== -1) {
+      arrSelected.splice(index, 1);
+    } else {
+      if (arrSelected.length < max) {
+        arrSelected.push(item)
+      } else {
+        alert('Já foram selecionadas o máximo de matérias');
+      }
     }
+    setSelected(arrSelected);
+  }
 
-    function toggleSelection(item) {
-        let index = selected.findIndex(i => i?.id == item.id);
-        let arrSelected = [...selected];
-        if (index != -1) {
-            arrSelected.splice(index, 1);
-        } else {
-            if (arrSelected.length < max) {
-                arrSelected.push(item)
-            } else {
-                alert('já foram selecionadas o maximo de matérias')
-            }
-        }
-        setSelected(arrSelected)
-    }
+  function handleTermoChange(text) {
+    setTermo(text);
+    const filteredOptions = originalOptions.filter(option =>
+      option.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setData(filteredOptions);
+  }
 
+  return (
+    <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>
+      <Text style={styles.textSelect} numberOfLines={1}><Feather name='book' size={22} color='#FFF' /> {selected.length > 0 ? selected.map(p => `${p.title}, `) : 'Selecione um curso'}</Text>
+      <AntDesign name='downcircleo' size={22} color='#FFF' />
+      <Modal onRequestClose={() => setVisible(false)} visible={visible} animationType="slide" >
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.header}>
+            <View style={styles.headerR1}>
+              <TouchableOpacity onPress={() => setVisible(false)}>
+                <Text style={styles.back}>Voltar</Text>
+              </TouchableOpacity>
+              <View>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.subtitle}>{`Selecione até ${max} opções`}</Text>
+              </View>
+              <TouchableOpacity>
+                <Text style={styles.finsh}>Concluir</Text>
+              </TouchableOpacity>
+            </View>
 
-    return <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>
-        <Text style={styles.textSelect} numberOfLines={1}><Feather name='book' size={22} color='#FFF' /> {selected.length > 0 ? selected.map(p => `${p.title}, `) : 'Selecione um curso'}</Text>
-        <AntDesign name='downcircleo' size={22} color='#FFF' />
-        <Modal onRequestClose={() => setVisible(false)} visible={visible} animationType="slide" >
-            <SafeAreaView style={{ flex: 1, }}>
-                <View style={styles.header}>
-                    <View style={styles.headerR1}>
-                        <TouchableOpacity onPress={() => setVisible(false)}>
-                            <Text style={styles.back}>Voltar</Text>
-                        </TouchableOpacity>
-                        <View>
-                            <Text style={styles.title}>{title}</Text>
-                            <Text style={styles.subtitle}>{`Selecione até ${max} opções`}</Text>
-                        </View>
-                        <TouchableOpacity>
-                            <Text style={styles.finsh}>Concluir</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {originalOpitions.length > 10 ?
-                        <TextInput
-                            placeholder="  Pesquisar"
-                            style={styles.input}
-                            value={termo}
-                            onChangeText={setTermo}
-                            placeholderTextColor="#FFF"
-
-                        /> : null}
-                </View>
-                <FlatList
-                    data={data}
-                    renderItem={({ item }) => renderItem(item)}
-                />
-            </SafeAreaView >
-        </Modal>
+            {originalOptions.length > 10 ?
+              <TextInput
+                placeholder="  Pesquisar"
+                style={styles.input}
+                value={termo}
+                onChangeText={handleTermoChange}
+                placeholderTextColor="#FFF"
+              /> : null}
+          </View>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        </SafeAreaView>
+      </Modal>
     </TouchableOpacity>
-
-}
+  );
+};
 
 const styles = StyleSheet.create({
     container: {

@@ -1,9 +1,10 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import infatecFetch from '../Services/api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
   StyleSheet,
   Text,
@@ -25,16 +26,13 @@ export default function telaDeAvisos() {
   const imageRef = useRef();
 
   //Função que carrega a fonte das letras no fron-end
-  useEffect(() => {
-    loadFont();
-  }, []);
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
 
-  async function loadFont() {
-    await Font.loadAsync({
-      Ubuntu: require("../../assets/fonts/Ubuntu-Regular.ttf"),
-      JuliusSansOne: require("../../assets/fonts/JuliusSansOne-Regular.ttf"),
-    });
-  }
+  if(!fontLoaded){
+    return null;
+  };
 
   //Const que guarda o valor das inputs
   const handleInputTitulo = (inputValueTitulo) => {
@@ -210,7 +208,7 @@ const styles = StyleSheet.create({
     top: -80,
     fontSize: 30,
     color: "#000",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
@@ -226,7 +224,7 @@ const styles = StyleSheet.create({
   },
 
   inputTitulo: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 15,
     height: 50,
     width: 410,
@@ -238,7 +236,7 @@ const styles = StyleSheet.create({
     top: -60,
     fontSize: 20,
     color: "#000",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -253,7 +251,7 @@ const styles = StyleSheet.create({
   },
 
   inputWarn: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 15,
     height: 300,
     width: 410,
@@ -264,7 +262,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 20,
     color: "#000",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -279,7 +277,7 @@ const styles = StyleSheet.create({
   },
 
   styleTextAdd: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     marginLeft: 20,
     position: "absolute",
     color: "#fff",
@@ -297,7 +295,7 @@ const styles = StyleSheet.create({
   },
 
   textNehum: {
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 15,
     position: "absolute",
     top: 10,
@@ -322,7 +320,7 @@ const styles = StyleSheet.create({
     left: 40,
     top: 10,
     color: "#fff",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
   },
 });
 

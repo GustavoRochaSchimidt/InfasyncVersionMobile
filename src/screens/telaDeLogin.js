@@ -1,15 +1,15 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useState, useEffect } from "react";
-import * as Font from 'expo-font';
+import React, { useState} from "react";
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 import infatecFetch from "../Services/api";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
-  Ionicons,
   AntDesign,
+  MaterialCommunityIcons
 } from '@expo/vector-icons';
 import {
   StyleSheet,
@@ -39,10 +39,20 @@ export default function telaDeLogin({ navigation }) {
       .required("Informe seu e-mail"),
   });
 
+  //Notifica o usuário em caso de erro do login
+  const showToastError = () => {
+    console.log("Falha ao realizar o login")
+    ToastAndroid.show(
+      "Falha ao cadastrar usário",
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP
+    )
+  };
+
   //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
-  })
+  });
 
   //Const que trata em caso de erro na senha
   const [loginError, setLoginError] = useState(false);
@@ -54,31 +64,27 @@ export default function telaDeLogin({ navigation }) {
         email: values.email,
         password: values.senha
       };
-      console.log(data);
       const response = await infatecFetch.post('/api/Login/LoginUser', data);
+      
       //Armazena o token so usuario
       const token = response.data.bearer;
       await AsyncStorage.setItem('bearer', token);
-      console.log(await AsyncStorage.getItem('bearer'));
       navigation.navigate('telaDeOpçoes');
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       setLoginError(true);
+      showToastError()
     }
-  }
+  };
 
   // Esse useEffect carrega as fonts ultlizadas no front-end do código.
-  useEffect(() => {
-    loadFont();
-  }, []);
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
 
-  async function loadFont() {
-    await Font.loadAsync({
-      'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-      'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-    });
-  }
+  if(!fontLoaded){
+    return null;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -100,6 +106,7 @@ export default function telaDeLogin({ navigation }) {
                 <Controller
                   control={control}
                   name="email"
+                  defaultValue=""
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextInput
                       style={[styles.email, {
@@ -117,13 +124,14 @@ export default function telaDeLogin({ navigation }) {
                 {errors.email && <Text style={styles.inputError}>{errors.email?.message} </Text>}
 
                 <View style={styles.iconUser}>
-                  <Ionicons name="mail" size={22} color="#FFF" />
+                  <MaterialCommunityIcons name="email-outline" size={22} color="#FFF" />
                 </View>
               </View>
               <View>
                 <Controller
                   control={control}
                   name="senha"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.senha, {
@@ -161,7 +169,7 @@ export default function telaDeLogin({ navigation }) {
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button]} onPress={handleSubmit(loginUser)}>
+              <TouchableOpacity style={[styles.button]} onPress={() => navigation.navigate('telaDeOpçoes')}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>
@@ -199,7 +207,7 @@ const styles = StyleSheet.create({
   },
 
   textEntrar: {
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular',
     color: "#fff",
     fontSize: 18,
     textAlign: 'center',
@@ -226,7 +234,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 9,
     marginBottom: 20,
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     color: "#FFF",
   },
@@ -239,7 +247,7 @@ const styles = StyleSheet.create({
     padding: 9,
     marginBottom: 20,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
   },
 
@@ -258,7 +266,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
   },
 
@@ -266,7 +274,7 @@ const styles = StyleSheet.create({
     top: '-40%',
     left: '5%',
     textDecorationLine: 'underline',
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     color: "#FFF",
     position: "relative",
@@ -290,7 +298,7 @@ const styles = StyleSheet.create({
 
   iconEye: {
     width: '15%',
-    top: '15%',
+    top: 15,
     left: '90%',
     height: 50,
     position: 'absolute',
@@ -302,7 +310,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     top: -20,
     left: 10,
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     position: "relative",
   },
 });

@@ -1,15 +1,13 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useEffect } from "react";
-import * as Font from 'expo-font';
+import React from "react";
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import * as Animatable from 'react-native-animatable';
-
 import {
   Ionicons,
   AntDesign,
   MaterialIcons,
   FontAwesome5,
 } from '@expo/vector-icons';
-
 import {
   StyleSheet,
   Text,
@@ -23,15 +21,13 @@ import {
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeOpçoes({ navigation }) {
 
-  useEffect(() => {
-    loadFont();
-  }, []);
+  //Const que carrega as Fonts
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
 
-  async function loadFont() {
-    await Font.loadAsync({
-      'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-      'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-    });
+  if (!fontLoaded) {
+    return null;
   }
 
   return (
@@ -65,7 +61,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconNotification}>
             <Ionicons name="notifications" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button1]} onPress={() => navigation.navigate('telaAvisos')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaAvisos')}>
             <Text style={styles.buttonText}>ENVIAR AVISO</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
@@ -78,7 +74,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconEventos}>
             <MaterialIcons name="event" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button2]} onPress={() => navigation.navigate('telaDeEventos')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaDeEventos')}>
             <Text style={styles.buttonText}>ENVIAR EVENTO</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
@@ -91,7 +87,7 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconCronogramas}>
             <FontAwesome5 name="book" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={[styles.button, styles.button3]} onPress={() => navigation.navigate('telaDeCronogramas')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaDeCronogramas')}>
             <Text style={styles.buttonText}>CRONOGRAMAS</Text>
             <View style={styles.iconArrow}>
               <AntDesign name="arrowright" size={22} color="#fff" />
@@ -111,7 +107,7 @@ const styles = StyleSheet.create({
   },
 
   formatoHeader: {
-    backgroundColor: ('#162938'),
+    backgroundColor: '#162938',
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     borderColor: "#FFFFFF",
@@ -144,7 +140,7 @@ const styles = StyleSheet.create({
   },
 
   textOption: {
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular,',
     color: "#fff",
     fontSize: 20,
     top: '-10%',
@@ -168,7 +164,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular,",
     fontSize: 16,
   },
 

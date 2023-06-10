@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import * as Font from 'expo-font';
+import React from "react";
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
     StyleSheet,
     Text,
@@ -13,16 +13,14 @@ import {
 
 export default function telaDeRecuperacao({ navigation }) {
 
-    useEffect(() => {
-        loadFont();
-    }, []);
+    //Função que carrega a fonte das letras no fron-end
+    const [fontLoaded] = useFonts({
+        Ubuntu_400Regular,
+    });
 
-    async function loadFont() {
-        await Font.loadAsync({
-            'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-            'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-        });
-    }
+    if (!fontLoaded) {
+        return null;
+    };
 
     return (
         <KeyboardAvoidingView
@@ -73,16 +71,16 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 20,
         fontWeight: "bold",
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         textAlign: "center",
     },
 
-    text2: { 
+    text2: {
         position: "relative",
         top: 10,
         color: "#fff",
         fontSize: 16,
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         textAlign: "center",
     },
 
@@ -95,12 +93,12 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu",
+        color: "#000",
+        fontFamily: "Ubuntu_400Regular",
         fontSize: 16,
         backgroundColor: "#FFF",
         marginBottom: 100,
-        borderColor:"#FFF"
+        borderColor: "#FFF"
     },
 
     button: {
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: "#FFFFFF",
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         fontSize: 16,
     },
 })

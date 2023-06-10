@@ -1,30 +1,27 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-
 } from 'react-native';
 import Header from '../../components/Header';
-import * as Font from 'expo-font';
-import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import * as Animatable from 'react-native-animatable';
-//import { useFonts } from 'expo-font';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
+import { JuliusSansOne_400Regular } from '@expo-google-fonts/julius-sans-one';
 
 export default function Home() {
   const navigation = useNavigation({});
 
-  useEffect(() => {
-    loadFont();
-  }, []);
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+    JuliusSansOne_400Regular
+  });
 
-  async function loadFont() {
-    await Font.loadAsync({
-      'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
-      'JuliusSansOne': require('../../../assets/fonts/JuliusSansOne-Regular.ttf'),
-    });
+  if(!fontLoaded){
+    return null;
   }
 
   return (
@@ -106,7 +103,7 @@ const styles = StyleSheet.create({
 
   textInfatec: {
     position: 'relative',
-    fontFamily: 'JuliusSansOne',
+    fontFamily: 'JuliusSansOne_400Regular',
     fontSize: 38,
     color: '#000000',
     textAlign: 'center',
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
 
   textFatec: {
     position: 'relative',
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular',
     color: '#000000',
     fontSize: 38,
     top: 40,
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular',
     color: '#ffffff',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
   },
 
   button2: {
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular',
     backgroundColor: '#162938',
     top: '15%',
     borderColor: "#FFFFFF",
@@ -163,6 +160,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText2: {
+    fontFamily: 'Ubuntu_400Regular',
     textDecorationLine: 'underline',
     color: "#000000",
     textAlign: "center"

@@ -1,6 +1,5 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useState, useEffect } from "react";
-import * as Font from 'expo-font';
+import React, { useState} from "react";
 import SelectMultiple from '../../src/components/SelectMultiple';
 import { useForm, Controller } from 'react-hook-form';
 import { posts } from "../components/SelectMultiple/posts";
@@ -8,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 import infatecFetch from "../Services/api";
-import { ToastContainer, toast } from 'react-native-toast-message';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
   Ionicons,
   AntDesign,
@@ -23,64 +22,79 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 
-//Uma função que pode ser importada em outro módulo ou arquivo.
 export default function TelaDeCadastro() {
-
-//Const com useState para realizar a visibilidade da senha.  
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConf, setHidePassConf] = useState(true);
 
-//Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup  
+//Toast cuida da notifições do app
+const showToast = () => {
+  console.log("Usuário cadastrado com sucesso")
+  ToastAndroid.show(
+    "Usuário cadastrado com sucesso",
+    ToastAndroid.SHORT,
+    ToastAndroid.TOP
+  )
+};
+
+//Toast em caso de erro no cadastro
+const showToastError = () => {
+  console.log("Falha ao cadastrar usário")
+  ToastAndroid.show(
+    "Falha ao cadastrar usário",
+    ToastAndroid.SHORT,
+    ToastAndroid.TOP
+  )
+};
+
+  //O schema cuida das validações dos campos de formularios
   const schema = yup.object().shape({
     ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     userName: yup.string().required("Informe seu nome"),
     email: yup
-    .string()
-    .email("E-mail inválido")
-    .matches(/^[a-zA-Z0-9._%+-]+@fatec\.sp\.gov\.br$/, "E-mail deve ser @fatec.sp.gov.br")
-    .required("Informe seu e-mail"),
+      .string()
+      .email("E-mail inválido")
+      .matches(/^[a-zA-Z0-9._%+-]+@fatec\.sp\.gov\.br$/, "E-mail deve ser @fatec.sp.gov.br")
+      .required("Informe seu e-mail"),
     senha: yup.string().min(8, "Sua senha tem que ter no minimo 8 digitos").required("Informe sua senha"),
     senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
   });
 
-  //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
-  })
+  });
 
-  //função da API que pega os valores das inputs e repassa para o cadastro.
   async function createUser(values) {
     try {
       const data = {
+        id: 0,
         ra: values.ra,
         name: values.userName,
         email: values.email,
         password: values.senha,
-        type: 1,
-        coursesId: '1',
-        cpf: '11111111111',
+        type: 0,
+        coursesId: 0,
       };
-      console.log(data);
+
       const response = await infatecFetch.post('/api/Login/CreateUser', data);
+      showToast()
       console.log(response.data);
     } catch (error) {
+      showToastError()
       console.error(error);
     }
   };
 
-// Esse useEffect carrega as fonts ultlizadas no front-end do código.
-  useEffect(() => {
-    loadFont();
-  }, []);
+  //const que carrega as fonts
+  const [fontLoaded] = useFonts({
+    Ubuntu_400Regular,
+  });
 
-  async function loadFont() {
-    await Font.loadAsync({
-      'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-      'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-    });
-  }
+  if(!fontLoaded){
+    return null;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -101,10 +115,9 @@ export default function TelaDeCadastro() {
               <View style={styles.cursoInput}>
                 <SelectMultiple
                   title="Cursos"
-                  max={3}
+                  max={1}
                   options={posts}
                   initinalSelect={[]}
-
                 />
               </View>
 
@@ -112,6 +125,7 @@ export default function TelaDeCadastro() {
                 <Controller
                   control={control}
                   name="ra"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.ra, {
@@ -137,6 +151,7 @@ export default function TelaDeCadastro() {
                 <Controller
                   control={control}
                   name="userName"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.name, {
@@ -162,6 +177,7 @@ export default function TelaDeCadastro() {
                 <Controller
                   control={control}
                   name="email"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.tel, {
@@ -186,6 +202,7 @@ export default function TelaDeCadastro() {
                 <Controller
                   control={control}
                   name="senha"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.senha, {
@@ -221,6 +238,7 @@ export default function TelaDeCadastro() {
                 <Controller
                   control={control}
                   name="senhaConfirm"
+                  defaultValue=""
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={[styles.senhaConfirm, {
@@ -252,7 +270,7 @@ export default function TelaDeCadastro() {
                   )}
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={handleSubmit(createUser)}>
+              <TouchableOpacity style={[styles.button]} onPress={handleSubmit(createUser)}>
                 <Text style={styles.buttonText}>CADASTRAR</Text>
               </TouchableOpacity>
             </View>
@@ -263,7 +281,7 @@ export default function TelaDeCadastro() {
   );
 };
 
-// Atribue a stilização do front-end.
+// Atribue a estilização do front-end.
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,
@@ -289,7 +307,7 @@ const styles = StyleSheet.create({
   },
 
   textCadastro: {
-    fontFamily: 'Ubuntu',
+    fontFamily: 'Ubuntu_400Regular',
     color: "#fff",
     fontSize: 18,
     textAlign: 'center',
@@ -315,7 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 9,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     marginBottom: 20,
   },
@@ -325,7 +343,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     padding: 9,
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     color: "#FFF",
     fontSize: 16,
     marginBottom: 20,
@@ -337,7 +355,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 9,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     marginBottom: 20,
   },
@@ -348,7 +366,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 9,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     marginBottom: 20,
   },
@@ -359,7 +377,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 9,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
     marginBottom: 20,
   },
@@ -380,7 +398,7 @@ const styles = StyleSheet.create({
   buttonText: {
     left: 50,
     color: "#FFFFFF",
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     fontSize: 16,
   },
 
@@ -422,7 +440,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     top: -20,
     left: 10,
-    fontFamily: "Ubuntu",
+    fontFamily: "Ubuntu_400Regular",
     position: "relative",
   },
 

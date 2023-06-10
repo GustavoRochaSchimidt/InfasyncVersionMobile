@@ -5,20 +5,20 @@ import {
     Text,
     StatusBar,
 } from "react-native"
-import { useEffect } from 'react';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 
 const StatusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight + 22 : 64;
 
 export default function Header() {
-    useEffect(() => {
-        loadFont();
-       }, []);
-      
-        async function loadFont() {
-          await Font.loadAsync({
-           'Ubuntu': require('../../../assets/fonts/Ubuntu-Regular.ttf'),
-          });
-        }
+
+    const [fontLoaded] = useFonts({
+        Ubuntu_400Regular,
+      });
+    
+      if(!fontLoaded){
+        return null;
+      }
+    
     return (
         <View style={styles.container}>
             <View style={styles.container}>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontFamily: 'Ubuntu',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 25,
         color: '#FFFFFF',
         textAlign: "center",

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
+import React, { useState } from "react";
 import * as Animatable from 'react-native-animatable';
+import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
     StyleSheet,
     Text,
@@ -10,25 +12,22 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-
-import {AntDesign,} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function telaDePerfilUser() {
 
+    //Const useState que guardam os estados da input
     const [hidePass, setHidePass] = useState(true);
     const [hidePassConf, setHidePassConf] = useState(true);
 
+    //Função que carrega a fonte das letras no fron-end
+    const [fontLoaded] = useFonts({
+        Ubuntu_400Regular
+    });
 
-    useEffect(() => {
-        loadFont();
-    }, []);
-
-    async function loadFont() {
-        await Font.loadAsync({
-            'Ubuntu': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-            'JuliusSansOne': require('../../assets/fonts/JuliusSansOne-Regular.ttf'),
-        });
-    }
+    if (!fontLoaded) {
+        return null;
+    };
 
     return (
         <KeyboardAvoidingView
@@ -95,7 +94,7 @@ export default function telaDePerfilUser() {
                         />
 
                         <TouchableOpacity
-                            style={styles.iconEye}
+                            style={styles.iconEye2}
                             onPress={() => setHidePass(!hidePass)}
                         >
                             {hidePass ? (
@@ -106,17 +105,17 @@ export default function telaDePerfilUser() {
                         </TouchableOpacity>
                     </View>
 
-                    <View>
-                        <TouchableOpacity style={[styles.button, styles.button1]} >
-                            <Text style={styles.buttonText}>ENVIAR</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.button} >
+                        <Text style={styles.buttonText}>ENVIAR</Text>
+                    </TouchableOpacity>
+
                 </Animatable.View>
             </ScrollView >
         </KeyboardAvoidingView >
     )
 };
 
+//Cuida da parte de estilização do codigo
 const styles = StyleSheet.create({
 
     fundoTela: {
@@ -130,12 +129,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#162938",
         borderColor: "#FFFFFF",
         borderWidth: 2,
-        height: '85%',
     },
+
     textInfos: {
         top: 15,
         color: "#FFF",
-        fontFamily: 'Ubuntu',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 20,
         position: "relative",
         textAlign: "center",
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
     textEmail: {
         top: 20,
         color: "#FFF",
-        fontFamily: 'Ubuntu',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         position: "relative",
         textAlign: "center",
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
 
     textEditProfile: {
         color: "#FFF",
-        fontFamily: 'Ubuntu',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 20,
         top: 40,
         position: "relative",
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     },
 
     iconUser: {
-        top: 75,
+        top: 70,
         left: '11%',
         position: 'absolute',
     },
@@ -168,66 +167,69 @@ const styles = StyleSheet.create({
     inputCorName: {
         position: "relative",
         height: 50,
+        width: 320,
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         color: "#FFF",
         fontSize: 16,
         marginBottom: 20,
         marginLeft: 40,
         marginRight: 40,
-        top: 60,
+        top: 55,
     },
 
     iconLock1: {
-        top: 75,
+        top: 65,
         left: '11%',
         position: 'absolute',
     },
 
     inputSenha: {
-        position: "relative",
+        position: "absolute",
         height: 50,
+        width: 320,
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         color: "#FFF",
         fontSize: 16,
         marginBottom: 20,
         marginLeft: 40,
-        marginRight: 40,
-        top: 60,
+        top: 50,
     },
 
     iconLock: {
-        top: '84%',
+        top: 135,
         left: '11%',
         position: 'absolute',
     },
 
     inputConfSenha: {
-        position: "relative",
+        position: "absolute",
         height: 50,
+        width: 320,
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         color: "#FFF",
         fontSize: 16,
         marginBottom: 40,
         marginLeft: 40,
         marginRight: 40,
-        top: 60,
+        top: 120,
     },
 
     button: {
-        top: 50,
+        top: 180,
         backgroundColor: "#162938",
         marginLeft: -100,
-        marginBottom: 120,
-        width: 210,
+        marginBottom: 200,
+        height: 40,
+        width: 200,
         left: '50%',
         borderRadius: 10,
         borderColor: "#FFFFFF",
@@ -239,14 +241,22 @@ const styles = StyleSheet.create({
 
     buttonText: {
         color: "#FFFFFF",
-        fontFamily: "Ubuntu",
+        fontFamily: "Ubuntu_400Regular",
         fontSize: 16,
         textAlign: "center",
     },
 
     iconEye: {
         width: '15%',
-        top: 75,
+        top: 65,
+        left: '80%',
+        height: 50,
+        position: 'absolute',
+    },
+
+    iconEye2: {
+        width: '10%',
+        top: 135,
         left: '80%',
         height: 50,
         position: 'absolute',
