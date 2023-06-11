@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
+import React, { useEffect, useState } from "react";
 import * as DocumentPicker from 'expo-document-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import infatecFetch from '../Services/api';
 import { Picker } from '@react-native-picker/picker';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
+import { TextInputMask } from 'react-native-masked-text';
 import {
   StyleSheet,
   Text,
@@ -15,29 +17,64 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import {Ionicons,} from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function telaDECronogramas() {
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
+export default function TelaDeCronogramas() {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValue2, setSelectedValue2] = useState('');
-
-  //Const useState que guadar o estado do objeto.
+  const [courses, setCourses] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [coursesData, setCoursesData] = useState([]);
 
-   //Função que carrega a fonte das letras no fron-end
-   const [fontLoaded] = useFonts({
+  //Guarda os valores de todos os itens que desejam sem auterados sobre os cursos
+  const [nomeCurso, setNomeCurso] = useState("");
+  const [andar, setAndar] = useState("");
+  const [materia, setMateria] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaTermino, setHoraTermino] = useState("");
+  const [nomeProfessor, setNomeProfessor] = useState("");
+
+  //Const que faz o GET da API para trazer os cursos
+  const getCourses = async () => {
+    try {
+      const token = await AsyncStorage.getItem('bearer');
+      const response = await infatecFetch.get('/api/Courses/GetAllCourses', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const coursesData = response.data.data.map((course) => ({
+        Id: course.id,
+        Curso: course.name,
+      }));
+      console.log(coursesData)
+
+      setCoursesData(coursesData);
+      setCourses(coursesData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
+  //Carrega as font da letras no front-end
+  const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
 
-  if(!fontLoaded){
+  if (!fontLoaded) {
     return null;
-  };
- 
-  //Const para abrir o local que esta o documento e selecionar.
+  }
+
+  //Const para abrir a livraria do aparelho e selecionar o excel
   const handleDocumentPicker = async () => {
     try {
       const document = await DocumentPicker.getDocumentAsync({ type: "application/vnd.ms-excel" });
-
       if (document.type === "success") {
         setSelectedFile(document);
       }
@@ -46,17 +83,14 @@ export default function telaDECronogramas() {
     }
   };
 
-  //Cuida da parte de enviar o Execel para a API no formato que o EndPoint pede.  
+  //Const traforma os dados em formdata e manda para a API fazer o POST e adcionar todos os cursos.
   const handleSendDocument = async () => {
     if (!selectedFile) {
       return;
     }
     const fileUri = selectedFile.uri;
-
-    // Transformar o arquivo em blob
     const response = await fetch(fileUri);
     const blob = await response.blob();
-
     const formData = new FormData();
     formData.append('file', blob, selectedFile.name);
 
@@ -75,7 +109,7 @@ export default function telaDECronogramas() {
     }
   };
 
-  //Botão deletar todos os cursos
+  //Const que busca na API os cursos e deleta todos os cursos
   const deleteCourses = async () => {
     try {
       const token = await AsyncStorage.getItem('bearer');
@@ -90,10 +124,43 @@ export default function telaDECronogramas() {
     }
   };
 
+  //Pergunta sem tem certaza que deseja deletar tudos os cursos
   const handleDeleteAllCourses = () => {
     const shouldDelete = window.confirm('Tem certeza de que deseja deletar todos os cursos?');
     if (shouldDelete) {
       deleteCourses();
+    }
+  };
+
+  //Envia os novos dados para a API
+  const handleEnviar = async () => {
+    const dados = {
+      id: selectedValue,
+      name: nomeCurso,
+      period: selectedValue2,
+      matter: materia,
+      start: horaInicio,
+      end: horaTermino,
+      floor: andar,
+      coordinator: nomeProfessor
+    };
+
+    console.log(dados)
+
+    try {
+      const token = sessionStorage.getItem('bearer');
+
+      const response = await infatecFetch.put(`/api/Courses/UpdateCourse`, dados, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      console.log('Curso editado com sucesso:', response.data);
+      // Realize as ações necessárias após o envio bem-sucedido, se necessário
+    } catch (error) {
+      console.error('Erro ao editar curso:', error);
+      // Realize as ações necessárias em caso de erro, se necessário
     }
   };
 
@@ -117,78 +184,94 @@ export default function telaDECronogramas() {
             <Text style={styles.textCronogramas}>CRONOGRAMAS</Text>
           </View>
         </View>
-        <View>
-          <View>
-            <Picker
-              style={styles.selectPicker}
-              selectedValue={selectedValue}
-              onValueChange={(itemValue) => setSelectedValue(itemValue)}
-            >
-              <Picker.Item label="Opção 1" value="opcao1" />
-              <Picker.Item label="Opção 2" value="opcao2" />
-              <Picker.Item label="Opção 3" value="opcao3" />
-            </Picker>
-          </View>
-          <View>
-            <Picker
-              style={styles.selectPicker2}
-              selectedValue={selectedValue2}
-              onValueChange={(itemValue) => setSelectedValue2(itemValue)}
-            >
-              <Picker.Item label="Opção 1" value="opcao1" />
-              <Picker.Item label="Opção 2" value="opcao2" />
-              <Picker.Item label="Opção 3" value="opcao3" />
-            </Picker>
-          </View>
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputName}
-            placeholder='Nome do curso'
-            placeholderTextColor='#000'
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputName}
-            placeholder='Andar'
-            placeholderTextColor='#000'
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputName}
-            placeholder='Matéria'
-            placeholderTextColor='#000'
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputHoraInicio}
-            placeholder='Horario de inicio'
-            placeholderTextColor='#000'
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputHoraTerm}
-            placeholder='Horario de término'
-            placeholderTextColor='#000'
-          />
-        </View>
 
+        <View>
+          <Picker
+            style={styles.selectPicker}
+            selectedValue={selectedValue}
+            onValueChange={(itemValue) => setSelectedValue(itemValue)}
+          >
+            <Picker.Item label="Selecione um curso" value="" />
+            {coursesData.map((course) => (
+              <Picker.Item key={course.Id} label={course.Curso} value={course.Id} />
+            ))}
+          </Picker>
+        </View>
+        <View>
+          <Picker
+            style={styles.selectPicker2}
+            selectedValue={selectedValue2}
+            onValueChange={(itemValue) => setSelectedValue2(itemValue)}
+          >
+            <Picker.Item label="Selecione o Horario" value="" />
+            <Picker.Item label="Diurno" value="diurno" />
+            <Picker.Item label="Noturno" value="noturno" />
+          </Picker>
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder="Nome do curso"
+            placeholderTextColor="#000"
+            value={nomeCurso}
+            onChangeText={setNomeCurso}
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder="Andar"
+            placeholderTextColor="#000"
+            value={andar}
+            onChangeText={setAndar}
+          />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputName}
+            placeholder="Matéria"
+            placeholderTextColor="#000"
+            value={materia}
+            onChangeText={setMateria}
+          />
+        </View>
+        <View>
+          <TextInputMask
+            style={styles.inputHoraInicio}
+            placeholder="Horario de inicio"
+            placeholderTextColor="#000"
+            value={horaInicio}
+            onChangeText={setHoraInicio}
+            type={'datetime'}
+            options={{
+              format: 'HH:mm',
+            }}
+          />
+        </View>
+        <View>
+          <TextInputMask
+            style={styles.inputHoraTerm}
+            placeholder="Horario de término"
+            placeholderTextColor="#000"
+            value={horaTermino}
+            onChangeText={setHoraTermino}
+            type={'datetime'}
+            options={{
+              format: 'HH:mm',
+            }}
+          />
+        </View>
         <View>
           <TextInput
             style={styles.inputNameProf}
-            placeholder='Nome do professor'
-            placeholderTextColor='#000'
+            placeholder="Nome do professor"
+            placeholderTextColor="#000"
+            value={nomeProfessor}
+            onChangeText={setNomeProfessor}
           />
         </View>
-
         <View style={styles.containerEnviar}>
-          <TouchableOpacity
-            style={styles.buttonEnviar}
-          >
+          <TouchableOpacity style={styles.buttonEnviar} onPress={handleEnviar} >
             <Text style={styles.textEnviar}>Enviar</Text>
           </TouchableOpacity>
         </View>

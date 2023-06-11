@@ -1,3 +1,4 @@
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React from "react";
 import {
     View,
@@ -9,6 +10,7 @@ import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 
 const StatusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight + 22 : 64;
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function Header() {
 
     const [fontLoaded] = useFonts({
@@ -28,6 +30,7 @@ export default function Header() {
     )
 }
 
+// Atribue a estilização do front-end.
 const styles = StyleSheet.create({
     container: {
 
@@ -38,7 +41,6 @@ const styles = StyleSheet.create({
         borderColor: "#FFFFFF",
         borderTopColor: "#162938",
         borderWidth: 1,
-
     },
 
     title: {

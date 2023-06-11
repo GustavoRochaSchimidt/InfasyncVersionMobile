@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
 import infatecFetch from '../Services/api';
@@ -17,6 +17,7 @@ import {
   Image,
 } from "react-native";
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeEventos() {
 
   //Essas conts de useState guarda o estado de cada componete para serem utilizados.
@@ -30,7 +31,7 @@ export default function telaDeEventos() {
     Ubuntu_400Regular,
   });
 
-  if(!fontLoaded){
+  if (!fontLoaded) {
     return null;
   };
 

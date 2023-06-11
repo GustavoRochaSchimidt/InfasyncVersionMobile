@@ -12,15 +12,17 @@ import * as Animatable from 'react-native-animatable';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import { JuliusSansOne_400Regular } from '@expo-google-fonts/julius-sans-one';
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function Home() {
   const navigation = useNavigation({});
 
+  //Carrega as fonts do front-end.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
     JuliusSansOne_400Regular
   });
 
-  if(!fontLoaded){
+  if (!fontLoaded) {
     return null;
   }
 
@@ -76,6 +78,7 @@ export default function Home() {
   );
 }
 
+//Cuida da parte de estilização do codigo.
 const styles = StyleSheet.create({
   container: {
     flex: 1,

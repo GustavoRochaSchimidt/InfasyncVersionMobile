@@ -11,9 +11,10 @@ import {
     Platform,
 } from 'react-native';
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeRecuperacao({ navigation }) {
 
-    //Função que carrega a fonte das letras no fron-end
+    //Função que carrega a fonte das letras no fron-end.
     const [fontLoaded] = useFonts({
         Ubuntu_400Regular,
     });
@@ -49,9 +50,10 @@ export default function telaDeRecuperacao({ navigation }) {
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
-    )
-}
+    );
+};
 
+//Cuida da parte de estilização do codigo
 const styles = StyleSheet.create({
     container: {
         flex: 1,

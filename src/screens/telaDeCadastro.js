@@ -1,5 +1,5 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useState} from "react";
+import React, { useState } from "react";
 import SelectMultiple from '../../src/components/SelectMultiple';
 import { useForm, Controller } from 'react-hook-form';
 import { posts } from "../components/SelectMultiple/posts";
@@ -29,25 +29,25 @@ export default function TelaDeCadastro() {
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConf, setHidePassConf] = useState(true);
 
-//Toast cuida da notifições do app
-const showToast = () => {
-  console.log("Usuário cadastrado com sucesso")
-  ToastAndroid.show(
-    "Usuário cadastrado com sucesso",
-    ToastAndroid.SHORT,
-    ToastAndroid.TOP
-  )
-};
+  //Toast cuida da notifições do app
+  const showToast = () => {
+    console.log("Usuário cadastrado com sucesso")
+    ToastAndroid.show(
+      "Usuário cadastrado com sucesso",
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP
+    )
+  };
 
-//Toast em caso de erro no cadastro
-const showToastError = () => {
-  console.log("Falha ao cadastrar usário")
-  ToastAndroid.show(
-    "Falha ao cadastrar usário",
-    ToastAndroid.SHORT,
-    ToastAndroid.TOP
-  )
-};
+  //Toast em caso de erro no cadastro
+  const showToastError = () => {
+    console.log("Falha ao cadastrar usário")
+    ToastAndroid.show(
+      "Falha ao cadastrar usário",
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP
+    )
+  };
 
   //O schema cuida das validações dos campos de formularios
   const schema = yup.object().shape({
@@ -92,7 +92,7 @@ const showToastError = () => {
     Ubuntu_400Regular,
   });
 
-  if(!fontLoaded){
+  if (!fontLoaded) {
     return null;
   };
 
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     top: "-5%",
-    position:"relative",
+    position: "relative",
   },
 
   caixaDeTexto: {

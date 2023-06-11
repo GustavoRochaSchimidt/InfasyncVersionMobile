@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDePerfilUser() {
 
     //Const useState que guardam os estados da input

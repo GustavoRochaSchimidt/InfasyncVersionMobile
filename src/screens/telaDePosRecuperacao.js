@@ -13,6 +13,7 @@ import {
     Platform,
 } from 'react-native';
 
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDePosRecuperacao() {
 
     //Const useState que guardam os estados da input
@@ -81,8 +82,8 @@ export default function telaDePosRecuperacao() {
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
-    )
-}
+    );
+};
 
 //Cuida da parte de estilização do codigo
 const styles = StyleSheet.create({
@@ -203,4 +204,4 @@ const styles = StyleSheet.create({
         fontFamily: "Ubuntu_400Regular",
         fontSize: 16,
     },
-})
+});

@@ -1,4 +1,4 @@
-
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React from "react";
 import {
     Alert,
@@ -8,7 +8,6 @@ import {
     StyleSheet,
     Image,
 }from "react-native";
-
 import {
     Ionicons,
     AntDesign,
@@ -16,10 +15,10 @@ import {
 } from '@expo/vector-icons';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 
-
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 function CustonDrawer({ navigation }) {
 
-   //const que carrega as fonts
+  //const que carrega as fonts.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
@@ -28,7 +27,7 @@ function CustonDrawer({ navigation }) {
     return null;
   };
 
-
+    //Const para sair do app
     const handleExitApp = () => {
         Alert.alert(
             'Tem certeza?',

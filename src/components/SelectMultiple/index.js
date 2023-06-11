@@ -4,7 +4,6 @@ import {
   AntDesign,
   Feather,
 } from '@expo/vector-icons';
-import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import infatecFetch from '../../Services/api';
 import {
@@ -39,6 +38,7 @@ const SelectMultiple = ({ title = '', max = '' }) => {
     );
   }
 
+  //Carrega as fonts do Front-end, e tambem a func fetchCourses.
   useEffect(() => {
     loadFont();
     fetchCourses();
@@ -50,10 +50,8 @@ const SelectMultiple = ({ title = '', max = '' }) => {
       'JuliusSansOne': require('../../../assets/fonts/JuliusSansOne-Regular.ttf'),
     });
   }
-  
 
- 
-
+  //function de get nos cursos para monstrar no select.
   async function fetchCourses() {
     try {
       const token = await AsyncStorage.getItem('bearer');
@@ -62,9 +60,9 @@ const SelectMultiple = ({ title = '', max = '' }) => {
           'Authorization': `Bearer ${token}`,
         },
       });
-  
+
       console.log(response.data); // Verifique o valor de response.data
-  
+
       const courses = response.data.data.map((course) => ({
         id: course.id,
         title: course.name,
@@ -78,6 +76,8 @@ const SelectMultiple = ({ title = '', max = '' }) => {
       console.error(error);
     }
   }
+
+  //Cuida da quantidade de itens selecionados.
   function toggleSelection(item) {
     let index = selected.findIndex(i => i?.id === item.id);
     let arrSelected = [...selected];
@@ -140,86 +140,87 @@ const SelectMultiple = ({ title = '', max = '' }) => {
   );
 };
 
+//Faz paste da estilização do front-end
 const styles = StyleSheet.create({
-    container: {
-        height: 50,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: "center",
-        borderRadius: 20,
-        borderColor: '#FFFFFF',
-        borderWidth: 2,
-        paddingHorizontal: 10,
-        padding: 9,
-        width: '100%',
-        top: -25
-    },
+  container: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: "center",
+    borderRadius: 20,
+    borderColor: '#FFFFFF',
+    borderWidth: 2,
+    paddingHorizontal: 10,
+    padding: 9,
+    width: '100%',
+    top: -25
+  },
 
-    header: {
-        backgroundColor: "#FAEBD7",
-        padding: 10,
+  header: {
+    backgroundColor: "#FAEBD7",
+    padding: 10,
 
-    },
+  },
 
-    headerR1: {
-        backgroundColor: "#FAEBD7",
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: "center",
+  headerR1: {
+    backgroundColor: "#FAEBD7",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: "center",
 
-    },
-    back: {
-        fontSize: 15,
-        fontFamily: "Ubuntu",
+  },
+  back: {
+    fontSize: 15,
+    fontFamily: "Ubuntu",
 
-    },
-    title: {
-        fontSize: 18,
-        fontFamily: "Ubuntu",
-        textAlign: "center",
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: "Ubuntu",
+    textAlign: "center",
 
-    },
+  },
 
-    finsh: {
-        fontSize: 15,
-        fontFamily: "Ubuntu",
-    },
+  finsh: {
+    fontSize: 15,
+    fontFamily: "Ubuntu",
+  },
 
-    subtitle: {
-        fontSize: 16,
-        fontFamily: "Ubuntu",
-        textAlign: "center",
-    },
-    input: {
-        backgroundColor: "#162938",
-        marginTop: '10%',
-        width: '100%',
-        borderRadius: 20,
-        borderColor: "#fff",
-        borderWidth: 2,
-        height: 40,
-        color: "#FFF",
-        fontFamily: "Ubuntu",
-    },
+  subtitle: {
+    fontSize: 16,
+    fontFamily: "Ubuntu",
+    textAlign: "center",
+  },
+  input: {
+    backgroundColor: "#162938",
+    marginTop: '10%',
+    width: '100%',
+    borderRadius: 20,
+    borderColor: "#fff",
+    borderWidth: 2,
+    height: 40,
+    color: "#FFF",
+    fontFamily: "Ubuntu",
+  },
 
-    item: {
-        borderRadius: 20,
-        borderBottomColor: '#000',
-        borderBottomWidth: 2,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginLeft: '5%',
-        marginHorizontal: '5%',
-        top: 5,
+  item: {
+    borderRadius: 20,
+    borderBottomColor: '#000',
+    borderBottomWidth: 2,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginLeft: '5%',
+    marginHorizontal: '5%',
+    top: 5,
 
-    },
-    textSelect: {
-        color: '#FFF',
-        fontSize: 16,
-        fontFamily: "Ubuntu",
+  },
+  textSelect: {
+    color: '#FFF',
+    fontSize: 16,
+    fontFamily: "Ubuntu",
 
 
-    }
+  }
 })
 
 export default SelectMultiple;

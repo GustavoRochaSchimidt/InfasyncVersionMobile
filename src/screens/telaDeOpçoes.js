@@ -31,7 +31,6 @@ export default function telaDeOpçoes({ navigation }) {
   }
 
   return (
-
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.fundoTela}
@@ -97,8 +96,7 @@ export default function telaDeOpçoes({ navigation }) {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-
-}
+};
 //O styles é encarregado de dar a estilização do front-end
 const styles = StyleSheet.create({
   fundoTela: {

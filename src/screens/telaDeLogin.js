@@ -29,7 +29,7 @@ export default function telaDeLogin({ navigation }) {
   //Const com useState para realizar a visibilidade da senha. 
   const [hidePass, setHidePass] = useState(true);
 
-  //Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup  
+  //Schema da bibioteca hookForm para facilitar a criação da validaçãode fromularios juntamente com yup.  
   const schema = yup.object({
     senha: yup.string().required("Informe sua senha"),
     email: yup
@@ -39,7 +39,7 @@ export default function telaDeLogin({ navigation }) {
       .required("Informe seu e-mail"),
   });
 
-  //Notifica o usuário em caso de erro do login
+  //Notifica o usuário em caso de erro do login.
   const showToastError = () => {
     console.log("Falha ao realizar o login")
     ToastAndroid.show(
@@ -49,12 +49,12 @@ export default function telaDeLogin({ navigation }) {
     )
   };
 
-  //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API
+  //Está const rederiza o formulario e apresenta os erros nos campos dos usuario e entrega o valor de cada campo pra a API.
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   });
 
-  //Const que trata em caso de erro na senha
+  //Const que trata em caso de erro na senha.
   const [loginError, setLoginError] = useState(false);
 
   //função da API que pega os valores das inputs e repassa para o login.
@@ -66,7 +66,7 @@ export default function telaDeLogin({ navigation }) {
       };
       const response = await infatecFetch.post('/api/Login/LoginUser', data);
       
-      //Armazena o token so usuario
+      //Armazena o token so usuario.
       const token = response.data.bearer;
       await AsyncStorage.setItem('bearer', token);
       navigation.navigate('telaDeOpçoes');
