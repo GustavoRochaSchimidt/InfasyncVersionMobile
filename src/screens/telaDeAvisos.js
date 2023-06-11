@@ -18,7 +18,7 @@ import {
 } from "react-native";
 
 export default function telaDeAvisos() {
-
+  
   //Essas conts de useState guardão o estado de cada componete para serem utilizados.
   const [valueTitulo, setValueTitulo] = useState("");
   const [valueDescriçao, setvalueDescriçao] = useState("");
@@ -30,7 +30,7 @@ export default function telaDeAvisos() {
     Ubuntu_400Regular,
   });
 
-  if (!fontLoaded) {
+  if(!fontLoaded){
     return null;
   };
 

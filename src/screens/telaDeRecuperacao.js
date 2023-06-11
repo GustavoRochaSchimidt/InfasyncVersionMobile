@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import {
     StyleSheet,
@@ -10,17 +10,36 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
+import infatecFetch from "../Services/api";
 
-//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeRecuperacao({ navigation }) {
+    
+    //armazena o e-mail do user
+    const [email, setEmail] = useState('');
 
-    //Função que carrega a fonte das letras no fron-end.
     const [fontLoaded] = useFonts({
         Ubuntu_400Regular,
     });
 
     if (!fontLoaded) {
         return null;
+    }
+
+    //Envia o e-mail com o codigo de recuperação de senha.
+    const enviarEmail = async () => {
+        try {
+            const dados = {
+                body: 'este é seu código:',
+                email: email
+            };
+
+            const response = await infatecFetch.post('/api/ForgotPassword/SendEmail/2', dados);
+            console.log(response.data);
+            console.log('Código enviado para o email com sucesso');
+            navigation.navigate('telaDePosRecuperacao');
+        } catch (error) {
+            console.error('Erro ao enviar código:', error);
+        }
     };
 
     return (
@@ -40,10 +59,12 @@ export default function telaDeRecuperacao({ navigation }) {
                             style={styles.inputEmail}
                             placeholder='E-mail'
                             placeholderTextColor='#000'
+                            value={email}
+                            onChangeText={setEmail}
                         />
                     </View>
                     <View>
-                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaDePosRecuperacao')}>
+                        <TouchableOpacity style={styles.button} onPress={() => enviarEmail()}>
                             <Text style={styles.buttonText}>ENVIAR</Text>
                         </TouchableOpacity>
                     </View>
@@ -51,9 +72,8 @@ export default function telaDeRecuperacao({ navigation }) {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
-//Cuida da parte de estilização do codigo
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -121,4 +141,4 @@ const styles = StyleSheet.create({
         fontFamily: "Ubuntu_400Regular",
         fontSize: 16,
     },
-})
+});

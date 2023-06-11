@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import SelectMultiple from '../../src/components/SelectMultiple';
 import { useForm, Controller } from 'react-hook-form';
-import { posts } from "../components/SelectMultiple/posts";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import * as Animatable from 'react-native-animatable';
@@ -116,7 +115,6 @@ export default function TelaDeCadastro() {
                 <SelectMultiple
                   title="Cursos"
                   max={1}
-                  options={posts}
                   initinalSelect={[]}
                 />
               </View>
