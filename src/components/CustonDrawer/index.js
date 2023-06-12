@@ -7,25 +7,32 @@ import {
     Text,
     StyleSheet,
     Image,
-}from "react-native";
+} from "react-native";
 import {
     Ionicons,
     AntDesign,
     FontAwesome5,
 } from '@expo/vector-icons';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
+import { useRoute } from '@react-navigation/native';
 
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 function CustonDrawer({ navigation }) {
 
-  //const que carrega as fonts.
-  const [fontLoaded] = useFonts({
-    Ubuntu_400Regular,
-  });
 
-  if(!fontLoaded){
-    return null;
-  };
+    //Const que tras o email da outra tela.
+    const route = useRoute();
+    const { email } = route.params;
+
+
+    //const que carrega as fonts.
+    const [fontLoaded] = useFonts({
+        Ubuntu_400Regular,
+    });
+
+    if (!fontLoaded) {
+        return null;
+    };
 
     //Const para sair do app
     const handleExitApp = () => {
@@ -49,7 +56,7 @@ function CustonDrawer({ navigation }) {
     return (
         <View style={styles.container}>
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate('telaPerfilUser')}>
+                <TouchableOpacity onPress={() => navigation.navigate('telaDeEditarSenha', {email: email})}>
                     <Text style={styles.perfilUserText}>EDITAR PERFIL</Text>
                     <FontAwesome5 style={styles.perfilIcon} name="user-cog" size={20} color="000" />
                 </TouchableOpacity>
@@ -73,13 +80,15 @@ function CustonDrawer({ navigation }) {
             <View style={styles.containerTop}>
                 <View style={{ marginLeft: "5%", top: 35, position: "absolute" }}>
                     <View style={styles.imagenLogo}>
-                    <Image
-                        source={require("../../../assets/imagens/LogoINFASYNCWhiteOF.png")}
-                        style={styles.image}
-                    />
+                        <Image
+                            source={require("../../../assets/imagens/LogoINFASYNCWhiteOF.png")}
+                            style={styles.image}
+                        />
                     </View>
 
-                    <Text style={{ fontSize: 15, top: 70, left: 20, position: "relative", color: "#FFF", fontFamily: "Ubuntu_400Regular", }}>E-mail: gustavo@fatec.sp.gov.br</Text>
+                    <Text style={{ fontSize: 15, top: 70, left: 20, position: "relative", color: "#FFF", fontFamily: "Ubuntu_400Regular", }}>
+                        E-mail: {email}
+                    </Text>
                 </View>
             </View>
         </View>
@@ -98,11 +107,11 @@ const styles = StyleSheet.create({
     },
 
     imagenLogo: {
-        position:"absolute",
+        position: "absolute",
         alignItems: "center",
         left: 50,
         marginTop: -55,
-      },
+    },
 
     image: {
         width: 150,

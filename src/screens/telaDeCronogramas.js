@@ -27,7 +27,7 @@ export default function TelaDeCronogramas() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
 
-  //Guarda os valores de todos os itens que desejam sem auterados sobre os cursos
+  //Guarda os valores de todos os itens que desejam sem alterados sobre os cursos.
   const [nomeCurso, setNomeCurso] = useState("");
   const [andar, setAndar] = useState("");
   const [materia, setMateria] = useState("");
@@ -35,7 +35,24 @@ export default function TelaDeCronogramas() {
   const [horaTermino, setHoraTermino] = useState("");
   const [nomeProfessor, setNomeProfessor] = useState("");
 
-  //Const que faz o GET da API para trazer os cursos
+  //Seta o tipo do user para bloquear o botão de enviar o Excel.
+  const [tipo, setTipo] = useState('');
+
+  useEffect(() => {
+    const getTipoFromAsyncStorage = async () => {
+      try {
+        const tipoArmazenado = await AsyncStorage.getItem('type');
+        setTipo(tipoArmazenado);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getTipoFromAsyncStorage();
+  }, []);
+
+
+  //Const que faz o GET da API para trazer os cursos.
   const getCourses = async () => {
     try {
       const token = await AsyncStorage.getItem('bearer');
@@ -49,10 +66,20 @@ export default function TelaDeCronogramas() {
         Id: course.id,
         Curso: course.name,
       }));
-      console.log(coursesData)
 
-      setCoursesData(coursesData);
-      setCourses(coursesData);
+      const type = await AsyncStorage.getItem('type');
+
+      if (type === '1') { //Caso for id 1 só pode editar um curso.
+        const filteredCourses = coursesData.filter((course) => course.Id === 1);
+        console.log(filteredCourses);
+        setCoursesData(filteredCourses);
+        setCourses(filteredCourses);
+      } else if (type === '2') { //Caso for id 2 pode editar todos os cursos.
+        console.log(coursesData);
+        setCoursesData(coursesData);
+        setCourses(coursesData);
+      }
+
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +89,7 @@ export default function TelaDeCronogramas() {
     getCourses();
   }, []);
 
-  //Carrega as font da letras no front-end
+  //Carrega as font da letras no front-end.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
@@ -71,7 +98,19 @@ export default function TelaDeCronogramas() {
     return null;
   }
 
-  //Const para abrir a livraria do aparelho e selecionar o excel
+  //const para limpar os campos após enviar.
+  const limparCampos = () => {
+    setSelectedValue('');
+    setSelectedValue2('');
+    setNomeCurso('');
+    setAndar('');
+    setMateria('');
+    setHoraInicio('');
+    setHoraTermino('');
+    setNomeProfessor('');
+  };
+
+  //Const para abrir a livraria do aparelho e selecionar o excel.
   const handleDocumentPicker = async () => {
     try {
       const document = await DocumentPicker.getDocumentAsync({ type: "application/vnd.ms-excel" });
@@ -83,14 +122,14 @@ export default function TelaDeCronogramas() {
     }
   };
 
-  //Const traforma os dados em formdata e manda para a API fazer o POST e adcionar todos os cursos.
+  //Const dados em formdata e manda para a API fazer o POST e adcionar todos os cursos.
   const handleSendDocument = async () => {
     if (!selectedFile) {
       return;
     }
     const fileUri = selectedFile.uri;
     const response = await fetch(fileUri);
-    const blob = await response.blob();
+    const blob = await response.blob();// transforma em binários.  
     const formData = new FormData();
     formData.append('file', blob, selectedFile.name);
 
@@ -109,10 +148,10 @@ export default function TelaDeCronogramas() {
     }
   };
 
-  //Const que busca na API os cursos e deleta todos os cursos
+  //Const que busca na API os cursos e deleta. 
   const deleteCourses = async () => {
     try {
-      const token = await AsyncStorage.getItem('bearer');
+      const token = await AsyncStorage.getItem('bearer'); //Pega o token para poder deletar.
       await infatecFetch.delete('/api/Courses/DeleteAllCourses', {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -124,7 +163,7 @@ export default function TelaDeCronogramas() {
     }
   };
 
-  //Pergunta sem tem certaza que deseja deletar tudos os cursos
+  //Pergunta sem tem certaza que deseja deletar tudos os cursos.
   const handleDeleteAllCourses = () => {
     const shouldDelete = window.confirm('Tem certeza de que deseja deletar todos os cursos?');
     if (shouldDelete) {
@@ -132,15 +171,15 @@ export default function TelaDeCronogramas() {
     }
   };
 
-  //Envia os novos dados para a API
+  //Envia os novos dados para a API quando editados separadamente.
   const handleEnviar = async () => {
     const dados = {
       id: selectedValue,
       name: nomeCurso,
       period: selectedValue2,
       matter: materia,
-      start: horaInicio,
-      end: horaTermino,
+      start: "30/12/1899" + horaInicio,
+      end: "30/12/1899" + horaTermino,
       floor: andar,
       coordinator: nomeProfessor
     };
@@ -148,19 +187,17 @@ export default function TelaDeCronogramas() {
     console.log(dados)
 
     try {
-      const token = sessionStorage.getItem('bearer');
+      const token = sessionStorage.getItem('bearer');// pega o token para fazer o PUT na API.
 
       const response = await infatecFetch.put(`/api/Courses/UpdateCourse`, dados, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-
-      console.log('Curso editado com sucesso:', response.data);
-      // Realize as ações necessárias após o envio bem-sucedido, se necessário
+      console.log('Curso editado com sucesso:', response.data); //Mensagem de editado com sucesso no console.
+      limparCampos();//Limpa os campos após enviar.
     } catch (error) {
-      console.error('Erro ao editar curso:', error);
-      // Realize as ações necessárias em caso de erro, se necessário
+      console.error('Erro ao editar curso:', error);//Mensagem em caso de algum erro.
     }
   };
 
@@ -296,18 +333,13 @@ export default function TelaDeCronogramas() {
         </View>
 
         <View>
-          <Image
-            source={{
-              uri:
-                "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
-            }}
-          />
           <Text style={styles.textAnexar}>Anexar Excel:</Text>
           <View style={styles.containerAnexar}>
             <View>
               <TouchableOpacity
-                style={styles.buttonAnexar}
+                style={[styles.buttonAnexar, tipo === '1' && { opacity: 0.5 }]}
                 onPress={handleDocumentPicker}
+                disabled={tipo === '1'}
               >
                 <Text style={styles.styleTextAdd}>Adicionar Arquivo</Text>
               </TouchableOpacity>
@@ -320,8 +352,9 @@ export default function TelaDeCronogramas() {
 
         <View>
           <TouchableOpacity
-            style={styles.buttonEnviar2}
+            style={[styles.buttonEnviar2, tipo === '1' && { opacity: 0.5 }]}
             onPress={handleSendDocument}
+            disabled={tipo === '1'}
           >
             <Text style={styles.textEnviar2}>Enviar Todos os Cronogramas</Text>
           </TouchableOpacity>
@@ -329,8 +362,9 @@ export default function TelaDeCronogramas() {
 
         <View >
           <TouchableOpacity
-            style={styles.buttonEnviar3}
+           style={[styles.buttonEnviar3, tipo === '1' && { opacity: 0.5 }]}
             onPress={handleDeleteAllCourses}
+            disabled={tipo === '1'}
           >
             <Text style={styles.textEnviar3}>Deletar Todos os Cronogramas</Text>
           </TouchableOpacity>
@@ -341,8 +375,7 @@ export default function TelaDeCronogramas() {
   );
 }
 
-
-
+//Cuida dos estilos de todos os componente do front-end.
 const styles = StyleSheet.create({
 
   containerFundoTela: {

@@ -69,7 +69,13 @@ export default function telaDeLogin({ navigation }) {
       //Armazena o token so usuario.
       const token = response.data.bearer;
       await AsyncStorage.setItem('bearer', token);
-      navigation.navigate('telaDeOpçoes');
+
+      //Armazena o tipo de usuario.
+      const type = response.data.type;
+      await AsyncStorage.setItem('type', type);
+
+      navigation.navigate('telaDeOpçoes', { email: values.email });
+      console.log(values.email)
     } catch (error) {
       console.error(error);
       setLoginError(true);
@@ -165,11 +171,11 @@ export default function telaDeLogin({ navigation }) {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity style={[styles.trocar, styles.button2]} onPress={() => navigation.navigate('telaDeRecuperacao')}>
+                <TouchableOpacity style={styles.trocar} onPress={() => navigation.navigate('telaDeRecuperacao')}>
                   <Text style={styles.buttonText2}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={[styles.button]} onPress={() => navigation.navigate('telaDeOpçoes')}>
+              <TouchableOpacity style={[styles.button]} onPress={handleSubmit(loginUser)}>
                 <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
             </View>

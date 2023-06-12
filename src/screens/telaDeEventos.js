@@ -1,4 +1,4 @@
-
+//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useState, useRef } from "react";
 import * as Animatable from 'react-native-animatable';
 import * as ImagePicker from 'expo-image-picker';
@@ -26,7 +26,7 @@ export default function telaDeEventos() {
   const [image, setImage] = useState(null);
   const imageRef = useRef();
 
-  //Função que carrega a fonte das letras no fron-end
+  //Função que carrega a fonte das letras no fron-end.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
@@ -35,7 +35,7 @@ export default function telaDeEventos() {
     return null;
   };
 
-  //Const que guarda o valor das inputs
+  //Const que guarda o valor das inputs.
   const handleInputTitulo = (inputValueTitulo) => {
     setValueTitulo(inputValueTitulo);
   };
@@ -44,14 +44,14 @@ export default function telaDeEventos() {
     setvalueDescriçao(inputValuedescriçao);
   };
 
-  //Const que pede a permisao do usuario para o acesso da galeria 
+  //Const que pede a permissão do usuario para o acesso da galeria. 
   const handleImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       alert("Permissão negada para acessar a biblioteca de mídia.");
       return;
     }
-    //A galeria é aberta e a imagem e setada no setImage
+    //A galeria é aberta e a imagem e setada no setImage.
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) {
       setImage(result.uri);
@@ -68,7 +68,7 @@ export default function telaDeEventos() {
     formData.append("imgUri", "");
 
     const response = await fetch(imageUri);
-    const blob = await response.blob();
+    const blob = await response.blob(); // transforma em binários. 
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
     formData.append("imageFile", imageFile);
 
@@ -170,8 +170,9 @@ export default function telaDeEventos() {
       </KeyboardAvoidingView>
     </ScrollView>
   );
-}
+};
 
+//Cuida da estilizaçãos do codigo.
 const styles = StyleSheet.create({
   containerFundoTela: {
     height: "100%",

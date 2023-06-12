@@ -13,21 +13,49 @@ import {
     Platform,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import infatecFetch from "../Services/api";
 
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
-export default function telaDePerfilUser() {
+export default function telaDePerfilUser({navigation}) {
 
-    //Const useState que guardam os estados da input
+    //Const useState que guardam os estados das inputs.
     const [hidePass, setHidePass] = useState(true);
     const [hidePassConf, setHidePassConf] = useState(true);
+    const [code, setCode] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    //Função que carrega a fonte das letras no fron-end
+    //Const que tras o email da outra tela.
+    const route = useRoute();
+    const { email } = route.params;
+
+    //Função que carrega a fonte das letras no fron-end.
     const [fontLoaded] = useFonts({
         Ubuntu_400Regular
     });
 
     if (!fontLoaded) {
         return null;
+    };
+
+    //Const para resetar o password.
+    const handleResetPassword = async () => {
+        try {
+            const data = {
+                email: email,
+                password: password
+            };
+
+            const response = await infatecFetch.put(`/api/ForgotPassword/NewPassword/${code}`, data);
+            console.log(response.data);
+            console.log("Senha alterada com sucesso")
+            navigation.navigate('telaDeOpçoes', {email: email});
+        } catch (error) {
+
+            console.error(error);
+            console.log("Erro ao alterar senha")
+        }
     };
 
     return (
@@ -39,7 +67,7 @@ export default function telaDePerfilUser() {
                 <Animatable.View animation="bounceIn" style={styles.fundoFormato}>
                     <View>
                         <Text style={styles.textInfos}>Informações do Perfil</Text>
-                        <Text style={styles.textEmail}>E-mail: gustavo@fatec.sp.gov.br</Text>
+                        <Text style={styles.textEmail}>E-mail:{email}</Text>
                     </View>
                     <View>
                         <Text style={styles.textEditProfile}>REDEFINIR SENHA</Text>
@@ -49,8 +77,10 @@ export default function telaDePerfilUser() {
                             borderColor: "#FFF",
                             paddingLeft: 35,
                         }]}
-                            placeholder='E-mail'
+                            placeholder='Código recebido'
                             placeholderTextColor='#FFF'
+                            value={code}
+                            onChangeText={setCode}
                         />
                         <View style={styles.iconUser}>
                             <AntDesign name='mail' size={22} color='#FFF' />
@@ -68,6 +98,8 @@ export default function telaDePerfilUser() {
                             placeholder='Nova senha'
                             placeholderTextColor='#FFF'
                             secureTextEntry={hidePassConf}
+                            value={password}
+                            onChangeText={setPassword}
                         />
                         <TouchableOpacity
                             style={styles.iconEye}
@@ -92,6 +124,8 @@ export default function telaDePerfilUser() {
                             placeholder='Confirmar nova senha'
                             placeholderTextColor='#FFF'
                             secureTextEntry={hidePass}
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
                         />
 
                         <TouchableOpacity
@@ -106,7 +140,7 @@ export default function telaDePerfilUser() {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={styles.button} >
+                    <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
                         <Text style={styles.buttonText}>ENVIAR</Text>
                     </TouchableOpacity>
 
@@ -116,7 +150,7 @@ export default function telaDePerfilUser() {
     )
 };
 
-//Cuida da parte de estilização do codigo
+//Cuida da parte de estilização do codigo.
 const styles = StyleSheet.create({
 
     fundoTela: {

@@ -13,25 +13,26 @@ import telaDeEventos from "./src/screens/telaDeEventos";
 import telaDECronogramas from "./src/screens/telaDeCronogramas";
 import telaDeRecuperacao from "./src/screens/telaDeRecuperacao";
 import telaDePosRecuperacao from "./src/screens/telaDePosRecuperacao";
-import telaTEste from "./src/screens/telaTEste";
+import telaDeEditarSenha from "./src/screens/telaDeEditarSenha";
 import CustonDrawer from "./src/components/CustonDrawer";
 
-//Const que chamam as funções ultilizadas no dispositivo
+//Const que chamam as funções ultilizadas no dispositivo.
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-//Esta fução carrega as telas em formato de pilha
+//Esta fução carrega as telas em formato de pilha.
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    //Tela inicial que o APP vai carregar.
+    <Stack.Navigator initialRouteName="Home"> 
       <Stack.Screen
         name="Home"
-        options={{ headerShown: false }}
+        options={{ headerShown: false }} //Tira o header da tela.
         component={Home} />
 
       <Stack.Screen
         name="telaDeCadastro"
-        options={{
+        options={{ //estiliza o header.
           title: "Voltar",
           headerStyle: {
             backgroundColor: "#FAEBD7",
@@ -135,13 +136,27 @@ function MyStack() {
           headerTintColor: "#000000",
         }}
       />
+
+      <Stack.Screen
+        name="telaDeEditarSenha"
+        component={telaDeEditarSenha}
+        options={{
+          title: "Voltar",
+          headerStyle: {
+            backgroundColor: "#FAEBD7",
+          },
+          headerTintColor: "#000000",
+        }}
+      />
+
     </Stack.Navigator>
   );
 };
 
-//Função que aplica o efeito de gaveta na tela de Opçoes
+//Função que aplica o efeito de gaveta na tela de Opçoes.
 function MyDrawer() {
   return (
+    //Pega a propriedade do drawer.
     <Drawer.Navigator drawerContent={(props) => <CustonDrawer {...props} />}
     >
       <Drawer.Screen
@@ -159,7 +174,6 @@ function MyDrawer() {
 //Carrega o App.js
 export default function App() {
   return (
-
     <NavigationContainer>
       <MyStack />
     </NavigationContainer>

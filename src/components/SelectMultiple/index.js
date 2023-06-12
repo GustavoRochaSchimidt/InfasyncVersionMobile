@@ -61,7 +61,7 @@ const SelectMultiple = ({ title = '', max = '' }) => {
         },
       });
 
-      console.log(response.data); // Verifique o valor de response.data
+      console.log(response.data); // Verifique o valor de response.data.
 
       const courses = response.data.data.map((course) => ({
         id: course.id,
@@ -75,7 +75,7 @@ const SelectMultiple = ({ title = '', max = '' }) => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   //Cuida da quantidade de itens selecionados.
   function toggleSelection(item) {
@@ -91,7 +91,7 @@ const SelectMultiple = ({ title = '', max = '' }) => {
       }
     }
     setSelected(arrSelected);
-  }
+  };
 
   function handleTermoChange(text) {
     setTermo(text);
@@ -99,7 +99,7 @@ const SelectMultiple = ({ title = '', max = '' }) => {
       option.title.toLowerCase().includes(text.toLowerCase())
     );
     setData(filteredOptions);
-  }
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>

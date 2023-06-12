@@ -1,82 +1,128 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    KeyboardAvoidingView,
-    ScrollView,
-    Platform,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import infatecFetch from "../Services/api";
+import { useRoute } from '@react-navigation/native';
 
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
-export default function telaDePosRecuperacao() {
-
-    //Const useState que guardam os estados da input
+export default function telaDePosRecuperacao({ navigation }) {
     const [hidePass, setHidePass] = useState(true);
     const [hidePassConf, setHidePassConf] = useState(true);
+    const [code, setCode] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [codeError, setCodeError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
-    //Função que carrega a fonte das letras no fron-end
+    //Const que tras o email da outra tela.
+    const route = useRoute();
+    const { email } = route.params;
+
+    //Carreg as fonts.
     const [fontLoaded] = useFonts({
-        Ubuntu_400Regular
+        Ubuntu_400Regular,
     });
 
     if (!fontLoaded) {
         return null;
+    }
+
+    //Const para resetar o password.
+    const handleResetPassword = async () => {
+        // Verificar se o campo de código está vazio.
+        if (code.trim() === '') {
+            setCodeError('Preencha o campo com o código.');
+            return;
+        } else {
+            setCodeError('');
+        }
+
+        // Verificar se o campo de senha está vazio.
+        if (password.trim() === '') {
+            setPasswordError('Preencha o campo com a nova senha.');
+            return;
+        } else {
+            setPasswordError('');
+        }
+
+        // Verificar se o campo de confirmação de senha está vazio.
+        if (confirmPassword.trim() === '') {
+            setConfirmPasswordError('Preencha o campo com a confirmação da nova senha.');
+            return;
+        } else {
+            setConfirmPasswordError('');
+        }
+
+        // Verificar se as senhas coincidem.
+        if (password !== confirmPassword) {
+            setConfirmPasswordError('As senhas não coincidem.');
+            return;
+        } else {
+            setConfirmPasswordError('');
+        }
+
+        try {
+            const data = {
+                email: email,
+                password: password
+            };
+
+            const response = await infatecFetch.put(`/api/ForgotPassword/NewPassword/${code}`, data);
+            console.log(response.data);
+            console.log('Senha alterada com sucesso');
+            navigation.navigate('telaDeLogin');
+        } catch (error) {
+            console.error(error);
+            console.log('Erro ao alterar senha');
+        }
     };
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
             <ScrollView>
                 <View style={styles.containerFormato}>
                     <Text style={styles.text1}>ESQUECEU SUA SENHA?</Text>
                     <Text style={styles.text2}>Digite o código e a nova senha</Text>
                     <TextInput
                         style={styles.inputEmail}
-                        placeholder='Código recebido'
-                        placeholderTextColor='#000'
+                        placeholder="Código recebido"
+                        placeholderTextColor="#000"
+                        value={code}
+                        onChangeText={setCode}
                     />
+                    {codeError !== null && <Text style={styles.errorText}>{codeError}</Text>}
+
                     <TextInput
                         style={styles.inputSenha}
-                        placeholder='Nova senha'
-                        placeholderTextColor='#000'
+                        placeholder="Nova senha"
+                        placeholderTextColor="#000"
                         secureTextEntry={hidePass}
+                        value={password}
+                        onChangeText={setPassword}
                     />
-                    <TouchableOpacity
-                        style={styles.iconEye}
-                        onPress={() => setHidePass(!hidePass)}
-                    >
-                        {hidePass ? (
-                            <AntDesign name='eye' size={24} color='#000' />
-                        ) : (
-                            <AntDesign name='eyeo' size={24} color='#000' />
-                        )}
+                    {passwordError !== null && <Text style={styles.errorText}>{passwordError}</Text>}
+
+                    <TouchableOpacity style={styles.iconEye} onPress={() => setHidePass(!hidePass)}>
+                        {hidePass ? <AntDesign name="eye" size={24} color="#000" /> : <AntDesign name="eyeo" size={24} color="#000" />}
                     </TouchableOpacity>
                     <TextInput
-                        style={styles.inputEmail}
-                        placeholder='Confirmar nova senha'
-                        placeholderTextColor='#000'
+                        style={styles.inputSenhaConf}
+                        placeholder="Confirmar nova senha"
+                        placeholderTextColor="#000"
                         secureTextEntry={hidePassConf}
-
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
                     />
-                    <TouchableOpacity
-                        style={styles.iconEye2}
-                        onPress={() => setHidePassConf(!hidePassConf)}
-                    >
-                        {hidePassConf ? (
-                            <AntDesign name='eye' size={24} color='#000' />
-                        ) : (
-                            <AntDesign name='eyeo' size={24} color='#000' />
-                        )}
+                    {confirmPasswordError !== null && <Text style={styles.errorText}>{confirmPasswordError}</Text>}
+
+                    <TouchableOpacity style={styles.iconEye2} onPress={() => setHidePassConf(!hidePassConf)}>
+                        {hidePassConf ? <AntDesign name="eye" size={24} color="#000" /> : <AntDesign name="eyeo" size={24} color="#000" />}
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} >
+                    <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
                         <Text style={styles.buttonText}>REDEFINIR SENHA</Text>
                     </TouchableOpacity>
                 </View>
@@ -85,41 +131,36 @@ export default function telaDePosRecuperacao() {
     );
 };
 
-//Cuida da parte de estilização do codigo
+//Cuida da estilizaçãos do codigo.
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
-        backgroundColor: "#FAEBD7"
+        backgroundColor: '#FAEBD7',
     },
-
     containerFormato: {
         marginTop: '30%',
         borderRadius: 50,
-        backgroundColor: "#162938",
-        borderColor: "#FFFFFF",
+        backgroundColor: '#162938',
+        borderColor: '#FFFFFF',
         borderWidth: 2,
-        padding: "10%"
+        padding: '10%',
     },
-
     text1: {
-        color: "#fff",
+        color: '#fff',
         fontSize: 20,
-        fontWeight: "bold",
-        fontFamily: "Ubuntu_400Regular",
-        textAlign: "center",
+        fontWeight: 'bold',
+        fontFamily: 'Ubuntu_400Regular',
+        textAlign: 'center',
     },
-
     text2: {
         top: 10,
-        color: "#fff",
+        color: '#fff',
         fontSize: 16,
-        fontFamily: "Ubuntu_400Regular",
-        textAlign: "center",
+        fontFamily: 'Ubuntu_400Regular',
+        textAlign: 'center',
     },
-
     inputEmail: {
-        position: "relative",
+        position: 'relative',
         top: 60,
         left: -15,
         width: 350,
@@ -127,16 +168,15 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        color: "#000",
-        fontFamily: "Ubuntu_400Regular",
+        color: '#000',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
-        backgroundColor: "#FFF",
+        backgroundColor: '#FFF',
         marginBottom: 20,
-        borderColor: "#FFF"
+        borderColor: '#FFF',
     },
-
     inputSenha: {
-        position: "relative",
+        position: 'relative',
         top: 60,
         left: -15,
         width: 350,
@@ -144,16 +184,15 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        color: "#000",
-        fontFamily: "Ubuntu_400Regular",
+        color: '#000',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
-        backgroundColor: "#FFF",
+        backgroundColor: '#FFF',
         marginBottom: 20,
-        borderColor: "#FFF"
+        borderColor: '#FFF',
     },
-
     inputSenhaConf: {
-        position: "relative",
+        position: 'relative',
         top: 60,
         left: -15,
         width: 350,
@@ -161,14 +200,13 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         padding: 9,
-        color: "#000",
-        fontFamily: "Ubuntu_400Regular",
+        color: '#000',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
-        backgroundColor: "#FFF",
+        backgroundColor: '#FFF',
         marginBottom: 20,
-        borderColor: "#FFF"
+        borderColor: '#FFF',
     },
-
     iconEye: {
         width: '15%',
         top: 223,
@@ -176,7 +214,6 @@ const styles = StyleSheet.create({
         height: 50,
         position: 'absolute',
     },
-
     iconEye2: {
         width: '15%',
         top: 288,
@@ -184,24 +221,33 @@ const styles = StyleSheet.create({
         height: 50,
         position: 'absolute',
     },
-
     button: {
-        backgroundColor: "#162938",
+        backgroundColor: '#162938',
         marginLeft: -100,
         width: 210,
         left: '50%',
         borderRadius: 10,
-        borderColor: "#FFFFFF",
+        borderColor: '#FFFFFF',
         borderWidth: 2,
         padding: 10,
         top: 80,
         marginBottom: '20%',
     },
-
     buttonText: {
         textAlign: 'center',
-        color: "#FFFFFF",
-        fontFamily: "Ubuntu_400Regular",
+        color: '#FFFFFF',
+        fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
     },
+
+    errorText: {
+        color: '#ff375b',
+        fontFamily: 'Ubuntu_400Regular',
+        fontSize: 16,
+        marginBottom: 5,
+        alignSelf: 'flex-start',
+        top: 40,
+        left: 10,
+        position: 'relative',
+      },
 });

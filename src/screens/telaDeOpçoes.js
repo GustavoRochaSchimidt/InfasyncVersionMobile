@@ -21,7 +21,7 @@ import {
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeOpçoes({ navigation }) {
 
-  //Const que carrega as Fonts
+  //Const que carrega as Fonts.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
@@ -97,7 +97,7 @@ export default function telaDeOpçoes({ navigation }) {
     </KeyboardAvoidingView>
   );
 };
-//O styles é encarregado de dar a estilização do front-end
+//O styles é encarregado de dar a estilização do front-end.
 const styles = StyleSheet.create({
   fundoTela: {
     flex: 1,

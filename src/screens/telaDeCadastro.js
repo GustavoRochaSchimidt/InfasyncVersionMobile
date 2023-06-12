@@ -25,10 +25,12 @@ import {
 } from "react-native";
 
 export default function TelaDeCadastro() {
+  
+  //Seta o estado do campo e guarda o valor.
   const [hidePass, setHidePass] = useState(true);
   const [hidePassConf, setHidePassConf] = useState(true);
 
-  //Toast cuida da notifições do app
+  //Toast cuida da notifições do app.
   const showToast = () => {
     console.log("Usuário cadastrado com sucesso")
     ToastAndroid.show(
@@ -38,7 +40,7 @@ export default function TelaDeCadastro() {
     )
   };
 
-  //Toast em caso de erro no cadastro
+  //Toast em caso de erro no cadastro.
   const showToastError = () => {
     console.log("Falha ao cadastrar usário")
     ToastAndroid.show(
@@ -48,7 +50,7 @@ export default function TelaDeCadastro() {
     )
   };
 
-  //O schema cuida das validações dos campos de formularios
+  //O schema cuida das validações dos campos de formularios.
   const schema = yup.object().shape({
     ra: yup.string().min(13, "O seu ra tem 13 digitos").required("Informe seu Ra"),
     userName: yup.string().required("Informe seu nome"),
@@ -61,10 +63,11 @@ export default function TelaDeCadastro() {
     senhaConfirm: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem'),
   });
 
+  //Const para monstrar os erros e valores das inputs.
   const { control, handleSubmit, formState: { errors, values } } = useForm({
     resolver: yupResolver(schema)
   });
-
+  //Função que crai o user.
   async function createUser(values) {
     try {
       const data = {
@@ -74,19 +77,18 @@ export default function TelaDeCadastro() {
         email: values.email,
         password: values.senha,
         type: 0,
-        coursesId: 0,
+        coursesId: 1,
       };
 
       const response = await infatecFetch.post('/api/Login/CreateUser', data);
-      showToast()
-      console.log(response.data);
+      console.log("Usuário cadastrado com sucesso")
     } catch (error) {
-      showToastError()
+      console.log("Falha ao cadastrar usário")
       console.error(error);
     }
   };
 
-  //const que carrega as fonts
+  //const que carrega as fonts do front-end.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
   });
