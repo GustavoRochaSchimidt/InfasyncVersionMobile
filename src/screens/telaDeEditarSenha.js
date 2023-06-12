@@ -19,25 +19,45 @@ import infatecFetch from "../Services/api";
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeEditarSenha({ navigation }) {
 
-     //Const que tras o email da outra tela.
-     const route = useRoute();
-     const { email } = route.params;
+    //Const que tras o email da outra tela.
+    const route = useRoute();
+    const { email } = route.params;
 
-    //Função que carrega a fonte das letras no fron-end.
+    //Função que carrega a fonte das letras no front-end.
     const [fontLoaded] = useFonts({
         Ubuntu_400Regular
     });
 
-     //armazena o e-mail do user
-     const [trocaEmail, setTrocaEmail] = useState('');
+    //armazena o e-mail do user.
+    const [trocaEmail, setTrocaEmail] = useState('');
+    const [emailValid, setEmailValid] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     if (!fontLoaded) {
         return null;
     };
 
-     //Envia o e-mail com o codigo de recuperação de senha.
-     const enviarEmail = async () => {
+    //Valida o e-mail.
+    const validateEmail = () => {
+        const domain = "@fatec.sp.gov.br";
+        if (!trocaEmail.endsWith(domain)) {
+            setEmailValid(false);
+            setErrorMessage('E-mail inválido. O e-mail deve ser do domínio @fatec.sp.gov.br.');
+        } else {
+            setEmailValid(true);
+            setErrorMessage('');
+        }
+    };
+
+    //Envia o e-mail com o codigo de recuperação de senha.
+    const enviarEmail = async () => {
         try {
+            const domain = "@fatec.sp.gov.br"; //valida se o dominio esta correto.
+            if (!trocaEmail.endsWith(domain)) {
+                setErrorMessage('E-mail inválido.');
+                return;
+            }
+
             const dados = {
                 body: 'este é seu código:',
                 email: email
@@ -46,7 +66,7 @@ export default function telaDeEditarSenha({ navigation }) {
             const response = await infatecFetch.post('/api/ForgotPassword/SendEmail/2', dados);
             console.log(response.data);
             console.log('Código enviado para o email com sucesso');
-            navigation.navigate('telaPerfilUser', {email: email});
+            navigation.navigate('telaPerfilUser', { email: email });
         } catch (error) {
             console.error('Erro ao enviar código:', error);
         }
@@ -67,20 +87,30 @@ export default function telaDeEditarSenha({ navigation }) {
                         <Text style={styles.textEditProfile}> REDEFINIR SENHA: </Text>
                     </View>
                     <View>
-                        <TextInput style={[styles.inputCorName, {
-                            borderColor: "#FFF",
-                            paddingLeft: 35,
-                        }]}
+                        <TextInput
+                            style={[
+                                styles.inputCorName,
+                                !emailValid ? styles.inputError : null,
+                            ]}
                             placeholder='E-mail'
                             placeholderTextColor='#FFF'
                             value={trocaEmail}
-                            onChangeText={setTrocaEmail}
+                            onChangeText={(text) => {
+                                setTrocaEmail(text);
+                                setEmailValid(true);
+                            }}
+                            onBlur={validateEmail}
                         />
                         <View style={styles.iconUser}>
                             <AntDesign name='mail' size={22} color='#FFF' />
                         </View>
+                        {!emailValid && (
+                            <Text style={styles.errorText}>O e-mail deve ser @fatec.sp.gov.br</Text>
+                        )}
+                        {errorMessage !== '' && (
+                            <Text style={styles.errorText}>{errorMessage}</Text>
+                        )}
                     </View>
-
                     <TouchableOpacity style={styles.button} onPress={() => enviarEmail()}>
                         <Text style={styles.buttonText}>ENVIAR</Text>
                     </TouchableOpacity>
@@ -141,6 +171,7 @@ const styles = StyleSheet.create({
     },
 
     inputCorName: {
+        paddingLeft: 30,
         position: "relative",
         height: 50,
         width: 320,
@@ -154,6 +185,8 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         top: 125,
+        borderColor: "#FFFFFF",
+        backgroundColor: "FFF"
     },
 
     button: {
@@ -178,5 +211,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
     },
+
+    inputError: {
+        borderColor: "#ff375b",
+        borderWidth: 2,
+    },
+
+    errorText: {
+        color: "#ff375b",
+        fontFamily: "Ubuntu_400Regular",
+        fontSize: 12,
+        marginTop: 5,
+        textAlign: 'center',
+        top: 105,
+        position: "relative",
+      },
 
 });

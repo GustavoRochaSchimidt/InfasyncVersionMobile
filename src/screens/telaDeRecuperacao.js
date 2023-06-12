@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     },
 
     inputError: {
-        color: "#ff375b",
+        color: "#000",
         top: 60,
         left: -15,
         fontFamily: "Ubuntu_400Regular",

@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   textInfatec: {
     position: 'relative',
     fontFamily: 'JuliusSansOne_400Regular',
-    fontSize: 38,
+    fontSize: 37,
     color: '#000000',
     textAlign: 'center',
     top: 40,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     fontFamily: 'Ubuntu_400Regular',
     color: '#000000',
-    fontSize: 38,
+    fontSize: 37,
     top: 40,
   },
 

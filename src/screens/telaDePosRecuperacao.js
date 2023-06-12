@@ -1,4 +1,3 @@
-//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React, { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
@@ -6,7 +5,6 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, KeyboardAvoidingVi
 import infatecFetch from "../Services/api";
 import { useRoute } from '@react-navigation/native';
 
-//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDePosRecuperacao({ navigation }) {
     const [hidePass, setHidePass] = useState(true);
     const [hidePassConf, setHidePassConf] = useState(true);
@@ -17,11 +15,9 @@ export default function telaDePosRecuperacao({ navigation }) {
     const [passwordError, setPasswordError] = useState(null);
     const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
-    //Const que tras o email da outra tela.
     const route = useRoute();
     const { email } = route.params;
 
-    //Carreg as fonts.
     const [fontLoaded] = useFonts({
         Ubuntu_400Regular,
     });
@@ -30,9 +26,7 @@ export default function telaDePosRecuperacao({ navigation }) {
         return null;
     }
 
-    //Const para resetar o password.
     const handleResetPassword = async () => {
-        // Verificar se o campo de código está vazio.
         if (code.trim() === '') {
             setCodeError('Preencha o campo com o código.');
             return;
@@ -40,7 +34,6 @@ export default function telaDePosRecuperacao({ navigation }) {
             setCodeError('');
         }
 
-        // Verificar se o campo de senha está vazio.
         if (password.trim() === '') {
             setPasswordError('Preencha o campo com a nova senha.');
             return;
@@ -48,7 +41,6 @@ export default function telaDePosRecuperacao({ navigation }) {
             setPasswordError('');
         }
 
-        // Verificar se o campo de confirmação de senha está vazio.
         if (confirmPassword.trim() === '') {
             setConfirmPasswordError('Preencha o campo com a confirmação da nova senha.');
             return;
@@ -56,7 +48,6 @@ export default function telaDePosRecuperacao({ navigation }) {
             setConfirmPasswordError('');
         }
 
-        // Verificar se as senhas coincidem.
         if (password !== confirmPassword) {
             setConfirmPasswordError('As senhas não coincidem.');
             return;
@@ -87,36 +78,79 @@ export default function telaDePosRecuperacao({ navigation }) {
                     <Text style={styles.text1}>ESQUECEU SUA SENHA?</Text>
                     <Text style={styles.text2}>Digite o código e a nova senha</Text>
                     <TextInput
-                        style={styles.inputEmail}
+                        style={[
+                            styles.inputEmail,
+                            codeError !== null ? styles.inputError : null,
+                        ]}
                         placeholder="Código recebido"
                         placeholderTextColor="#000"
                         value={code}
                         onChangeText={setCode}
+                        onBlur={() => {
+                            if (code.trim() === '') {
+                                setCodeError('Preencha o campo com o código.');
+                            } else {
+                                setCodeError(null);
+                            }
+                        }}
                     />
                     {codeError !== null && <Text style={styles.errorText}>{codeError}</Text>}
 
                     <TextInput
-                        style={styles.inputSenha}
+                        style={[
+                            styles.inputSenha,
+                            passwordError !== null ? styles.inputError : null,
+                        ]}
                         placeholder="Nova senha"
                         placeholderTextColor="#000"
                         secureTextEntry={hidePass}
                         value={password}
                         onChangeText={setPassword}
+                        onBlur={() => {
+                            if (password.trim() === '') {
+                                setPasswordError('Preencha o campo com a nova senha.');
+                            } else {
+                                setPasswordError(null);
+                            }
+                        }}
                     />
                     {passwordError !== null && <Text style={styles.errorText}>{passwordError}</Text>}
 
-                    <TouchableOpacity style={styles.iconEye} onPress={() => setHidePass(!hidePass)}>
-                        {hidePass ? <AntDesign name="eye" size={24} color="#000" /> : <AntDesign name="eyeo" size={24} color="#000" />}
+                    <TouchableOpacity
+                        style={styles.iconEye}
+                        onPress={() => setHidePass(!hidePass)}
+                    >
+                        {hidePass ? (
+                            <AntDesign name="eye" size={24} color="#000" />
+                        ) : (
+                            <AntDesign name="eyeo" size={24} color="#000" />
+                        )}
                     </TouchableOpacity>
+
                     <TextInput
-                        style={styles.inputSenhaConf}
+                        style={[
+                            styles.inputSenhaConf,
+                            confirmPasswordError !== null ? styles.inputError : null,
+                        ]}
                         placeholder="Confirmar nova senha"
                         placeholderTextColor="#000"
                         secureTextEntry={hidePassConf}
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
+                        onBlur={() => {
+                            if (confirmPassword.trim() === '') {
+                                setConfirmPasswordError('Preencha o campo com a confirmação da nova senha.');
+                            } else if (confirmPassword !== password) {
+                                setConfirmPasswordError('As senhas não coincidem.');
+                            } else {
+                                setConfirmPasswordError(null);
+                            }
+                        }}
                     />
-                    {confirmPasswordError !== null && <Text style={styles.errorText}>{confirmPasswordError}</Text>}
+                    {confirmPasswordError !== null && (
+                        <Text style={styles.errorText}>{confirmPasswordError}</Text>
+                    )}
+
 
                     <TouchableOpacity style={styles.iconEye2} onPress={() => setHidePassConf(!hidePassConf)}>
                         {hidePassConf ? <AntDesign name="eye" size={24} color="#000" /> : <AntDesign name="eyeo" size={24} color="#000" />}
@@ -131,7 +165,6 @@ export default function telaDePosRecuperacao({ navigation }) {
     );
 };
 
-//Cuida da estilizaçãos do codigo.
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -172,7 +205,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         backgroundColor: '#FFF',
-        marginBottom: 20,
+        marginBottom: 40,
         borderColor: '#FFF',
     },
     inputSenha: {
@@ -188,7 +221,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         backgroundColor: '#FFF',
-        marginBottom: 20,
+        marginBottom: 40,
         borderColor: '#FFF',
     },
     inputSenhaConf: {
@@ -204,19 +237,19 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         backgroundColor: '#FFF',
-        marginBottom: 20,
+        marginBottom: 40,
         borderColor: '#FFF',
     },
     iconEye: {
         width: '15%',
-        top: 223,
+        top: 240,
         left: 340,
         height: 50,
         position: 'absolute',
     },
     iconEye2: {
         width: '15%',
-        top: 288,
+        top: 290,
         left: 340,
         height: 50,
         position: 'absolute',
@@ -244,10 +277,18 @@ const styles = StyleSheet.create({
         color: '#ff375b',
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
-        marginBottom: 5,
         alignSelf: 'flex-start',
-        top: 40,
+        top: 20,
         left: 10,
         position: 'relative',
-      },
+    },
+    inputError: {
+        color: "#000",
+        top: 60,
+        left: -15,
+        fontFamily: "Ubuntu_400Regular",
+        position: "relative",
+        borderColor: "#ff375b",
+        borderWidth: 2,
+    },
 });
