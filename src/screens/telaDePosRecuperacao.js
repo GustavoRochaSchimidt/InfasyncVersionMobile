@@ -94,38 +94,39 @@ export default function telaDePosRecuperacao({ navigation }) {
                             }
                         }}
                     />
-                    {codeError !== null && <Text style={styles.errorText}>{codeError}</Text>}
+                    {codeError !== null && <Text style={styles.errorText2}>{codeError}</Text>}
+                    <View>
+                        <TextInput
+                            style={[
+                                styles.inputSenha,
+                                passwordError !== null ? styles.inputError : null,
+                            ]}
+                            placeholder="Nova senha"
+                            placeholderTextColor="#000"
+                            secureTextEntry={hidePass}
+                            value={password}
+                            onChangeText={setPassword}
+                            onBlur={() => {
+                                if (password.trim() === '') {
+                                    setPasswordError('Preencha o campo com a nova senha.');
+                                } else {
+                                    setPasswordError(null);
+                                }
+                            }}
+                        />
+                        {passwordError !== null && <Text style={styles.errorText3}>{passwordError}</Text>}
 
-                    <TextInput
-                        style={[
-                            styles.inputSenha,
-                            passwordError !== null ? styles.inputError : null,
-                        ]}
-                        placeholder="Nova senha"
-                        placeholderTextColor="#000"
-                        secureTextEntry={hidePass}
-                        value={password}
-                        onChangeText={setPassword}
-                        onBlur={() => {
-                            if (password.trim() === '') {
-                                setPasswordError('Preencha o campo com a nova senha.');
-                            } else {
-                                setPasswordError(null);
-                            }
-                        }}
-                    />
-                    {passwordError !== null && <Text style={styles.errorText}>{passwordError}</Text>}
-
-                    <TouchableOpacity
-                        style={styles.iconEye}
-                        onPress={() => setHidePass(!hidePass)}
-                    >
-                        {hidePass ? (
-                            <AntDesign name="eye" size={24} color="#000" />
-                        ) : (
-                            <AntDesign name="eyeo" size={24} color="#000" />
-                        )}
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.iconEye}
+                            onPress={() => setHidePass(!hidePass)}
+                        >
+                            {hidePass ? (
+                                <AntDesign name="eye" size={24} color="#000" />
+                            ) : (
+                                <AntDesign name="eyeo" size={24} color="#000" />
+                            )}
+                        </TouchableOpacity>
+                    </View>
 
                     <TextInput
                         style={[
@@ -170,6 +171,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FAEBD7',
     },
+
     containerFormato: {
         marginTop: '30%',
         borderRadius: 50,
@@ -178,6 +180,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         padding: '10%',
     },
+
     text1: {
         color: '#fff',
         fontSize: 20,
@@ -185,6 +188,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         textAlign: 'center',
     },
+
     text2: {
         top: 10,
         color: '#fff',
@@ -192,6 +196,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         textAlign: 'center',
     },
+
     inputEmail: {
         position: 'relative',
         top: 60,
@@ -208,6 +213,7 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         borderColor: '#FFF',
     },
+
     inputSenha: {
         position: 'relative',
         top: 60,
@@ -224,9 +230,10 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         borderColor: '#FFF',
     },
+
     inputSenhaConf: {
         position: 'relative',
-        top: 60,
+        top: 10,
         left: -15,
         width: 350,
         height: 45,
@@ -237,23 +244,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         backgroundColor: '#FFF',
-        marginBottom: 40,
+        marginBottom: 30,
         borderColor: '#FFF',
     },
+
     iconEye: {
         width: '15%',
-        top: 240,
-        left: 340,
+        top: -18,
+        left: 300,
         height: 50,
-        position: 'absolute',
+        position: 'relative',
     },
+
     iconEye2: {
         width: '15%',
-        top: 290,
-        left: 340,
+        top: -55,
+        left: 300,
         height: 50,
-        position: 'absolute',
+        position: 'relative',
     },
+
     button: {
         backgroundColor: '#162938',
         marginLeft: -100,
@@ -263,9 +273,10 @@ const styles = StyleSheet.create({
         borderColor: '#FFFFFF',
         borderWidth: 2,
         padding: 10,
-        top: 80,
-        marginBottom: '20%',
+        //top: 30,
+        // marginBottom: '10%',
     },
+
     buttonText: {
         textAlign: 'center',
         color: '#FFFFFF',
@@ -278,17 +289,37 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu_400Regular',
         fontSize: 16,
         alignSelf: 'flex-start',
-        top: 20,
+        top: -18,
         left: 10,
         position: 'relative',
     },
+
     inputError: {
         color: "#000",
-        top: 60,
         left: -15,
         fontFamily: "Ubuntu_400Regular",
         position: "relative",
         borderColor: "#ff375b",
         borderWidth: 2,
+    },
+
+    errorText2: {
+        color: '#ff375b',
+        fontFamily: 'Ubuntu_400Regular',
+        fontSize: 16,
+        alignSelf: 'flex-start',
+        top: 20,
+        left: 10,
+        position: 'relative',
+    },
+
+    errorText3: {
+        color: '#ff375b',
+        fontFamily: 'Ubuntu_400Regular',
+        fontSize: 16,
+        alignSelf: 'flex-start',
+        top: 20,
+        left: 10,
+        position: 'relative',
     },
 });

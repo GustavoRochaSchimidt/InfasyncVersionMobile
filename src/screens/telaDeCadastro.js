@@ -445,10 +445,11 @@ const styles = StyleSheet.create({
   },
 
   cursoInput: {
+    top: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: 40,
+    marginBottom: 20,
   },
 });
 

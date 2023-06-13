@@ -1,12 +1,12 @@
-//Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
+//Os imports são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
 import React from "react";
 import {
-    Alert,
     View,
     TouchableOpacity,
     Text,
     StyleSheet,
     Image,
+    Linking,
 } from "react-native";
 import {
     Ionicons,
@@ -15,12 +15,13 @@ import {
 } from '@expo/vector-icons';
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import { useRoute } from '@react-navigation/native';
-
-//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
-function CustonDrawer({ navigation }) {
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-    //Const que tras o email da outra tela.
+//Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um biblioteca de navegação de telas.
+function CustomDrawer({ navigation }) {
+
+    //Const que traz o email da outra tela.
     const route = useRoute();
     const { email } = route.params;
 
@@ -34,46 +35,46 @@ function CustonDrawer({ navigation }) {
         return null;
     };
 
+    //botão mais informações
+    function handleMaisInformacoesPress() {
+        const url = 'http://localhost:3000/adm';
+        Linking.openURL(url);
+    }
+
+
     //Const para sair do app
-    const handleExitApp = () => {
-        Alert.alert(
-          'Tem certeza?',
-          'Deseja mesmo fechar o aplicativo?',
-          [
-            {
-              text: 'Cancelar',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel'
-            },
-            {
-              text: 'Sair',
-              onPress: () => {
-                navigation.navigate('Home')
-              }
-            }
-          ]
-        );
-      }
-      
+    const handleLogout = async () => {
+        try {
+
+            // Exemplo de remoção do token:
+            await AsyncStorage.removeItem("token");
+
+            // Navegue para a tela inicial
+            navigation.navigate("Home");
+        } catch (error) {
+            // Lide com o erro, se necessário
+            console.log(error);
+        }
+    };
+
+
     return (
         <View style={styles.container}>
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate('telaDeEditarSenha', {email: email})}>
+                <TouchableOpacity onPress={() => navigation.navigate('telaDeEditarSenha', { email: email })}>
                     <Text style={styles.perfilUserText}>EDITAR PERFIL</Text>
                     <FontAwesome5 style={styles.perfilIcon} name="user-cog" size={20} color="000" />
                 </TouchableOpacity>
             </View>
 
             <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleMaisInformacoesPress}>
                     <Text style={styles.perfilUserText}>MAIS INFORMAÇÕES</Text>
-                    <AntDesign style={styles.perfilIcon} name="infocirlce" size={20} color="000" />
+                    <AntDesign style={styles.perfilIcon} name="infocirlce" size={20} color="#000" />
                 </TouchableOpacity>
             </View>
-
-
             <View>
-                <TouchableOpacity onPress={handleExitApp}>
+                <TouchableOpacity onPress={handleLogout}>
                     <Text style={styles.perfilUserText}>SAIR</Text>
                     <Ionicons style={styles.perfilIcon} name="md-exit" size={20} color="000" />
                 </TouchableOpacity>
@@ -94,12 +95,12 @@ function CustonDrawer({ navigation }) {
                 </View>
             </View>
         </View>
-    )
-};
+    );
+}
 
-export default CustonDrawer;
+export default CustomDrawer;
 
-// Atribue a estilização do front-end.
+// Atribui a estilização do front-end.
 const styles = StyleSheet.create({
 
     container: {

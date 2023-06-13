@@ -4,6 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Linking
 } from 'react-native';
 import Header from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +26,12 @@ export default function Home() {
   if (!fontLoaded) {
     return null;
   }
+
+      //botão mais informações
+      function handleMaisInformacoesPress() {
+        const url = 'http://localhost:3000/adm';
+        Linking.openURL(url);
+    }
 
   return (
     <View style={styles.container}>
@@ -68,7 +75,7 @@ export default function Home() {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.button3]}
-            onPress={() => alert('Botão pressionado')}
+            onPress={handleMaisInformacoesPress}
           >
             <Text style={styles.buttonText2}>MAIS INFORMAÇÕES</Text>
           </TouchableOpacity>

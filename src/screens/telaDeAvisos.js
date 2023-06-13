@@ -81,7 +81,7 @@ export default function telaDeAvisos() {
           Authorization: `Bearer ${token}`,
         },
       });
-      consele.log("Aviso enviado com sucesso")
+      console.log("Aviso enviado com sucesso")
     } catch (error) {
       console.error(error);
       console.log("Erro ao enviar aviso")
