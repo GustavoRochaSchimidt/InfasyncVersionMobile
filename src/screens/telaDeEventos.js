@@ -80,10 +80,10 @@ export default function telaDeEventos() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(formData);
-      console.log(token);
+      console.log("Evento enviado com sucesso");
     } catch (error) {
       console.error(error);
+      console.log("Falha ao enviar evento");
     }
   };
 
@@ -138,9 +138,7 @@ export default function telaDeEventos() {
             <Image
               ref={imageRef}
               source={{
-                uri:
-                  image ||
-                  "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
+                uri:image 
               }}
             />
             <Text style={styles.textAnexar}>Anexar imagem:</Text>

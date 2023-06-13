@@ -73,8 +73,6 @@ export default function telaDeAvisos() {
     const imageFile = new File([blob], "image.jpg", { type: "image/jpeg" });
     formData.append("imageFile", imageFile);
 
-    console.log(imageFile)
-
     try {
       const token = AsyncStorage.getItem("bearer");
       await infatecFetch.post("/api/Warnings/CreateNewWarning", formData, {
@@ -83,10 +81,10 @@ export default function telaDeAvisos() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(formData);
-      console.log(token);
+      consele.log("Aviso enviado com sucesso")
     } catch (error) {
       console.error(error);
+      console.log("Erro ao enviar aviso")
     }
   };
 
@@ -141,9 +139,7 @@ export default function telaDeAvisos() {
             <Image
               ref={imageRef}
               source={{
-                uri:
-                  image ||
-                  "https://mltmpgeox6sf.i.optimole.com/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png",
+                uri:image  
               }}
             />
             <Text style={styles.textAnexar}>Anexar imagem:</Text>

@@ -75,7 +75,6 @@ export default function telaDeLogin({ navigation }) {
       await AsyncStorage.setItem('type', type);
 
       navigation.navigate('telaDeOpçoes', { email: values.email });
-      console.log(values.email)
     } catch (error) {
       console.error(error);
       setLoginError(true);

@@ -37,22 +37,24 @@ function CustonDrawer({ navigation }) {
     //Const para sair do app
     const handleExitApp = () => {
         Alert.alert(
-            'Tem certeza?',
-            'Deseja mesmo fechar o aplicativo?',
-            [
-                {
-                    text: 'Cancelar',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel'
-                },
-                {
-                    text: 'Sim',
-                    onPress: () => BackHandler.exitApp()
-                }
-            ]
+          'Tem certeza?',
+          'Deseja mesmo fechar o aplicativo?',
+          [
+            {
+              text: 'Cancelar',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel'
+            },
+            {
+              text: 'Sair',
+              onPress: () => {
+                navigation.navigate('Home')
+              }
+            }
+          ]
         );
-    }
-
+      }
+      
     return (
         <View style={styles.container}>
             <View>

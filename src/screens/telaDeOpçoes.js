@@ -1,7 +1,8 @@
 //Os imports  são usados para importar módulos, componentes, estilos e outras dependências necessárias para o funcionamento do aplicativo.
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { useFonts, Ubuntu_400Regular } from '@expo-google-fonts/ubuntu';
 import * as Animatable from 'react-native-animatable';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Ionicons,
   AntDesign,
@@ -21,6 +22,22 @@ import {
 //Uma função que pode ser importada em outro módulo ou arquivo, junto do navigation que é um bibioteca de navigação de telas.
 export default function telaDeOpçoes({ navigation }) {
 
+  const [tipo, setTipo] = useState('');
+
+  useEffect(() => {
+    const getTipoFromAsyncStorage = async () => {
+      try {
+        const tipoArmazenado = await AsyncStorage.getItem('type');
+        setTipo(tipoArmazenado);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getTipoFromAsyncStorage();
+  }, []);
+  
+  
   //Const que carrega as Fonts.
   const [fontLoaded] = useFonts({
     Ubuntu_400Regular,
@@ -29,6 +46,7 @@ export default function telaDeOpçoes({ navigation }) {
   if (!fontLoaded) {
     return null;
   }
+
 
   return (
     <KeyboardAvoidingView
@@ -60,9 +78,13 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconNotification}>
             <Ionicons name="notifications" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaAvisos')}>
+          <TouchableOpacity 
+          style={[styles.button, tipo === '1' && { opacity: 0.5 }]} 
+          onPress={() => navigation.navigate('telaAvisos')}
+          disabled={tipo === '1'}
+          >
             <Text style={styles.buttonText}>ENVIAR AVISO</Text>
-            <View style={styles.iconArrow}>
+            <View style={[styles.iconArrow, tipo === '1' && { opacity: 0.5 }]}>
               <AntDesign name="arrowright" size={22} color="#fff" />
             </View>
           </TouchableOpacity>
@@ -73,9 +95,13 @@ export default function telaDeOpçoes({ navigation }) {
             style={styles.iconEventos}>
             <MaterialIcons name="event" size={50} color="#162938" />
           </Animatable.View>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('telaDeEventos')}>
+          <TouchableOpacity 
+          style={[styles.button, tipo === '1' && { opacity: 0.5 }]} 
+          onPress={() => navigation.navigate('telaDeEventos')}
+          disabled={tipo === '1'}
+          >
             <Text style={styles.buttonText}>ENVIAR EVENTO</Text>
-            <View style={styles.iconArrow}>
+            <View style={[styles.iconArrow, tipo === '1' && { opacity: 0.5 }]}>
               <AntDesign name="arrowright" size={22} color="#fff" />
             </View>
           </TouchableOpacity>

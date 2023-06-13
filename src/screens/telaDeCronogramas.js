@@ -178,8 +178,8 @@ export default function TelaDeCronogramas() {
       name: nomeCurso,
       period: selectedValue2,
       matter: materia,
-      start: "30/12/1899" + horaInicio,
-      end: "30/12/1899" + horaTermino,
+      start: "30/12/1899 " + horaInicio,
+      end: "30/12/1899 " + horaTermino,
       floor: andar,
       coordinator: nomeProfessor
     };
